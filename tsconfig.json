@@ -6,6 +6,13 @@
     "moduleResolution": "node",
     "noEmit": true,
     "skipLibCheck": true,
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "typeRoots": [
+      "../node_modules/@types",
+      "../@types"
+    ],
+    "paths": {
+      "@components/*": ["Components/*"],
+    }
   }
 }
