@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import Lessons from './Components/Lessons/Lessons';
+import Levels from './Components/Levels/Levels';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -10,7 +10,7 @@ export default class App extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-          <Lessons/>
+          <Levels/>
       </View>
     );
   }

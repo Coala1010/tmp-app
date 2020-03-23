@@ -4,7 +4,7 @@ import { Text, View, TouchableOpacity } from 'react-native';
 
 import Units from '../Units/Units';
 
-export default class Lessons extends React.Component {
+export default class Levels extends React.Component {
 
     constructor (props) {
         super(props)
