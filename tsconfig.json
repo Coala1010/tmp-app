@@ -12,7 +12,9 @@
       "../@types"
     ],
     "paths": {
-      "@components/*": ["Components/*"],
+      "@components/*": ["components/*"],
+      "@types/*": ["types/*"],
+      "@screens/*": ["screens/*"],
     }
   }
 }

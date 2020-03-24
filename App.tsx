@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import Levels from './Components/Levels/Levels';
+import Levels from './screens/levels/Levels';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -23,6 +23,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     fontFamily: 'Arial',
-    padding: 5
+    marginTop: 30
   },
 });    
