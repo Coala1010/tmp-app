@@ -1,37 +1,39 @@
 import React from 'react';
 
-import { StyleSheet, Text, View, Image, FlatList } from 'react-native';
-import PropTypes from 'prop-types';
+import { StyleSheet, Text, View, Image, FlatList, TouchableOpacity } from 'react-native';
 import UserUnit from '../../types/UserUnit';
+import {
+  NavigationScreenProp
+} from 'react-navigation';
 
 interface Props {
   visible: boolean,
   userUnits: Array<UserUnit>
+  navigation: NavigationScreenProp<any,any>;
 }
 
 export default class Units extends React.Component<Props> {
 
-  static defaultProps: Props = {
-    visible: false,
-    userUnits: Array<UserUnit>()
-  }
-
   _keyExtractor = (item, index) => index.toString();
+
+  _unitTitle = (item, index) => item.title + ' .' + (index+1);
 
   _renderItem = ({item, index}) => (
     <View style={styles.unitContainer} >
-      <View style={styles.imageContainer}>
-        <Image style={styles.image}
-            source={require('../../assets/family.png')} 
-            key={item.title} />
-      </View>
-      <Text style={styles.text}>{item.title} .{index}</Text>     
+      <TouchableOpacity onPress={() => this.props.navigation.navigate('Lessons', { unitTitle: this._unitTitle(item, index)})}>
+        <View style={styles.imageContainer}>
+          <Image style={styles.image}
+              source={require('../../assets/family.png')} 
+              key={item.title} />
+        </View>
+        <Text style={styles.text}>{this._unitTitle(item, index)}</Text>     
+      </TouchableOpacity>
     </View>
   );  
-
+  
   render() {
-    const userUnits  = this.props.userUnits;
-    const visible  = this.props.visible;
+    const userUnits = this.props.userUnits;
+    const visible = this.props.visible;
     return visible &&  
     <View style={styles.container}>
       <FlatList<UserUnit>
@@ -43,7 +45,6 @@ export default class Units extends React.Component<Props> {
     </View>;
   }  
 }
-
 
 const styles = StyleSheet.create({
   text: {

@@ -1,14 +1,11 @@
-import UserUnit from "./UserUnit";
-
-export default class UserLevel {
-    levelId: number;
+export default class UserLesson {
+    lessonId: number;
     title: string;
 	order: number;
-	levelNumber: number;
+	lessonNumber: number;
 	levelLastModificationDate: Date;
 	levelCreationDate: Date;
 	userLevelProgress: number;
 	userLastModificationDate: Date;
 	userCreationDate: Date;
-	userUnits: Array<UserUnit>
 }   

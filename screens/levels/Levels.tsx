@@ -7,6 +7,13 @@ import UserLevels from '../../types/UserLevels';
 
 import UserLevelsProvider from '../../providers/UserLevelsProvider';
 
+import {
+  NavigationParams,
+  NavigationScreenProp,
+  NavigationState,
+} from 'react-navigation';
+
+
 interface State {
   selectedIndex: Number,
   userLevels: UserLevels
@@ -21,7 +28,7 @@ export default class Levels extends React.Component<State> {
 
     state: Readonly<State> = {
         selectedIndex: -1,
-        userLevels: UserLevelsProvider("1")
+        userLevels: UserLevelsProvider("1"),
     }  
   
     updateIndex (selectedIndex) {
@@ -63,7 +70,8 @@ export default class Levels extends React.Component<State> {
             </View>
           </TouchableOpacity>
           
-          <Units userUnits={userLevel.units} visible={this.state.selectedIndex == i }/>
+          <Units userUnits={userLevel.userUnits} visible={this.state.selectedIndex == i} 
+                navigation = {this.props.navigation}/>
         
         </View>
       )
