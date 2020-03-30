@@ -10,5 +10,5 @@ export default class UserLevel {
 	userLevelProgress: number;
 	userLastModificationDate: Date;
 	userCreationDate: Date;
-	units: Array<UserUnit>
+	userUnits: Array<UserUnit>
 }   
