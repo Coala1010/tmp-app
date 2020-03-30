@@ -30,7 +30,8 @@ export default class Lessons extends React.Component<State> {
           shadowOpacity: 0.6,
           borderRadius: 15}}>
 
-          <TouchableOpacity style={{padding: 5}} onPress = {() => {}}>
+          <TouchableOpacity style={{padding: 5}} 
+          onPress={() => this.props.navigation.navigate('Activities', {lessonTitle: userLesson.title, lessonId: userLesson.lessonId})}>
             <View style = {{alignItems: 'center', backgroundColor: '#FCFDFF', 
                   justifyContent: 'space-around', height: 60,
                   flexDirection: 'row'
