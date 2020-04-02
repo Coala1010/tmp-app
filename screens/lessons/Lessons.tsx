@@ -3,76 +3,98 @@ import { Text, View, TouchableOpacity, Button, Image, StyleSheet } from 'react-n
 import UserLessons from '../../types/UserLessons';
 import UserLessonsProvider from '../../providers/UserLessonsProvider';
 
+interface Props {
+}
+
 interface State {
   selectedIndex: Number,
   userLessons: UserLessons,
+  unitId: Number
 }
 
-export default class Lessons extends React.Component<State> {
-    state: Readonly<State> = {
-        selectedIndex: -1,
-        userLessons: UserLessonsProvider("1")
-    }  
-    
-    renderLessonsList(){
-      const userLessons = this.state.userLessons;
-      return userLessons.userLessonsArray.map((userLesson, i, levelArray) =>
-        <View 
-          key={i} 
-          style={{
-          marginTop: 10, 
-          justifyContent: 'space-around',
-          backgroundColor: '#FCFDFF',
-          borderColor: 'black',
-          borderStyle: 'solid',
-          borderWidth: 0,
-          shadowColor: 'lightgray',
-          shadowOpacity: 0.6,
-          borderRadius: 15}}>
-
-          <TouchableOpacity style={{padding: 5}} 
-          onPress={() => this.props.navigation.navigate('Activities', {lessonTitle: userLesson.title, lessonId: userLesson.lessonId})}>
-            <View style = {{alignItems: 'center', backgroundColor: '#FCFDFF', 
-                  justifyContent: 'space-around', height: 60,
-                  flexDirection: 'row'
-                  }}>
-              <Text style = {{marginLeft: 70, color: '#233665', alignContent: 'center', display: 'flex', 
-              padding: 10, fontWeight: 'bold'}}>{userLesson.title}</Text>
-              <Text style = {{marginLeft: 20, color: '#233665', alignContent: 'flex-end', display: 'flex', padding: 7, marginEnd: 0,
-                            backgroundColor: '#F7F9FC',
-                            fontWeight: 'bold', borderStyle: 'solid', borderRadius: 5, borderWidth: 1,
-                            borderColor: '#F7F9FC', overflow: 'hidden'}}>{i+1}</Text>              
-            </View>
-          </TouchableOpacity>
-        
-        </View>
-      )
-    }
+export default class Lessons extends React.Component<Props, State> {
   
-    render() {
-        const { unitTitle } = this.props.route.params; 
-        return (
-            <View style={{flex: 1, justifyContent:'top', width: '100%', backgroundColor: '#FCFDFF'}}>
-                <View style={{flex: 1, justifyContent:'top', width: '100%', backgroundColor: '#FCFDFF'}}>
-                    <View style={{backgroundColor: '#FCFDFF',
-                            borderStyle: 'solid', borderWidth: 3,
+  state: Readonly<State> = {
+      selectedIndex: -1,
+      userLessons: null,
+      unitId: null
+  } 
+ 
+  constructor (props) {
+    super(props);
+    const { unitId } = this.props.route.params; 
+    this.setState({unitId : unitId});
+    UserLessonsProvider("1", unitId, (json) => {
+      let userLessons : UserLessons = new UserLessons();
+      userLessons.userLessonsArray = json;
+      this.setState({userLessons : userLessons});
+    })
+  } 
+    
+  renderLessonsList(){
+    const userLessons = this.state.userLessons;
+    return userLessons.userLessonsArray.map((userLesson, i, levelArray) =>
+      <View 
+        key={i} 
+        style={{
+        marginTop: 10, 
+        justifyContent: 'space-around',
+        backgroundColor: '#FCFDFF',
+        borderColor: 'black',
+        borderStyle: 'solid',
+        borderWidth: 0,
+        shadowColor: 'lightgray',
+        shadowOpacity: 0.6,
+        borderRadius: 15}}>
+
+        <TouchableOpacity style={{padding: 5}} 
+        onPress={() => this.props.navigation.navigate('Activities', {lessonTitle: userLesson.title, lessonId: userLesson.lessonId})}>
+          <View style = {{alignItems: 'center', backgroundColor: '#FCFDFF', 
+                justifyContent: 'space-around', height: 60,
+                flexDirection: 'row'
+                }}>
+            <Text style = {{marginLeft: 70, color: '#233665', alignContent: 'center', display: 'flex', 
+            padding: 10, fontWeight: 'bold'}}>{userLesson.title}</Text>
+            <Text style = {{marginLeft: 20, color: '#233665', alignContent: 'flex-end', display: 'flex', padding: 7, marginEnd: 0,
+                          backgroundColor: '#F7F9FC',
+                          fontWeight: 'bold', borderStyle: 'solid', borderRadius: 5, borderWidth: 1,
+                          borderColor: '#F7F9FC', overflow: 'hidden'}}>{i+1}</Text>              
+          </View>
+        </TouchableOpacity>
+        
+      </View>
+    )
+  }
+  
+  render() {
+    const { unitTitle } = this.props.route.params; 
+    const userLessons = this.state.userLessons;
+    let list;
+    if (userLessons && userLessons.userLessonsArray) {
+        list = this.renderLessonsList();
+    }
+      return (
+        <View style={{flex: 1, justifyContent:'top', width: '100%', backgroundColor: '#FCFDFF'}}>
+          <View style={{flex: 1, justifyContent:'top', width: '100%', backgroundColor: '#FCFDFF'}}>
+            <View style={{backgroundColor: '#FCFDFF',
+                        borderStyle: 'solid', borderWidth: 3,
                         borderColor: '#F7F9F7', height: 100,
                         justifyContent: 'space-around',
                         flexDirection: 'row'}}>
-                        <Text style={{textAlign: 'center', marginTop: 50, fontWeight: 'bold', color: '#233665', width: '100%',}}>
-                            {unitTitle}
-                        </Text>
-                        <TouchableOpacity 
-                            style={styles.backButton}
-                            onPress={() => this.props.navigation.goBack()}>
-                            <Image 
-                            style={styles.image}
-                            source={require('../../assets/arrow_back-24px.png')} 
-                            />
-                        </TouchableOpacity>
-                    </View>
-                {this.renderLessonsList()}
+                <Text style={{textAlign: 'center', marginTop: 50, fontWeight: 'bold', color: '#233665', width: '100%',}}>
+                  {unitTitle}
+                </Text>
+                <TouchableOpacity 
+                    style={styles.backButton}
+                   onPress={() => this.props.navigation.goBack()}>
+                  <Image 
+                      style={styles.image}
+                      source={require('../../assets/arrow_back-24px.png')} 
+                  />
+                </TouchableOpacity>
             </View>
+            {list}
+          </View>
         </View>
       );
     } 

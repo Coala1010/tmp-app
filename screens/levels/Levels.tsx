@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Text, View, TouchableOpacity } from 'react-native';
 
-import Units from '../../components/units/Units';
+import Units from '../../Components/units/Units';
 import UserLevels from '../../types/UserLevels';
 
 import UserLevelsProvider from '../../providers/UserLevelsProvider';
@@ -24,11 +24,16 @@ export default class Levels extends React.Component<State> {
     constructor (props) {
         super(props)
         this.updateIndex = this.updateIndex.bind(this)
+        UserLevelsProvider("1", (json) => {
+          let userLevels : UserLevels = new UserLevels();
+          userLevels.userLevelsArray = json;
+          this.setState({userLevels : userLevels});
+        })
     }
 
     state: Readonly<State> = {
         selectedIndex: -1,
-        userLevels: UserLevelsProvider("1"),
+        userLevels: null
     }  
   
     updateIndex (selectedIndex) {
@@ -78,9 +83,13 @@ export default class Levels extends React.Component<State> {
     }
   
     render() {
+      let list;
+      if (this.state.userLevels) {
+          list = this.renderLevelsList();
+      }
       return (
         <View style={{flex: 1, justifyContent:'top', padding: 10, width: '100%'}}>
-          {this.renderLevelsList()}
+          {list}
         </View>
       );
     } 

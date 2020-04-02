@@ -18,9 +18,10 @@ export default class Units extends React.Component<Props> {
 
   _unitTitle = (item, index) => item.title + ' .' + (index+1);
 
-  _renderItem = ({item, index}) => (
+  _renderItem = ({item, index}) => {
+    return (
     <View style={styles.unitContainer} >
-      <TouchableOpacity onPress={() => this.props.navigation.navigate('Lessons', { unitTitle: this._unitTitle(item, index)})}>
+      <TouchableOpacity onPress={() => this.props.navigation.navigate('Lessons', { unitTitle: this._unitTitle(item, index), unitId: item.unitId})}>
         <View style={styles.imageContainer}>
           <Image style={styles.image}
               source={require('../../assets/family.png')} 
@@ -29,7 +30,8 @@ export default class Units extends React.Component<Props> {
         <Text style={styles.text}>{this._unitTitle(item, index)}</Text>     
       </TouchableOpacity>
     </View>
-  );  
+  );
+  }  
   
   render() {
     const userUnits = this.props.userUnits;
