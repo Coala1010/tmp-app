@@ -8,15 +8,15 @@ import UserLevels from '../../types/UserLevels';
 import UserLevelsProvider from '../../providers/UserLevelsProvider';
 
 import {
-  NavigationParams,
-  NavigationScreenProp,
-  NavigationState,
+    NavigationParams,
+    NavigationScreenProp,
+    NavigationState,
 } from 'react-navigation';
 
 
 interface State {
-  selectedIndex: Number,
-  userLevels: UserLevels
+    selectedIndex: Number,
+    userLevels: UserLevels
 }
 
 export default class Levels extends React.Component<State> {
@@ -28,7 +28,7 @@ export default class Levels extends React.Component<State> {
           let userLevels : UserLevels = new UserLevels();
           userLevels.userLevelsArray = json;
           this.setState({userLevels : userLevels});
-        })
+      })
     }
 
     state: Readonly<State> = {
@@ -41,8 +41,8 @@ export default class Levels extends React.Component<State> {
     }
   
     handleOnPress(selectedIndex) {
-      const selectedIndexUpdate = this.state.selectedIndex == selectedIndex ? -1 : selectedIndex
-      this.setState({selectedIndex: selectedIndexUpdate});  
+        const selectedIndexUpdate = this.state.selectedIndex == selectedIndex ? -1 : selectedIndex
+        this.setState({selectedIndex: selectedIndexUpdate});  
     }
     
     renderLevelsList(){

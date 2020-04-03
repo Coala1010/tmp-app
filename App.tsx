@@ -4,6 +4,10 @@ import Levels from './screens/levels/Levels';
 import Lessons from './screens/lessons/Lessons';
 import Activities from './screens/activities/Activities';
 import VideoActivity from './screens/activities/VideoActivity';
+import PhrasesActivity from './screens/activities/PhrasesActivity';
+import WordsActivity from './screens/activities/WordsActivity';
+import MultichoiceActivity from './screens/activities/MultichoiceActivity';
+import DragAndDropActivity from './screens/activities/DragAndDropActivity';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { useNavigation } from '@react-navigation/native';
@@ -34,6 +38,10 @@ export default class App extends React.Component {
           <this.Stack.Screen name="Lessons" component={Lessons}/>
           <this.Stack.Screen name="Activities" component={Activities}/>
           <this.Stack.Screen name="VideoActivity" component={VideoActivity}/>
+          <this.Stack.Screen name="PhrasesActivity" component={PhrasesActivity}/>
+          <this.Stack.Screen name="WordsActivity" component={WordsActivity}/>
+          <this.Stack.Screen name="MultichoiceActivity" component={MultichoiceActivity}/>
+          <this.Stack.Screen name="DragAndDropActivity" component={DragAndDropActivity}/>
         </this.Stack.Navigator>
       </NavigationContainer>
     );

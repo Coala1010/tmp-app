@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, TouchableOpacity, Button, Image, StyleSheet } from 'react-native';
+import { Text, View, TouchableOpacity, Image, StyleSheet } from 'react-native';
 import UserLessons from '../../types/UserLessons';
 import UserLessonsProvider from '../../providers/UserLessonsProvider';
 
@@ -22,6 +22,9 @@ export default class Lessons extends React.Component<Props, State> {
  
   constructor (props) {
     super(props);
+  } 
+
+  componentDidMount() {
     const { unitId } = this.props.route.params; 
     this.setState({unitId : unitId});
     UserLessonsProvider("1", unitId, (json) => {
@@ -29,7 +32,7 @@ export default class Lessons extends React.Component<Props, State> {
       userLessons.userLessonsArray = json;
       this.setState({userLessons : userLessons});
     })
-  } 
+  }
     
   renderLessonsList(){
     const userLessons = this.state.userLessons;
@@ -74,7 +77,7 @@ export default class Lessons extends React.Component<Props, State> {
         list = this.renderLessonsList();
     }
       return (
-        <View style={{flex: 1, justifyContent:'top', width: '100%', backgroundColor: '#FCFDFF'}}>
+        // <View style={{flex: 1, justifyContent:'top', width: '100%', backgroundColor: '#FCFDFF'}}>
           <View style={{flex: 1, justifyContent:'top', width: '100%', backgroundColor: '#FCFDFF'}}>
             <View style={{backgroundColor: '#FCFDFF',
                         borderStyle: 'solid', borderWidth: 3,
@@ -93,9 +96,10 @@ export default class Lessons extends React.Component<Props, State> {
                   />
                 </TouchableOpacity>
             </View>
+            <View style={{flex: 1, justifyContent:'top', padding: 10, width: '100%'}}>
             {list}
           </View>
-        </View>
+       </View>
       );
     } 
   }
@@ -107,9 +111,19 @@ export default class Lessons extends React.Component<Props, State> {
       width: 24,
       //resizeMode: 'contain',  
     },
-    backButton: {marginTop: 50, color: '#233665', width: 30, height: 30, marginRight: 30,
-    backgroundColor: '#F7F9FC',
-    fontWeight: 'bold', borderStyle: 'solid', borderRadius: 5, borderWidth: 1,
-    borderColor: '#F7F9FC', overflow: 'hidden',
-    alignItems: 'center'}
+    backButton: {
+      marginTop: 50, 
+      color: '#233665', 
+      width: 30, 
+      height: 30, 
+      marginRight: 30,
+      backgroundColor: '#F7F9FC',
+      fontWeight: 'bold', 
+      borderStyle: 'solid', 
+      borderRadius: 5, 
+      borderWidth: 1,
+      borderColor: '#F7F9FC', 
+      overflow: 'hidden',
+      alignItems: 'center'
+    }
   });

@@ -1,63 +1,16 @@
 import React from 'react';
 import { Text, View, TouchableOpacity, Button, Image, StyleSheet } from 'react-native';
-import { Video } from 'expo-av';
-// import BottomNavigation from '../../Components/navigation/BottomNavigation';
 
-interface State {
-  selectedIndex: Number,
-}
+export default class BottomNavigation extends React.Component<State> {
 
-export default class VideoActivity extends React.Component<State> {
-    state: Readonly<State> = {
-        selectedIndex: -1,
-    }  
-    
-    renderVideo(videoTitle: String){
-      const { videoUrl, lessonTitle } = this.props.route.params; 
-      return (
-        <View style={{flex: 1, justifyContent:'top', width: '100%', backgroundColor: '#FCFDFF'}}>
-            <View>
-                <Video
-                    source={require('../../assets/video_sample.mov')}
-                    rate={1.0}
-                    volume={1.0}
-                    isMuted={false}
-                    resizeMode="cover"
-                    shouldPlay
-                    isLooping
-                    style={{ width: '100%', height: 300 }}
-                />    
-            </View>
-            <Text style={{textAlign: 'right', marginTop: 20, marginRightf:50, fontWeight: 'bold', color: '#233665', width: '90%',}}>
-                {videoTitle}
-            </Text>
-            
-        </View>    
-      )
-    }
-  
     render() {
-        const { videoUrl, lessonTitle, videoTitle } = this.props.route.params; 
         return (
-            <View style={{flex: 1, justifyContent:'top', width: '100%', backgroundColor: '#FCFDFF'}}>
-                <View style={{flex: 1, justifyContent:'top', width: '100%', backgroundColor: '#FCFDFF'}}>
-                    <View style={{backgroundColor: '#FCFDFF',
-                            borderStyle: 'solid', borderWidth: 3,
-                        borderColor: '#F7F9F7', height: 100,
-                        justifyContent: 'space-around',
-                        flexDirection: 'row'}}>
-                        <Text style={{textAlign: 'center', marginTop: 50, fontWeight: 'bold', color: '#233665', width: '100%',}}>
-                            {lessonTitle}
-                        </Text>
-                    </View>
-                {this.renderVideo(videoTitle)}
-
-                {/* <BottomNavigation/> */}
-                <View style={{flexDirection: 'row', marginBottom: 50}}>
+            <View style={{flexDirection: 'row', marginBottom: 50}}>
                     <View style={styles.forwardButton}>
                         <TouchableOpacity style={{padding: 5}} 
-                            onPress={() => this.props.navigation.navigate('VideoActivity', { videoUrl: userActivities.videoActivity.videoUrl,
-                            lessonTitle: lessonTitle})}>
+                            // onPress={() => this.props.navigation.navigate('VideoActivity', { videoUrl: userActivities.videoActivity.videoUrl,
+                            // lessonTitle: lessonTitle})}
+                            >
                             <View style = {styles.forwardButtonInner}>
                                 <Image 
                                     style={styles.forwardImage}
@@ -81,27 +34,11 @@ export default class VideoActivity extends React.Component<State> {
                         </TouchableOpacity>
                     </View>
                 </View>
+        )
+    }
+}   
 
-            </View>
-        </View>
-      );
-    } 
-  }
-
-
-  const styles = StyleSheet.create({
-    image: {
-        height: 24,
-        width: 24,
-        //resizeMode: 'contain',  
-    },
-    backgroundVideo: {
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        bottom: 0,
-        right: 0,
-    },
+const styles = StyleSheet.create({
     forwardImage: {
         height: 24,
         width: 14,

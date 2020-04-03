@@ -7,7 +7,7 @@ interface State {
   selectedIndex: Number,
 }
 
-export default class VideoActivity extends React.Component<State> {
+export default class MultichoiceActivity extends React.Component<State> {
     state: Readonly<State> = {
         selectedIndex: -1,
     }  
