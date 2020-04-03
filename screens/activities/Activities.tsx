@@ -19,7 +19,8 @@ export default class Activities extends React.Component<State> {
       const userActivities = UserActivitiesProvider("1", lessonId);
       return (
         <View style={{flex: 1, justifyContent:'top', padding: 10, width: '100%'}}>
-            <View style={{alignContent: 'flex-end', alignItems: 'flex-start'}}
+            <View 
+            //style={{alignContent: 'flex-end', alignItems: 'flex-start', }}
                 //key={i} 
                 style={styles.activity}>
 
@@ -30,8 +31,7 @@ export default class Activities extends React.Component<State> {
                         justifyContent: 'space-around', height: 60,
                         flexDirection: 'row'
                         }}>
-                    <Text style = {{marginLeft: 50, color: '#233665', alignContent: 'center', display: 'flex', 
-                    padding: 10, fontWeight: 'bold'}}>Video Activity</Text>
+                    <Text style = {styles.activityText}>Video Activity</Text>
                     <Image 
                                     style={styles.image}
                                     source={require('../../assets/video-24px.png')} 
@@ -50,8 +50,7 @@ export default class Activities extends React.Component<State> {
                         justifyContent: 'space-around', height: 60,
                         flexDirection: 'row'
                         }}>
-                    <Text style = {{marginLeft: 50, color: '#233665', alignContent: 'center', display: 'flex', 
-                    padding: 10, fontWeight: 'bold'}}>Phrases Activity</Text>
+                    <Text style = {styles.activityText}>Phrases Activity</Text>
                     <Image 
                                     style={styles.image}
                                     source={require('../../assets/headset-24px.png')} 
@@ -70,8 +69,7 @@ export default class Activities extends React.Component<State> {
                         justifyContent: 'space-around', height: 60,
                         flexDirection: 'row'
                         }}>
-                    <Text style = {{marginLeft: 50, color: '#233665', alignContent: 'center', display: 'flex', 
-                    padding: 10, fontWeight: 'bold'}}>Words Activity</Text>
+                    <Text style = {styles.activityText}>Words Activity</Text>
                     <Image 
                                     style={styles.image}
                                     source={require('../../assets/photo-24px.png')} 
@@ -90,8 +88,7 @@ export default class Activities extends React.Component<State> {
                         justifyContent: 'space-around', height: 60,
                         flexDirection: 'row'
                         }}>
-                    <Text style = {{marginLeft: 50, color: '#233665', alignContent: 'center', display: 'flex', 
-                    padding: 10, fontWeight: 'bold'}}>Multichoice Activity</Text>
+                    <Text style = {styles.activityText}>Multichoice Activity</Text>
                     <Image 
                                     style={styles.image}
                                     source={require('../../assets/format_list_bulleted-24px.png')} 
@@ -110,8 +107,7 @@ export default class Activities extends React.Component<State> {
                         justifyContent: 'space-around', height: 60,
                         flexDirection: 'row'
                         }}>
-                    <Text style = {{marginLeft: 50, color: '#233665', alignContent: 'center', display: 'flex', 
-                    padding: 10, fontWeight: 'bold'}}>Drag And Drop Activity</Text>
+                    <Text style = {styles.activityText}>Drag And Drop Activity</Text>
                     <Image 
                                     style={styles.image}
                                     source={require('../../assets/extension-24px.png')} 
@@ -184,9 +180,19 @@ export default class Activities extends React.Component<State> {
 
 
   const styles = StyleSheet.create({
+    activityText: {
+        marginLeft: 50, 
+        color: '#233665', 
+        alignContent: 'center', 
+        display: 'flex', 
+        padding: 10, 
+        fontWeight: 'bold', 
+        marginRight: 10
+    },
     image: {
         height: 24,
         width: 24,
+        marginRight: 10
     },
     forwardImage: {
         height: 24,
@@ -262,6 +268,8 @@ export default class Activities extends React.Component<State> {
         shadowColor: 'lightgray',
         shadowOpacity: 0.6,
         borderRadius: 15,
-        alignContent: 'center'
+        alignContent: 'center',
+        // alignContent: 'flex-end', 
+        alignItems: 'flex-end'
     }
   });

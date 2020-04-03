@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text, View, TouchableOpacity, Button, Image, StyleSheet } from 'react-native';
-import { Video } from 'expo-av';
+import ActivityGroupsProgress from '../../Components/navigation/ActivityGroupsProgress';
 // import BottomNavigation from '../../Components/navigation/BottomNavigation';
 
 interface State {
@@ -16,21 +16,6 @@ export default class DragAndDropActivity extends React.Component<State> {
       const { videoUrl, lessonTitle } = this.props.route.params; 
       return (
         <View style={{flex: 1, justifyContent:'top', width: '100%', backgroundColor: '#FCFDFF'}}>
-            <View>
-                <Video
-                    source={require('../../assets/video_sample.mov')}
-                    rate={1.0}
-                    volume={1.0}
-                    isMuted={false}
-                    resizeMode="cover"
-                    shouldPlay
-                    isLooping
-                    style={{ width: '100%', height: 300 }}
-                />    
-            </View>
-            <Text style={{textAlign: 'right', marginTop: 20, marginRightf:50, fontWeight: 'bold', color: '#233665', width: '90%',}}>
-                {videoTitle}
-            </Text>
             
         </View>    
       )
@@ -48,9 +33,9 @@ export default class DragAndDropActivity extends React.Component<State> {
                         flexDirection: 'row'}}>
                         <Text style={{textAlign: 'center', marginTop: 50, fontWeight: 'bold', color: '#233665', width: '100%',}}>
                             {lessonTitle}
-                        </Text>
-                    </View>
-                {this.renderVideo(videoTitle)}
+                    </Text>
+                </View>
+                <ActivityGroupsProgress chosenActivity='dragndrop'/>
 
                 {/* <BottomNavigation/> */}
                 <View style={{flexDirection: 'row', marginBottom: 50}}>
