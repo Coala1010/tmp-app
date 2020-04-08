@@ -21,7 +21,7 @@ export default function DragAndDropActivity({ route }) {
         } catch (err) {
             console.log(err);
         }
-    }, [lessonId]);
+    }, []);
 
     return (
         <View style={{flex: 1, justifyContent:'flex-start', width: '100%', backgroundColor: '#FCFDFF'}}>

@@ -81,6 +81,7 @@ const Dropbox = ({ setSelected, clearSelected, selected, answers }) => (
 );
 
 export default function DragNDrop({ activityData }) {
+    const [currentQuest, setQurrentQuest] = React.useState(0);
     const [selected, setSelected] = React.useState({});
     const [dragging, setDragging] = React.useState(null);
     const [scrollId, setScrollId] = React.useState(1);
@@ -106,8 +107,6 @@ export default function DragNDrop({ activityData }) {
             console.log(err);
         }
     };
-
-    const [currentQuest, setQurrentQuest] = React.useState(0);
 
     return !activityData || !activityData.length ? null : (
         <ScrollView onScroll={() => setScrollId(scrollId + 1)} scrollEventThrottle={50} scrollEnabled={!dragging}>

@@ -3,12 +3,13 @@ import { StyleSheet, Text, View, Animated, Dimensions, TouchableOpacity, Image, 
 import SideSwipe from 'react-native-sideswipe';
 
 export const Carousel = ({ activityData, onChange }) => {
-  const [currentIndex, setCurrentIndex] = React.useState(0);
+  const [currentIndex, setCurrentIndex] = React.useState(activityData.length - 1);
   const { width } = Dimensions.get('window');
   const contentOffset = 0;
 
   return (
     <SideSwipe
+      contentContainerStyle={{ flexDirection: 'row-reverse' }}
       index={currentIndex}
       itemWidth={width - 50}
       style={{ width }}
@@ -18,18 +19,18 @@ export const Carousel = ({ activityData, onChange }) => {
       contentOffset={contentOffset}
       onIndexChange={index => {
         setCurrentIndex(index);
-        onChange(index);
+        onChange(activityData.length - 1 - index);
       }}
       renderItem={({ itemIndex, currentIndex, item, animatedValue }) => (
         <View style={[
           {width: width - 50},
-          itemIndex === 0 && { paddingLeft: 20 },
-          itemIndex === activityData.length - 1 && { paddingRight: 20 },
+          itemIndex === 0 && { paddingRight: 20 },
+          itemIndex === activityData.length - 1 && { paddingLeft: 20 },
         ]}>
           <View style={styles.imgContainer}>
             <Image style={styles.img} source={{ uri: item.imgUrl }} />
             <View style={styles.numberContainer}>
-              <Text style={styles.number}>{activityData.length}/{activityData.length - itemIndex}</Text>
+              <Text style={styles.number}>{activityData.length}/{itemIndex + 1}</Text>
             </View>
           </View>
         </View>
