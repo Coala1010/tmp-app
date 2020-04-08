@@ -1,5 +1,6 @@
 import React from 'react';
 import { Text, View, TouchableOpacity, Button, Image, StyleSheet } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 
 import ActivityGroupsProgress from '../../Components/navigation/ActivityGroupsProgress';
 import DragNDrop from '../../Components/DragNDrop/DragNDrop';
@@ -9,7 +10,7 @@ interface State {
   selectedIndex: Number,
 }
 
-export default function DragAndDropActivity({ route }) {
+export default function DragAndDropActivity({ route, navigation }) {
     const [activityData, setActivityData] = React.useState(null);
     const { lessonTitle, lessonId } = route.params;
 
@@ -38,25 +39,33 @@ export default function DragAndDropActivity({ route }) {
                 <ActivityGroupsProgress chosenActivity='dragndrop'/>
                 <DragNDrop activityData={activityData} />
 
-                <View style={styles.footer}>
-                    <TouchableOpacity
-                        style={{padding: 5}} 
-                        onPress={() => this.props.navigation.navigate(
-                            'VideoActivity',
-                            { videoUrl: userActivities.videoActivity.videoUrl, lessonTitle: lessonTitle }
-                        )}
-                    >
-                        <View style = {styles.forwardButtonInner}>
-                            <Image 
-                                style={styles.forwardImage}
-                                source={require('../../assets/keyboard_arrow_left-24px.png')} 
-                            />
-                        </View>
-                    </TouchableOpacity>
-                    <Text style={styles.footerTitle}>
-                        Forward
-                    </Text>
-                    <View style={{ width: 24 }} />
+                <View style={styles.footerContainer}>
+                    <View style={styles.footer}>
+                        <TouchableOpacity
+                            style={{padding: 5}} 
+                            onPress={() => this.props.navigation.navigate(
+                                'VideoActivity',
+                                { videoUrl: userActivities.videoActivity.videoUrl, lessonTitle: lessonTitle }
+                            )}
+                        >
+                            <View style = {styles.forwardButtonInner}>
+                                <Image 
+                                    style={styles.forwardImage}
+                                    source={require('../../assets/keyboard_arrow_left-24px.png')} 
+                                />
+                            </View>
+                        </TouchableOpacity>
+                        <Text style={styles.footerTitle}>
+                            Forward
+                        </Text>
+                        <View style={{ width: 24 }} />
+                    </View>
+
+                    <View style={styles.backBtnContainer}>
+                        <TouchableOpacity style={styles.backBtn} onPress={() => navigation.goBack()}>
+                            <Ionicons name="md-exit" size={32} color="#24395F" />
+                        </TouchableOpacity>
+                    </View>
                 </View>
             </View>
         </View>
@@ -64,7 +73,32 @@ export default function DragAndDropActivity({ route }) {
 }
 
 const styles = StyleSheet.create({
+    backBtn: {
+        paddingVertical: 20,
+        paddingHorizontal: 20,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    backBtnContainer: {
+        marginBottom: 20,
+        marginRight: 20,
+        borderRadius: 20,
+        backgroundColor: 'white',
+        height: 70,
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.20,
+        shadowRadius: 1.41,
+        elevation: 2,
+    },
+    footerContainer: {
+        flexDirection: 'row',
+    },
     footer: {
+        flex: 1,
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
@@ -74,7 +108,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         height: 70,
         paddingHorizontal: 15,
-        shadowColor: "#000",
+        shadowColor: '#000',
         shadowOffset: {
             width: 0,
             height: 2,
