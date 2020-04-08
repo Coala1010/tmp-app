@@ -60,9 +60,18 @@ const Dropbox = ({ setSelected, clearSelected, selected, answers }) => (
                     <TouchableOpacity style={[styles.option, styles.optionDragging]} onPress={clearSelected}>
                         <Text style={[styles.optionText, styles.optionTextDragging]}>{answers.find(({ id }) => id === selected).answer}</Text>
                         {answers.find(({ id }) => id === selected).isCorrect ? (
-                            <Ionicons style={styles.optionIcon} name="md-checkmark" size={32} color="white" />
+                            <Ionicons
+                                style={styles.optionIcon}
+                                name="md-checkmark"
+                                size={Dimensions.get('window').width < 390 ? 28 : 32} color="white"
+                            />
                         ) : (
-                            <Ionicons style={styles.optionIcon} name="md-close" size={32} color="white" />
+                            <Ionicons
+                                style={styles.optionIcon}
+                                name="md-close"
+                                size={Dimensions.get('window').width < 390 ? 28 : 32}
+                                color="white"
+                            />
                         )}
                     </TouchableOpacity>
                 </View>
@@ -203,7 +212,7 @@ const styles = StyleSheet.create({
     optionText: {
         color: '#24395F',
         fontWeight: 'bold',
-        fontSize: 16,
+        fontSize: Dimensions.get('window').width < 390 ? 14 : 16,
     },
     optionTextDragging: {
         color: 'white',
@@ -223,6 +232,6 @@ const styles = StyleSheet.create({
     },
     optionIcon: {
         position: 'absolute',
-        right: 20,
+        right: Dimensions.get('window').width < 390 ? 13 : 16,
     },
 });
