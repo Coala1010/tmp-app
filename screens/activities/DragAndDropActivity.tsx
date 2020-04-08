@@ -48,7 +48,7 @@ export default function DragAndDropActivity({ route }) {
 
     return (
         <View style={{flex: 1, justifyContent:'flex-start', width: '100%', backgroundColor: '#FCFDFF'}}>
-            <View style={{flex: 1, justifyContent:'flex-start', width: '100%', backgroundColor: '#FCFDFF'}}>
+            <View style={{flex: 1, justifyContent:'flex-start', width: '100%', backgroundColor: 'white'}}>
                 <View style={{backgroundColor: '#FCFDFF',
                     borderStyle: 'solid', borderWidth: 3,
                     borderColor: '#F7F9F7', height: 100,
@@ -95,9 +95,16 @@ const styles = StyleSheet.create({
         marginHorizontal: 20,
         borderRadius: 20,
         backgroundColor: 'white',
-        elevation: 2,
         height: 70,
         paddingHorizontal: 15,
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.20,
+        shadowRadius: 1.41,
+        elevation: 2,
     },
     footerTitle: {
         color: '#233665',

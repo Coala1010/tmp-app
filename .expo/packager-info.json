@@ -1,10 +1,10 @@
 {
   "devToolsPort": 19002,
-  "expoServerPort": null,
-  "packagerPort": null,
-  "packagerPid": null,
+  "expoServerPort": 19000,
+  "packagerPort": 19001,
+  "packagerPid": 12256,
   "expoServerNgrokUrl": "https://qj-2w3.barbarbia190.tma-app.exp.direct",
   "packagerNgrokUrl": "https://packager.qj-2w3.barbarbia190.tma-app.exp.direct",
-  "ngrokPid": 10495,
+  "ngrokPid": 12273,
   "webpackServerPort": null
 }
