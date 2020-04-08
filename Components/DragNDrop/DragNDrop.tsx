@@ -223,7 +223,6 @@ const styles = StyleSheet.create({
         margin: 10,
     },
     optionIcon: {
-        display: 'none',
         position: 'absolute',
         right: 20,
     },

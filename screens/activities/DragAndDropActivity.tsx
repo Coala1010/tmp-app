@@ -16,29 +16,6 @@ export default function DragAndDropActivity({ route }) {
     React.useEffect(() => {
         try {
             getDnDActivity(1).then((res) => {
-                res[0].answers = [
-                    {
-                        'answer': 'Different',
-                        'id': 1,
-                        'isCorrect': true,
-                    },{
-                        'answer': 'A word',
-                        'id': 3,
-                        'isCorrect': true,
-                    },{
-                        'answer': 'Answer 99',
-                        'id': 4,
-                        'isCorrect': true,
-                    },{
-                        'answer': 'Answer',
-                        'id': 5,
-                        'isCorrect': true,
-                    },{
-                        'answer': 'Answer 1',
-                        'id': 6,
-                        'isCorrect': true,
-                    },
-                ];
                 setActivityData(res);
             });
         } catch (err) {
@@ -188,5 +165,5 @@ const styles = StyleSheet.create({
         justifyContent: 'space-around', 
         height: 60,
         flexDirection: 'row'
-    }
+    },
 });
