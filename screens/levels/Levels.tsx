@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Text, View, TouchableOpacity } from 'react-native';
 
-import Units from '../../Components/units/Units';
+import Units from '../../Components/Units/Units';
 import UserLevels from '../../types/UserLevels';
 
 import UserLevelsProvider from '../../providers/UserLevelsProvider';
@@ -88,7 +88,7 @@ export default class Levels extends React.Component<State> {
           list = this.renderLevelsList();
       }
       return (
-        <View style={{flex: 1, justifyContent:'top', padding: 10, width: '100%'}}>
+        <View style={{flex: 1, justifyContent:'flex-start', padding: 10, width: '100%'}}>
           {list}
         </View>
       );

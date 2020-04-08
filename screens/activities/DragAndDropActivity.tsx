@@ -1,80 +1,111 @@
 import React from 'react';
 import { Text, View, TouchableOpacity, Button, Image, StyleSheet } from 'react-native';
+
 import ActivityGroupsProgress from '../../Components/navigation/ActivityGroupsProgress';
-// import BottomNavigation from '../../Components/navigation/BottomNavigation';
+import DragNDrop from '../../Components/DragNDrop/DragNDrop';
+import { getDnDActivity } from '../../providers/activities/DragNDropActivity';
 
 interface State {
   selectedIndex: Number,
 }
 
-export default class DragAndDropActivity extends React.Component<State> {
-    state: Readonly<State> = {
-        selectedIndex: -1,
-    }  
-    
-    renderVideo(videoTitle: String){
-      const { videoUrl, lessonTitle } = this.props.route.params; 
-      return (
-        <View style={{flex: 1, justifyContent:'top', width: '100%', backgroundColor: '#FCFDFF'}}>
-            
-        </View>    
-      )
-    }
-  
-    render() {
-        const { videoUrl, lessonTitle, videoTitle } = this.props.route.params; 
-        return (
-            <View style={{flex: 1, justifyContent:'top', width: '100%', backgroundColor: '#FCFDFF'}}>
-                <View style={{flex: 1, justifyContent:'top', width: '100%', backgroundColor: '#FCFDFF'}}>
-                    <View style={{backgroundColor: '#FCFDFF',
-                            borderStyle: 'solid', borderWidth: 3,
-                        borderColor: '#F7F9F7', height: 100,
-                        justifyContent: 'space-around',
-                        flexDirection: 'row'}}>
-                        <Text style={{textAlign: 'center', marginTop: 50, fontWeight: 'bold', color: '#233665', width: '100%',}}>
-                            {lessonTitle}
+export default function DragAndDropActivity({ route }) {
+    const [activityData, setActivityData] = React.useState(null);
+    const { lessonTitle, lessonId } = route.params;
+
+    React.useEffect(() => {
+        try {
+            getDnDActivity(1).then((res) => {
+                res[0].answers = [
+                    {
+                        'answer': 'Different',
+                        'id': 1,
+                        'isCorrect': true,
+                    },{
+                        'answer': 'A word',
+                        'id': 3,
+                        'isCorrect': true,
+                    },{
+                        'answer': 'Answer 99',
+                        'id': 4,
+                        'isCorrect': true,
+                    },{
+                        'answer': 'Answer',
+                        'id': 5,
+                        'isCorrect': true,
+                    },{
+                        'answer': 'Answer 1',
+                        'id': 6,
+                        'isCorrect': true,
+                    },
+                ];
+                setActivityData(res);
+            });
+        } catch (err) {
+            console.log(err);
+        }
+    }, [lessonId]);
+
+    return (
+        <View style={{flex: 1, justifyContent:'flex-start', width: '100%', backgroundColor: '#FCFDFF'}}>
+            <View style={{flex: 1, justifyContent:'flex-start', width: '100%', backgroundColor: '#FCFDFF'}}>
+                <View style={{backgroundColor: '#FCFDFF',
+                    borderStyle: 'solid', borderWidth: 3,
+                    borderColor: '#F7F9F7', height: 100,
+                    justifyContent: 'space-around',
+                    flexDirection: 'row'}}>
+                    <Text style={{textAlign: 'center', marginTop: 50, fontWeight: 'bold', color: '#233665', width: '100%',}}>
+                        {lessonTitle}
                     </Text>
                 </View>
                 <ActivityGroupsProgress chosenActivity='dragndrop'/>
+                <DragNDrop activityData={activityData} />
 
-                {/* <BottomNavigation/> */}
-                <View style={{flexDirection: 'row', marginBottom: 50}}>
-                    <View style={styles.forwardButton}>
-                        <TouchableOpacity style={{padding: 5}} 
-                            onPress={() => this.props.navigation.navigate('VideoActivity', { videoUrl: userActivities.videoActivity.videoUrl,
-                            lessonTitle: lessonTitle})}>
-                            <View style = {styles.forwardButtonInner}>
-                                <Image 
-                                    style={styles.forwardImage}
-                                    source={require('../../assets/keyboard_arrow_left-24px.png')} 
-                                />
-                                <Text style = {{ color: '#233665', alignContent: 'center', display: 'flex', 
-                                            padding: 10, fontWeight: 'bold'}}>Forward</Text>
-                            </View>
-                        </TouchableOpacity>
-                    </View>
-                    <View style={styles.backButton}>
-                        <TouchableOpacity 
-                            style={styles.backButtonTO}
-                            onPress={() => this.props.navigation.goBack()}>
-                            <View style={styles.backImageWrapper}>
-                                <Image 
-                                    style={styles.backImage}
-                                    source={require('../../assets/exit_to_app-24px.png')} 
-                                />
-                            </View>
-                        </TouchableOpacity>
-                    </View>
+                <View style={styles.footer}>
+                    <TouchableOpacity
+                        style={{padding: 5}} 
+                        onPress={() => this.props.navigation.navigate(
+                            'VideoActivity',
+                            { videoUrl: userActivities.videoActivity.videoUrl, lessonTitle: lessonTitle }
+                        )}
+                    >
+                        <View style = {styles.forwardButtonInner}>
+                            <Image 
+                                style={styles.forwardImage}
+                                source={require('../../assets/keyboard_arrow_left-24px.png')} 
+                            />
+                        </View>
+                    </TouchableOpacity>
+                    <Text style={styles.footerTitle}>
+                        Forward
+                    </Text>
+                    <View style={{ width: 24 }} />
                 </View>
-
             </View>
         </View>
-      );
-    } 
-  }
+    );
+}
 
-
-  const styles = StyleSheet.create({
+const styles = StyleSheet.create({
+    footer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginBottom: 20,
+        marginHorizontal: 20,
+        borderRadius: 20,
+        backgroundColor: 'white',
+        elevation: 2,
+        height: 70,
+        paddingHorizontal: 15,
+    },
+    footerTitle: {
+        color: '#233665',
+        alignContent: 'center',
+        padding: 10,
+        fontWeight: 'bold',
+        fontSize: 22,
+    },
     image: {
         height: 24,
         width: 24,
@@ -151,4 +182,4 @@ export default class DragAndDropActivity extends React.Component<State> {
         height: 60,
         flexDirection: 'row'
     }
-  });
+});

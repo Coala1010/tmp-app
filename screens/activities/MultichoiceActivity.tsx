@@ -15,7 +15,7 @@ export default class MultichoiceActivity extends React.Component<State> {
     renderVideo(videoTitle: String){
       const { videoUrl, lessonTitle } = this.props.route.params; 
       return (
-        <View style={{flex: 1, justifyContent:'top', width: '100%', backgroundColor: '#FCFDFF'}}>
+        <View style={{flex: 1, justifyContent:'flex-start', width: '100%', backgroundColor: '#FCFDFF'}}>
             
         </View>    
       )
@@ -24,8 +24,8 @@ export default class MultichoiceActivity extends React.Component<State> {
     render() {
         const { videoUrl, lessonTitle, videoTitle } = this.props.route.params; 
         return (
-            <View style={{flex: 1, justifyContent:'top', width: '100%', backgroundColor: '#FCFDFF'}}>
-                <View style={{flex: 1, justifyContent:'top', width: '100%', backgroundColor: '#FCFDFF'}}>
+            <View style={{flex: 1, justifyContent:'flex-start', width: '100%', backgroundColor: '#FCFDFF'}}>
+                <View style={{flex: 1, justifyContent:'flex-start', width: '100%', backgroundColor: '#FCFDFF'}}>
                     <View style={{backgroundColor: '#FCFDFF',
                             borderStyle: 'solid', borderWidth: 3,
                         borderColor: '#F7F9F7', height: 100,
