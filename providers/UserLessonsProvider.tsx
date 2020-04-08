@@ -7,7 +7,6 @@ export default function UserLessonsProvider(userToken: string, unitId:number, re
     })
     .then((response) => {
         response.json().then(json => {
-            console.log(json);
             resultCallback(json);
         });
     });
