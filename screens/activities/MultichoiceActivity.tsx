@@ -57,9 +57,14 @@ export default function MultichoiceActivityScreen({ navigation, route }) {
                         {lessonTitle}
                     </Text>
                 </View>
-                <ActivityGroupsProgress chosenActivity='multichoice'/>
+                <ActivityGroupsProgress navigation={navigation} chosenActivity='multichoice'/>
                 <View style={{ flex: 1}}>
-                    {activityData && <Multichoice activityData={activityData} setHintText={setHintText} />}
+                    {activityData ? (
+                        <Multichoice
+                            activityData={activityData}
+                            setHintText={setHintText}
+                        />
+                    ): <View style={{ flex: 1 }} />}
                     <ActivityFooter
                         navigation={navigation}
                         leftBtn={<HintBtn hintText={hintText} />}
