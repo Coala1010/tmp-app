@@ -1,80 +1,125 @@
 import React from 'react';
 import { Text, View, TouchableOpacity, Button, Image, StyleSheet } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+
 import ActivityGroupsProgress from '../../Components/navigation/ActivityGroupsProgress';
-// import BottomNavigation from '../../Components/navigation/BottomNavigation';
+import DragNDrop from '../../Components/DragNDrop/DragNDrop';
+import { getDnDActivity } from '../../providers/activities/DragNDropActivity';
 
-interface State {
-  selectedIndex: Number,
-}
+export default function DragAndDropActivity({ route, navigation }) {
+    const [activityData, setActivityData] = React.useState(null);
+    const { lessonTitle } = route.params;
 
-export default class DragAndDropActivity extends React.Component<State> {
-    state: Readonly<State> = {
-        selectedIndex: -1,
-    }  
-    
-    renderVideo(videoTitle: String){
-      const { videoUrl, lessonTitle } = this.props.route.params; 
-      return (
-        <View style={{flex: 1, justifyContent:'top', width: '100%', backgroundColor: '#FCFDFF'}}>
-            
-        </View>    
-      )
-    }
-  
-    render() {
-        const { videoUrl, lessonTitle, videoTitle } = this.props.route.params; 
-        return (
-            <View style={{flex: 1, justifyContent:'top', width: '100%', backgroundColor: '#FCFDFF'}}>
-                <View style={{flex: 1, justifyContent:'top', width: '100%', backgroundColor: '#FCFDFF'}}>
-                    <View style={{backgroundColor: '#FCFDFF',
-                            borderStyle: 'solid', borderWidth: 3,
-                        borderColor: '#F7F9F7', height: 100,
-                        justifyContent: 'space-around',
-                        flexDirection: 'row'}}>
-                        <Text style={{textAlign: 'center', marginTop: 50, fontWeight: 'bold', color: '#233665', width: '100%',}}>
-                            {lessonTitle}
+    React.useEffect(() => {
+        try {
+            getDnDActivity(1).then((res) => {
+                setActivityData(res);
+            });
+        } catch (err) {
+            console.log(err);
+        }
+    }, []);
+
+    return (
+        <View style={{flex: 1, justifyContent:'flex-start', width: '100%', backgroundColor: '#FCFDFF'}}>
+            <View style={{flex: 1, justifyContent:'flex-start', width: '100%', backgroundColor: 'white'}}>
+                <View style={{backgroundColor: '#FCFDFF',
+                    borderStyle: 'solid', borderWidth: 3,
+                    borderColor: '#F7F9F7', height: 100,
+                    justifyContent: 'space-around',
+                    flexDirection: 'row'}}>
+                    <Text style={{textAlign: 'center', marginTop: 50, fontWeight: 'bold', color: '#233665', width: '100%',}}>
+                        {lessonTitle}
                     </Text>
                 </View>
                 <ActivityGroupsProgress chosenActivity='dragndrop'/>
+                <DragNDrop activityData={activityData} />
 
-                {/* <BottomNavigation/> */}
-                <View style={{flexDirection: 'row', marginBottom: 50}}>
-                    <View style={styles.forwardButton}>
-                        <TouchableOpacity style={{padding: 5}} 
-                            onPress={() => this.props.navigation.navigate('VideoActivity', { videoUrl: userActivities.videoActivity.videoUrl,
-                            lessonTitle: lessonTitle})}>
+                <View style={styles.footerContainer}>
+                    <View style={styles.footer}>
+                        <TouchableOpacity
+                            style={{padding: 5}} 
+                            onPress={() => this.props.navigation.navigate(
+                                'VideoActivity',
+                                { videoUrl: userActivities.videoActivity.videoUrl, lessonTitle: lessonTitle }
+                            )}
+                        >
                             <View style = {styles.forwardButtonInner}>
                                 <Image 
                                     style={styles.forwardImage}
                                     source={require('../../assets/keyboard_arrow_left-24px.png')} 
                                 />
-                                <Text style = {{ color: '#233665', alignContent: 'center', display: 'flex', 
-                                            padding: 10, fontWeight: 'bold'}}>Forward</Text>
                             </View>
                         </TouchableOpacity>
+                        <Text style={styles.footerTitle}>
+                            Forward
+                        </Text>
+                        <View style={{ width: 24 }} />
                     </View>
-                    <View style={styles.backButton}>
-                        <TouchableOpacity 
-                            style={styles.backButtonTO}
-                            onPress={() => this.props.navigation.goBack()}>
-                            <View style={styles.backImageWrapper}>
-                                <Image 
-                                    style={styles.backImage}
-                                    source={require('../../assets/exit_to_app-24px.png')} 
-                                />
-                            </View>
+
+                    <View style={styles.backBtnContainer}>
+                        <TouchableOpacity style={styles.backBtn} onPress={() => navigation.goBack()}>
+                            <Ionicons name="md-exit" size={32} color="#24395F" />
                         </TouchableOpacity>
                     </View>
                 </View>
-
             </View>
         </View>
-      );
-    } 
-  }
+    );
+}
 
-
-  const styles = StyleSheet.create({
+const styles = StyleSheet.create({
+    backBtn: {
+        paddingVertical: 20,
+        paddingHorizontal: 20,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    backBtnContainer: {
+        marginBottom: 20,
+        marginRight: 20,
+        borderRadius: 20,
+        backgroundColor: 'white',
+        height: 70,
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.20,
+        shadowRadius: 1.41,
+        elevation: 2,
+    },
+    footerContainer: {
+        flexDirection: 'row',
+    },
+    footer: {
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginBottom: 20,
+        marginHorizontal: 20,
+        borderRadius: 20,
+        backgroundColor: 'white',
+        height: 70,
+        paddingHorizontal: 15,
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.20,
+        shadowRadius: 1.41,
+        elevation: 2,
+    },
+    footerTitle: {
+        color: '#233665',
+        alignContent: 'center',
+        padding: 10,
+        fontWeight: 'bold',
+        fontSize: 22,
+    },
     image: {
         height: 24,
         width: 24,
@@ -150,5 +195,5 @@ export default class DragAndDropActivity extends React.Component<State> {
         justifyContent: 'space-around', 
         height: 60,
         flexDirection: 'row'
-    }
-  });
+    },
+});

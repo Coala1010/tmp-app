@@ -77,8 +77,8 @@ export default class Lessons extends React.Component<Props, State> {
         list = this.renderLessonsList();
     }
       return (
-        // <View style={{flex: 1, justifyContent:'top', width: '100%', backgroundColor: '#FCFDFF'}}>
-          <View style={{flex: 1, justifyContent:'top', width: '100%', backgroundColor: '#FCFDFF'}}>
+        // <View style={{flex: 1, justifyContent:'flex-start', width: '100%', backgroundColor: '#FCFDFF'}}>
+          <View style={{flex: 1, justifyContent:'flex-start', width: '100%', backgroundColor: '#FCFDFF'}}>
             <View style={{backgroundColor: '#FCFDFF',
                         borderStyle: 'solid', borderWidth: 3,
                         borderColor: '#F7F9F7', height: 100,
@@ -96,7 +96,7 @@ export default class Lessons extends React.Component<Props, State> {
                   />
                 </TouchableOpacity>
             </View>
-            <View style={{flex: 1, justifyContent:'top', padding: 10, width: '100%'}}>
+            <View style={{flex: 1, justifyContent:'flex-start', padding: 10, width: '100%'}}>
             {list}
           </View>
        </View>

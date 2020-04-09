@@ -88,7 +88,7 @@ export default class Levels extends React.Component<State> {
           list = this.renderLevelsList();
       }
       return (
-        <View style={{flex: 1, justifyContent:'top', padding: 10, width: '100%'}}>
+        <View style={{flex: 1, justifyContent:'flex-start', padding: 10, width: '100%'}}>
           {list}
         </View>
       );

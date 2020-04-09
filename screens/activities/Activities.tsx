@@ -18,7 +18,7 @@ export default class Activities extends React.Component<State> {
       const { lessonTitle, lessonId } = this.props.route.params; 
       const userActivities = UserActivitiesProvider("1", lessonId);
       return (
-        <View style={{flex: 1, justifyContent:'top', padding: 10, width: '100%'}}>
+        <View style={{flex: 1, justifyContent:'flex-start', padding: 10, width: '100%'}}>
             <View 
             //style={{alignContent: 'flex-end', alignItems: 'flex-start', }}
                 //key={i} 
@@ -96,22 +96,18 @@ export default class Activities extends React.Component<State> {
                     </View>
                 </TouchableOpacity>
             </View>
-            <View 
-                //key={i} 
-                style={styles.activity}>
-
+            <View style={styles.activity}>
                 <TouchableOpacity style={{padding: 5}} 
-                    onPress={() => this.props.navigation.navigate('DragAndDropActivity', { videoUrl: userActivities.videoActivity.videoUrl,
-                    lessonTitle: lessonTitle})}>
-                    <View style = {{alignItems: 'center', backgroundColor: '#FCFDFF', 
+                    onPress={() => this.props.navigation.navigate('DragAndDropActivity', { lessonTitle, lessonId })}>
+                    <View style={{alignItems: 'center', backgroundColor: '#FCFDFF', 
                         justifyContent: 'space-around', height: 60,
                         flexDirection: 'row'
-                        }}>
-                    <Text style = {styles.activityText}>Drag And Drop Activity</Text>
-                    <Image 
-                                    style={styles.image}
-                                    source={require('../../assets/extension-24px.png')} 
-                                    />
+                    }}>
+                        <Text style={styles.activityText}>Drag And Drop Activity</Text>
+                        <Image 
+                            style={styles.image}
+                            source={require('../../assets/extension-24px.png')} 
+                        />
                     </View>
                 </TouchableOpacity>
             </View>
@@ -122,8 +118,8 @@ export default class Activities extends React.Component<State> {
     render() {
         const { lessonTitle } = this.props.route.params; 
         return (
-            <View style={{flex: 1, justifyContent:'top', width: '100%', backgroundColor: '#FCFDFF'}}>
-                <View style={{flex: 1, justifyContent:'top', width: '100%', backgroundColor: '#FCFDFF'}}>
+            <View style={{flex: 1, justifyContent:'flex-start', width: '100%', backgroundColor: '#FCFDFF'}}>
+                <View style={{flex: 1, justifyContent:'flex-start', width: '100%', backgroundColor: '#FCFDFF'}}>
                     <View style={{backgroundColor: '#233665',
                                 borderStyle: 'solid', borderWidth: 3,
                                 borderColor: '#F7F9F7', height: 100,
