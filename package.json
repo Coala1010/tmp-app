@@ -16,6 +16,7 @@
     "dotenv": "^8.2.0",
     "expo": "~36.0.0",
     "expo-av": "~8.0.0",
+    "expo-font": "~8.0.0",
     "link": "^0.1.5",
     "react": "~16.9.0",
     "react-dom": "~16.9.0",
@@ -31,11 +32,11 @@
     "react-native-vector-icons": "^6.6.0",
     "react-native-video": "^4.4.5",
     "react-native-video-player": "^0.10.0",
+    "react-native-walkthrough-tooltip": "^1.1.7",
     "react-native-web": "~0.11.7",
     "react-navigation": "^4.3.3",
     "react-navigation-hooks": "^1.1.0",
-    "uuid": "^7.0.3",
-    "expo-font": "~8.0.0"
+    "uuid": "^7.0.3"
   },
   "devDependencies": {
     "@types/react": "~16.9.0",

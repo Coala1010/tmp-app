@@ -4,7 +4,7 @@ import SideSwipe from 'react-native-sideswipe';
 import { Feather, AntDesign } from '@expo/vector-icons';
 import { updateMultichoiceActivity } from '../../providers/activities/Multichoice';
 
-export default function Multichoice({ activityData }) {
+export default function Multichoice({ activityData, setHintText }) {
     const [currentIndex, setCurrentIndex] = React.useState(activityData.length - 1);
     const [selected, setSelected] = React.useState({});
     const [currentQuestion, setCurrentQuestion] = React.useState(0);
@@ -38,10 +38,14 @@ export default function Multichoice({ activityData }) {
     const { width } = Dimensions.get('window');
     const contentOffset = 0;
 
+    React.useEffect(() => {
+        setHintText(activityData[currentQuestion].hint);
+    }, [currentQuestion]);
+
     return (
-        <ScrollView>
+        <View style={{ flex: 1 }}>
             <SideSwipe
-                contentContainerStyle={{ flexDirection: 'row-reverse' }}
+                contentContainerStyle={styles.swipperContainer}
                 index={currentIndex}
                 itemWidth={width - 50}
                 style={{ width }}
@@ -58,14 +62,16 @@ export default function Multichoice({ activityData }) {
                         itemIndex === activityData.length - 1 && { marginLeft: 20 },
                     ]}>
                         <View style={{ width: 10 }} />
-                        <Text style={styles.questionText}>{item.question}</Text>
+                        <View style={{ flex: 1 }}>
+                            <Text style={styles.questionText}>{item.question}</Text>
+                        </View>
                         <View style={styles.numberContainer}>
                             <Text style={styles.number}>{activityData.length}/{itemIndex + 1}</Text>
                         </View>
                     </View>
                 )}
             />
-            <View style={styles.answers}>
+            <ScrollView style={styles.answers}>
                 {activityData[currentQuestion].answers.map((answer, id) => (
                     <TouchableOpacity
                         onPress={() => setCurrentSelected(answer.id)}
@@ -99,12 +105,15 @@ export default function Multichoice({ activityData }) {
                         </View>
                     </TouchableOpacity>
                 ))}
-            </View>
-        </ScrollView>
+            </ScrollView>
+        </View>
     );
 }
 
 const styles = StyleSheet.create({
+    swipperContainer: {
+        flexDirection: 'row-reverse',
+    },
     questionCard: {
         flexDirection: 'row',
         justifyContent: 'space-between',
@@ -126,7 +135,7 @@ const styles = StyleSheet.create({
     },
     questionText: {
         color: '#233665',
-        fontSize: 20,
+        fontSize: 18,
         fontWeight: 'bold',
     },
     numberContainer: {
@@ -138,10 +147,10 @@ const styles = StyleSheet.create({
     number: {
         color: '#24395F',
         fontWeight: 'bold',
-        fontSize: 20,
+        fontSize: 18,
     },
     answers: {
-        paddingTop: 30,
+        paddingVertical: 8,
     },
     answerContainer: {
         flexDirection: 'row',
@@ -168,7 +177,7 @@ const styles = StyleSheet.create({
     },
     answerText: {
         color: '#233665',
-        fontSize: 20,
+        fontSize: 18,
         fontWeight: 'bold',
     },
     answerTextSelected: {

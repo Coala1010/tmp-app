@@ -4,7 +4,7 @@ import { Text, View } from 'react-native';
 import ActivityGroupsProgress from '../../Components/navigation/ActivityGroupsProgress';
 import DragNDrop from '../../Components/DragNDrop/DragNDrop';
 import { getDnDActivity } from '../../providers/activities/DragNDropActivity';
-import ActivityFooter from '../../Components/ActivityFooter/ActibityFooter';
+import ActivityFooter from '../../Components/ActivityFooter/ActivityFooter';
 
 export default function DragAndDropActivity({ route, navigation }) {
     const [activityData, setActivityData] = React.useState(null);

@@ -1,21 +1,24 @@
 import React from 'react';
-import { Text, View } from 'react-native';
+import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
 import ActivityGroupsProgress from '../../Components/navigation/ActivityGroupsProgress';
-import ActivityFooter from '../../Components/ActivityFooter/ActibityFooter';
+import ActivityFooter from '../../Components/ActivityFooter/ActivityFooter';
 import Multichoice from '../../Components/Multichoice/Multichoice';
+import HintBtn from '../../Components/Multichoice/HintBtn';
 import { getMultichoice } from '../../providers/activities/Multichoice';
 
 export default function MultichoiceActivityScreen({ navigation, route }) {
     const [activityData, setActivityData] = React.useState(null);
+    const [hintText, setHintText] = React.useState(null);
+
     const { lessonTitle } = route.params;
 
     React.useEffect(() => {
         try {
             getMultichoice(1).then((res) => {
                 res[1] = {
-                    hint: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. ",
+                    hint: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque porttitor elit quis sem ultricies, vel ultrices lectus viverra. Sed vel metus porttitor, bibendum erat in, imperdiet erat. Sed a sapien nulla. Curabitur scelerisque urna sit amet felis pellentesque, vitae ornare est porta. Nulla",
                     id: 4,
-                    question: "ما هي عاصمة السعودية ؟ ",
+                    question: "ما هي عاصمة السعودية ؟ kjhgg",
                     title: "الدرس الخامس",
                     userAnswerId: 1,
                     activityStatus: true,
@@ -56,8 +59,11 @@ export default function MultichoiceActivityScreen({ navigation, route }) {
                 </View>
                 <ActivityGroupsProgress chosenActivity='multichoice'/>
                 <View style={{ flex: 1}}>
-                    {activityData && <Multichoice activityData={activityData} />}
-                    <ActivityFooter navigation={navigation} />
+                    {activityData && <Multichoice activityData={activityData} setHintText={setHintText} />}
+                    <ActivityFooter
+                        navigation={navigation}
+                        leftBtn={<HintBtn hintText={hintText} />}
+                    />
                 </View>
             </View>
         </View>
