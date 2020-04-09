@@ -1,38 +1,71 @@
 import React from 'react';
-import Tooltip from 'react-native-walkthrough-tooltip';
 import { Text, View, Image, StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
+import Tooltip from 'rn-tooltip';
 
 export default function HintBtn({ hintText }) {
-    const [isVisible, setIsVisible] = React.useState(false);
+    const [adjusted, setAdjusted] = React.useState(false);
+    const [height, setHeight] = React.useState(500);
+
+    React.useEffect(() => {
+        if (hintText) {
+            setHeight(Math.ceil(hintText.length));
+            setAdjusted(false);
+        }
+    }, [hintText]);
 
     return (
-        <Tooltip
-            tooltipStyle={styles.tooltip}
-            contentStyle={styles.content}
-            arrowSize={{ width: 15, height: 15 }}
-            arrowStyle={{ display: 'none' }}
-            isVisible={isVisible}
-            content={
-                <View>
-                    <View style={styles.arrow} />
-                    <Text style={{ fontSize: 18, color: '#233665' }}>{hintText}</Text>
+        <View style={{ position: 'relative', top: -10 }}>
+            <Tooltip
+                backgroundColor="transparent"
+                overlayColor="rgba(0, 0, 0, 0.3)"
+                containerStyle={{ bottom: -10, justifyContent: 'flex-end', padding: 0 }}
+                pointerStyle={{ right: 10 }}
+                width={Dimensions.get('window').width - 40}
+                height={height}
+                popover={(
+                    <View style={styles.tooltipBody}>
+                        <View style={styles.arrow} />
+                        <Text
+                            onLayout={(e) => {
+                                if (!adjusted) {
+                                    setHeight(e.nativeEvent.layout.height + 40)
+                                }
+                            }}
+                            style={styles.tooltipText}
+                        >
+                            {hintText}
+                        </Text>
+                    </View>
+                )}
+            >
+                <View style={styles.hintBtn}>
+                    <Image style={styles.img} source={require('./light_bulb.png')} />
                 </View>
-            }
-            placement="top"
-            onClose={() => setIsVisible(false)}
-        >
-            <TouchableOpacity style={styles.hintBtn} onPress={() => {
-                if (hintText) {
-                    setIsVisible(true);
-                }
-            }}>
-                <Image style={styles.img} source={require('./light_bulb.png')} />
-            </TouchableOpacity>
-        </Tooltip>
+            </Tooltip>
+        </View>
     );
 }
 
 const styles = StyleSheet.create({
+    tooltipBody: {
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.20,
+        shadowRadius: 1.41,
+        elevation: 2,
+    },
+    tooltipText: {
+        fontSize: 18,
+        color: '#233665',
+        backgroundColor: 'white',
+        paddingHorizontal: 20,
+        paddingVertical: 25,
+        borderRadius: 20,
+        overflow: 'hidden',
+    },
     tooltip: {
         width: Dimensions.get('window').width,
         borderRadius: 15,
@@ -66,8 +99,8 @@ const styles = StyleSheet.create({
         borderRightColor: 'transparent',
         borderBottomColor: 'white',
         position: 'absolute',
-        bottom: -35,
-        right: 7,
+        bottom: -15,
+        right: 20,
         transform: [{ rotate: '180deg' }],
     },
     img: {
@@ -75,6 +108,9 @@ const styles = StyleSheet.create({
         width: 30,
     },
     hintBtn: {
+        position: 'relative',
+        paddingTop: -10,
+        top: 10,
         marginBottom: 20,
         marginRight: 20,
         borderRadius: 35,

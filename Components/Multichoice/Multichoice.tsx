@@ -61,7 +61,7 @@ export default function Multichoice({ activityData, setHintText }) {
                         itemIndex === 0 && { marginRight: 20 },
                         itemIndex === activityData.length - 1 && { marginLeft: 20 },
                     ]}>
-                        <View style={{ width: 10 }} />
+                        <View style={{ width: 30 }} />
                         <View style={{ flex: 1 }}>
                             <Text style={styles.questionText}>{item.question}</Text>
                         </View>
@@ -143,6 +143,7 @@ const styles = StyleSheet.create({
         padding: 10,
         borderRadius: 10,
         height: 45,
+        marginLeft: 10,
     },
     number: {
         color: '#24395F',
