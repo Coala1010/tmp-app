@@ -18,6 +18,8 @@ interface State {
   audioRecordingButtonExpanded: boolean,
   audioPlayButtonAnim: Animated.Value,
   audioPlayButtonExpanded: boolean
+  record: Sound;
+  recordProgress: string,
 }
 
 export default class PhrasesActivity extends React.Component<State> {
@@ -31,7 +33,9 @@ export default class PhrasesActivity extends React.Component<State> {
         audio: null,
         audioLoaded: false,
         audioPlayButtonAnim: new Animated.Value(70),
-        audioPlayButtonExpanded: false
+        audioPlayButtonExpanded: false,
+        record: null,
+        recordProgress: '00:00',
     }
     
     constructor(props) {
@@ -136,8 +140,18 @@ export default class PhrasesActivity extends React.Component<State> {
                     toValue: 70,
                 }
             ).start();
+            this.setState({recordProgress: '00:00'});
+            this.state.record.stopAsync();
         }    
         else {
+            Audio.getPermissionsAsync().then((permission) => {
+                if (!permission.granted) {
+                    Audio.requestPermissionsAsync().then(() => this.recordAudio());
+                } else {
+                    this.recordAudio();
+                }
+            })
+
             this.setState({audioRecordingButtonExpanded: true});
             if (this.state.audioButtonExpanded) {
                 this.expandAudioButton();    
@@ -150,6 +164,19 @@ export default class PhrasesActivity extends React.Component<State> {
             ).start();
         }
     }
+
+    recordAudio = () => new Promise (async (resolve, reject) => {
+        alert('recording');
+        const recording = new Audio.Recording();
+        try {
+            await recording.prepareToRecordAsync(Audio.RECORDING_OPTIONS_PRESET_HIGH_QUALITY);
+            await recording.startAsync();
+            this.setState({record: recording});
+            // You are now recording!
+        } catch (error) {
+            // An error occurred!
+        }
+    })
 
     renderExpandAudioRecordingClose = () => {
         return this.state.audioRecordingButtonExpanded ?  (
@@ -181,6 +208,7 @@ export default class PhrasesActivity extends React.Component<State> {
                     toValue: 120,
                 }
             ).start();
+            this.state.record.playAsync();
         }
     }
 
