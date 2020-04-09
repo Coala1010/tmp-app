@@ -6,13 +6,9 @@ import ActivityGroupsProgress from '../../Components/navigation/ActivityGroupsPr
 import DragNDrop from '../../Components/DragNDrop/DragNDrop';
 import { getDnDActivity } from '../../providers/activities/DragNDropActivity';
 
-interface State {
-  selectedIndex: Number,
-}
-
 export default function DragAndDropActivity({ route, navigation }) {
     const [activityData, setActivityData] = React.useState(null);
-    const { lessonTitle, lessonId } = route.params;
+    const { lessonTitle } = route.params;
 
     React.useEffect(() => {
         try {
