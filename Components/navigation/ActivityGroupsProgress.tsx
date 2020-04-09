@@ -2,7 +2,8 @@ import React from 'react';
 import { Text, View, TouchableOpacity, Button, Image, StyleSheet } from 'react-native';
 
 interface Props {
-    chosenActivity: string
+    chosenActivity: string,
+    navigation: any
 }
 export default class ActivityGroupsProgress extends React.Component<Props> {
 
@@ -11,12 +12,15 @@ export default class ActivityGroupsProgress extends React.Component<Props> {
         return (
             <View style={{flexDirection: 'row', width: '100%', justifyContent: 'center', marginTop: 5, marginBottom: 5}}>
                 <View style={{flexDirection: 'row', width: '90%', justifyContent: 'center'}}>
-                    <View style={styles.activityGroup}>
-                        <Image 
-                            style={[styles.activityImage, chosenActivity == 'dragndrop' ? styles.activeImage : styles.inActiveImage]}
-                            source={require('../../assets/extension-24px.png')} 
-                        />
-                    </View>
+                    <TouchableOpacity onPress={() => this.props.navigation.navigate('DragAndDropActivity', { })}>
+                        <View style={styles.activityGroup}
+                            >
+                            <Image 
+                                style={[styles.activityImage, chosenActivity == 'dragndrop' ? styles.activeImage : styles.inActiveImage]}
+                                source={require('../../assets/extension-24px.png')} 
+                            />
+                        </View>
+                    </TouchableOpacity>
                     <View style={styles.grayLine}/>
                     <View style={styles.activityGroup}>
                         <Image 
