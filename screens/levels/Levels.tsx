@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Text, View, TouchableOpacity } from 'react-native';
 
-import Units from '../../Components/Units/Units';
+import Units from '../../Components/units/Units';
 import UserLevels from '../../types/UserLevels';
 
 import UserLevelsProvider from '../../providers/UserLevelsProvider';
