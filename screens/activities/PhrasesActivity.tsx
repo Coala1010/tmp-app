@@ -2,7 +2,7 @@ import React from 'react';
 import { Text, View, TouchableOpacity, Image, StyleSheet, Animated } from 'react-native';
 import ActivityGroupsProgress from '../../Components/navigation/ActivityGroupsProgress';
 import { Audio } from 'expo-av';
-import { Sound } from 'expo-av/build/Audio';
+import { Sound, Recording } from 'expo-av/build/Audio';
 // import { AVPlaybackStatus } from 'AV';
 // import SoundPlayer from 'react-native-sound-player'
 // import BottomNavigation from '../../Components/navigation/BottomNavigation';
@@ -17,8 +17,8 @@ interface State {
   audioRecordingButtonAnim: Animated.Value,
   audioRecordingButtonExpanded: boolean,
   audioPlayButtonAnim: Animated.Value,
-  audioPlayButtonExpanded: boolean
-  record: Sound;
+  audioPlayButtonExpanded: boolean,
+  record: Recording,
   recordProgress: string,
 }
 
@@ -141,18 +141,35 @@ export default class PhrasesActivity extends React.Component<State> {
                 }
             ).start();
             this.setState({recordProgress: '00:00'});
-            this.state.record.stopAsync();
+            this.state.record.stopAndUnloadAsync().then(recording => {
+                if(recording.isDoneRecording) {
+                    this.state.record.createNewLoadedSoundAsync().then(recording => recording.sound.playAsync());
+                }
+            });
+            const fileUrl = this.state.record.getURI();
+            //const redcordedVoice = 
+            //this.state.record.
+            
         }    
         else {
             Audio.getPermissionsAsync().then((permission) => {
                 if (!permission.granted) {
+                    //alert("permissions not granted");
+                    //Permissions.askAsync(Permissions.AUDIO_RECORDING);
                     Audio.requestPermissionsAsync().then(() => this.recordAudio());
                 } else {
+                    alert("permissions granted");
                     this.recordAudio();
                 }
             })
 
-            this.setState({audioRecordingButtonExpanded: true});
+            this.expandAudioRecord();
+        }
+    }
+
+    expandAudioRecord = () => {
+
+        this.setState({audioRecordingButtonExpanded: true});
             if (this.state.audioButtonExpanded) {
                 this.expandAudioButton();    
             }
@@ -162,16 +179,26 @@ export default class PhrasesActivity extends React.Component<State> {
                     toValue: 120,
                 }
             ).start();
-        }
     }
 
     recordAudio = () => new Promise (async (resolve, reject) => {
-        alert('recording');
         const recording = new Audio.Recording();
+        this.setState({record: recording});
         try {
-            await recording.prepareToRecordAsync(Audio.RECORDING_OPTIONS_PRESET_HIGH_QUALITY);
+            await Audio.setAudioModeAsync({
+                playsInSilentModeIOS: false,
+                allowsRecordingIOS: true,
+                staysActiveInBackground: false,
+                interruptionModeIOS: Audio.INTERRUPTION_MODE_IOS_MIX_WITH_OTHERS,
+                shouldDuckAndroid: true,
+                interruptionModeAndroid: Audio.INTERRUPTION_MODE_ANDROID_DUCK_OTHERS,
+                playThroughEarpieceAndroid: true,
+              });
+
+            //await recording.prepareToRecordAsync(Audio.RECORDING_OPTIONS_PRESET_HIGH_QUALITY);
+            await recording.prepareToRecordAsync(Audio.RECORDING_OPTIONS_PRESET_LOW_QUALITY).then(recordingStatus => alert(recordingStatus.canRecord));
             await recording.startAsync();
-            this.setState({record: recording});
+            // await ;
             // You are now recording!
         } catch (error) {
             // An error occurred!
