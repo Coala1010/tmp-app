@@ -18,7 +18,7 @@ export default function MultichoiceActivityScreen({ navigation, route }) {
                 res[1] = {
                     hint: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque porttitor elit quis sem ultricies, vel ultrices lectus viverra. Sed vel metus porttitor, bibendum erat in, imperdiet erat. Sed a sapien nulla. Curabitur scelerisque urna sit amet felis pellentesque, vitae ornare est porta. Nulla",
                     id: 4,
-                    question: "ما هي عاصمة السعودية ؟ kjhgg",
+                    question: "ما هي عاصمة السعودية ؟",
                     title: "الدرس الخامس",
                     userAnswerId: 1,
                     activityStatus: true,
