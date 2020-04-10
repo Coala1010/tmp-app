@@ -1,4 +1,10 @@
 .env
 .expo
+<<<<<<< HEAD
 node_modules
 .DS_Store
+=======
+.idea
+
+.DS_Store
+>>>>>>> f9a237eb76e65a4c81cad30d28f720ce9adcefd4
