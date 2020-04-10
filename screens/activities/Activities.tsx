@@ -1,118 +1,163 @@
 import React from 'react';
 import { Text, View, TouchableOpacity, Button, Image, StyleSheet } from 'react-native';
-import UserLessons from '../../types/UserLessons';
+import UserActivities from '../../types/activities/UserActivities';
 import UserActivitiesProvider from '../../providers/activities/UserActivitiesProvider';
 
 interface State {
   selectedIndex: Number,
-  userLessons: UserLessons,
+  userActivities: UserActivities,
 }
 
 export default class Activities extends React.Component<State> {
     state: Readonly<State> = {
         selectedIndex: -1,
-        userLessons: null
-    }  
+        userActivities: null
+    }
+
+    constructor (props) {
+        super(props)
+        const { lessonTitle, lessonId } = this.props.route.params; 
+        UserActivitiesProvider(lessonId, (json) => {
+            let userActivities : UserActivities = json;
+            this.setState({userActivities : userActivities});
+        });
+    }
     
     renderActivitiesList(){
       const { lessonTitle, lessonId } = this.props.route.params; 
-      const userActivities = UserActivitiesProvider("1", lessonId);
-      return (
+      // const userActivities = 
+
+      return this.state.userActivities ? (
         <View style={{flex: 1, justifyContent:'flex-start', padding: 10, width: '100%'}}>
-            <View 
-            //style={{alignContent: 'flex-end', alignItems: 'flex-start', }}
-                //key={i} 
-                style={styles.activity}>
+            {
+                this.state.userActivities.videoActivityGroup && this.state.userActivities.videoActivityGroup.userGroupId ? (
+                    <View 
+                        //style={{alignContent: 'flex-end', alignItems: 'flex-start', }}
+                        //key={i} 
+                        style={styles.activity}>
 
-                <TouchableOpacity style={{padding: 5}} 
-                    onPress={() => this.props.navigation.navigate('VideoActivity', { videoUrl: userActivities.videoActivity.videoUrl,
-                    lessonTitle: lessonTitle})}>
-                    <View style = {{alignItems: 'center', backgroundColor: '#FCFDFF', 
-                        justifyContent: 'space-around', height: 60,
-                        flexDirection: 'row'
-                        }}>
-                    <Text style = {styles.activityText}>Video Activity</Text>
-                    <Image 
-                                    style={styles.image}
-                                    source={require('../../assets/video-24px.png')} 
-                                    />
-                    </View>
-                </TouchableOpacity>
-            </View>
-            <View 
-                //key={i} 
-                style={styles.activity}>
+               
+                        <TouchableOpacity style={{padding: 5}} 
+                            onPress={() => this.props.navigation.navigate('VideoActivity', { 
+                                userGroupId: this.state.userActivities.videoActivityGroup.userGroupId,
+                                lessonTitle: lessonTitle,
+                                lessonId: lessonId})}>
+                            <View style = {{alignItems: 'center', backgroundColor: '#FCFDFF', 
+                                justifyContent: 'space-around', height: 60,
+                                flexDirection: 'row'
+                                }}>
+                            <Text style = {styles.activityText}>Video Activity</Text>
+                            <Image 
+                                            style={styles.image}
+                                            source={require('../../assets/video-24px.png')} 
+                                            />
+                            </View>
+                        </TouchableOpacity>
+                    
+                   </View>
+                ) : <View/>
+            }
+            {
+                this.state.userActivities.phrasesActivityGroup && this.state.userActivities.phrasesActivityGroup.userGroupId ? (
+                    <View 
+                        //key={i} 
+                        style={styles.activity}>
 
-                <TouchableOpacity style={{padding: 5}} 
-                    onPress={() => this.props.navigation.navigate('PhrasesActivity', { videoUrl: userActivities.videoActivity.videoUrl,
-                    lessonTitle: lessonTitle})}>
-                    <View style = {{alignItems: 'center', backgroundColor: '#FCFDFF', 
-                        justifyContent: 'space-around', height: 60,
-                        flexDirection: 'row'
-                        }}>
-                    <Text style = {styles.activityText}>Phrases Activity</Text>
-                    <Image 
-                                    style={styles.image}
-                                    source={require('../../assets/headset-24px.png')} 
-                                    />
+                        <TouchableOpacity style={{padding: 5}} 
+                            onPress={() => this.props.navigation.navigate('PhrasesActivity', { 
+                                userGroupId: this.state.userActivities.phrasesActivityGroup.userGroupId,
+                                lessonTitle: lessonTitle,
+                                lessonId: lessonId})}>
+                            <View style = {{alignItems: 'center', backgroundColor: '#FCFDFF', 
+                                justifyContent: 'space-around', height: 60,
+                                flexDirection: 'row'
+                                }}>
+                            <Text style = {styles.activityText}>Phrases Activity</Text>
+                            <Image 
+                                            style={styles.image}
+                                            source={require('../../assets/headset-24px.png')} 
+                                            />
+                            </View>
+                        </TouchableOpacity>
                     </View>
-                </TouchableOpacity>
-            </View>
-            <View 
-                //key={i} 
-                style={styles.activity}>
+                ) : <View/>
+            }
+            {
+                this.state.userActivities.wordActivityGroup && this.state.userActivities.wordActivityGroup.userGroupId ? ( 
+                    <View 
+                        //key={i} 
+                        style={styles.activity}>
 
-                <TouchableOpacity style={{padding: 5}} 
-                    onPress={() => this.props.navigation.navigate('WordsActivity', { videoUrl: userActivities.videoActivity.videoUrl,
-                    lessonTitle: lessonTitle})}>
-                    <View style = {{alignItems: 'center', backgroundColor: '#FCFDFF', 
-                        justifyContent: 'space-around', height: 60,
-                        flexDirection: 'row'
-                        }}>
-                    <Text style = {styles.activityText}>Words Activity</Text>
-                    <Image 
-                                    style={styles.image}
-                                    source={require('../../assets/photo-24px.png')} 
-                                    />
+                        <TouchableOpacity style={{padding: 5}} 
+                            onPress={() => this.props.navigation.navigate('WordsActivity', { 
+                                userGroupId: this.state.userActivities.wordActivityGroup.userGroupId,
+                                lessonTitle: lessonTitle,
+                                lessonId: lessonId
+                            })}>
+                            <View style = {{alignItems: 'center', backgroundColor: '#FCFDFF', 
+                                justifyContent: 'space-around', height: 60,
+                                flexDirection: 'row'
+                                }}>
+                            <Text style = {styles.activityText}>Words Activity</Text>
+                            <Image 
+                                            style={styles.image}
+                                            source={require('../../assets/photo-24px.png')} 
+                                            />
+                            </View>
+                        </TouchableOpacity>
                     </View>
-                </TouchableOpacity>
-            </View>
-            <View 
-                //key={i} 
-                style={styles.activity}>
+               ) : <View/>
+            }
+            {
+                this.state.userActivities.multichoiceActivityGroup && this.state.userActivities.multichoiceActivityGroup.userGroupId ? ( 
+                    <View 
+                        //key={i} 
+                        style={styles.activity}>
 
-                <TouchableOpacity style={{padding: 5}} 
-                    onPress={() => this.props.navigation.navigate('MultichoiceActivity', { videoUrl: userActivities.videoActivity.videoUrl,
-                    lessonTitle: lessonTitle})}>
-                    <View style = {{alignItems: 'center', backgroundColor: '#FCFDFF', 
-                        justifyContent: 'space-around', height: 60,
-                        flexDirection: 'row'
-                        }}>
-                    <Text style = {styles.activityText}>Multichoice Activity</Text>
-                    <Image 
+                        <TouchableOpacity style={{padding: 5}} 
+                            onPress={() => this.props.navigation.navigate('MultichoiceActivity', { 
+                                userGroupId: this.state.userActivities.multichoiceActivityGroup.userGroupId,
+                                lessonTitle: lessonTitle,
+                                lessonId: lessonId})}>
+                            <View style = {{alignItems: 'center', backgroundColor: '#FCFDFF', 
+                                justifyContent: 'space-around', height: 60,
+                                flexDirection: 'row'
+                                }}>
+                            <Text style = {styles.activityText}>Multichoice Activity</Text>
+                            <Image 
+                                            style={styles.image}
+                                            source={require('../../assets/format_list_bulleted-24px.png')} 
+                                            />
+                            </View>
+                        </TouchableOpacity>
+                    </View>
+               ) : <View/>
+            }
+            {
+                this.state.userActivities.dragAndDropActivityGroup && this.state.userActivities.dragAndDropActivityGroup.userGroupId ? (
+                    <View style={styles.activity}>
+                        <TouchableOpacity style={{padding: 5}} 
+                            onPress={() => this.props.navigation.navigate('DragAndDropActivity', { 
+                                userGroupId: this.state.userActivities.dragAndDropActivityGroup.userGroupId,
+                                lessonTitle: lessonTitle,
+                                lessonId: lessonId
+                             })}>
+                            <View style={{alignItems: 'center', backgroundColor: '#FCFDFF', 
+                                justifyContent: 'space-around', height: 60,
+                                flexDirection: 'row'
+                            }}>
+                                <Text style={styles.activityText}>Drag And Drop Activity</Text>
+                                <Image 
                                     style={styles.image}
-                                    source={require('../../assets/format_list_bulleted-24px.png')} 
-                                    />
+                                    source={require('../../assets/extension-24px.png')} 
+                                />
+                            </View>
+                        </TouchableOpacity>
                     </View>
-                </TouchableOpacity>
-            </View>
-            <View style={styles.activity}>
-                <TouchableOpacity style={{padding: 5}} 
-                    onPress={() => this.props.navigation.navigate('DragAndDropActivity', { lessonTitle, lessonId })}>
-                    <View style={{alignItems: 'center', backgroundColor: '#FCFDFF', 
-                        justifyContent: 'space-around', height: 60,
-                        flexDirection: 'row'
-                    }}>
-                        <Text style={styles.activityText}>Drag And Drop Activity</Text>
-                        <Image 
-                            style={styles.image}
-                            source={require('../../assets/extension-24px.png')} 
-                        />
-                    </View>
-                </TouchableOpacity>
-            </View>
+               ) : <View/>
+            }
         </View>
-      )
+      ) : <View/>
     }
   
     render() {
