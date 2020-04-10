@@ -2,6 +2,8 @@ import React from 'react';
 import { Text, View, TouchableOpacity, Image, StyleSheet, Animated } from 'react-native';
 import { Audio } from 'expo-av';
 import { Sound, Recording } from 'expo-av/build/Audio';
+import { MaterialCommunityIcons, Ionicons, MaterialIcons } from '@expo/vector-icons';
+
 
 interface State {
     selectedIndex: Number,
@@ -9,7 +11,7 @@ interface State {
     audioButtonExpanded: boolean,
     audioProgress: string,
     audio: Sound;
-    audioLoaded: boolean;
+    sampleLoaded: boolean;
     audioRecordingButtonAnim: Animated.Value,
     audioRecordingButtonExpanded: boolean,
     audioPlayButtonAnim: Animated.Value,
@@ -18,6 +20,11 @@ interface State {
     recordProgress: string,
     recordedFileUrl: string,
     userRecord: Sound,
+    userRecordProgress: string,
+}
+
+interface Props {
+    onUserAnswer: Function,
 }
 
 export default class PhrasesAudioControls extends React.Component<State> {
@@ -29,23 +36,43 @@ export default class PhrasesAudioControls extends React.Component<State> {
         audioRecordingButtonExpanded: false,
         audioProgress: '00:00',
         audio: null,
-        audioLoaded: false,
+        sampleLoaded: false,
         audioPlayButtonAnim: new Animated.Value(70),
         audioPlayButtonExpanded: false,
         record: null,
         recordProgress: '00:00',
         recordedFileUrl: null,
         userRecord: null,
+        userRecordProgress: null,
     }
 
     constructor(props) {
         super(props);
     }
 
-    onAutoPlaybackStatusUpdate = (status: any) => {
+    componentDidMount() {
+        this.loadAudio();
+    }
+
+    componentWillUnmount() {
+        this.state.audio.stopAsync();
+    }
+
+    static getDerivedStateFromProps(props, state) {
+        console.log(props.recordUrl, state.recordedFileUrl);
+        if (!props.recordUrl) {
+            return { recordedFileUrl: null };
+        }
+        if (props.recordUrl !== state.recordedFileUrl) {
+            return { recordedFileUrl: props.recordUrl };
+        }
+        return null;
+    }
+
+    onAutoPlaybackStatusUpdate = (name: string, status: any) => {
         if (status.positionMillis) {
             let progress = this.millisecondsToTime(status.positionMillis);
-            this.setState({audioProgress: progress});
+            this.setState({ [`${name}Progress`]: progress });
         }
     } 
 
@@ -57,21 +84,27 @@ export default class PhrasesAudioControls extends React.Component<State> {
         return minutesString + ":" + secondsString;
     }
 
-    componentDidMount() {
-        this.loadAudio();
-    }
+    loadAudio = async (name = 'audio', uri = 'https://ccrma.stanford.edu/~jos/mp3/gtr-nylon22.mp3', onFinished?) => {
+        if (this.state[name === 'audio' ? 'sampleLoaded' : `${name}Loaded`] === uri) {
+            return;
+        }
 
-    componentWillUnmount() {
-        this.state.audio.stopAsync();
-    }
-
-    loadAudio = async (name = 'audio', uri = 'https://ccrma.stanford.edu/~jos/mp3/gtr-nylon22.mp3') => {
         try {
             const soundObject = new Audio.Sound();
             await soundObject.loadAsync({ uri }, {}, false);
-            soundObject.setOnPlaybackStatusUpdate(this.onAutoPlaybackStatusUpdate);
+            soundObject.setOnPlaybackStatusUpdate(
+                (...args) => {
+                    this.onAutoPlaybackStatusUpdate(name, ...args);
+                    if (args[0].didJustFinish && onFinished) {
+                        onFinished();
+                    }
+                },
+            );
             soundObject.setProgressUpdateIntervalAsync(1000);
-            this.setState({[name]: soundObject, audioLoaded: true})
+            this.setState({
+                [name]: soundObject,
+                [name === 'audio' ? 'sampleLoaded' : `${name}Loaded`]: uri,
+            });
         } catch (error) {
             alert('error: ' + error)
         }
@@ -86,8 +119,8 @@ export default class PhrasesAudioControls extends React.Component<State> {
                     toValue: 70,
                 }
             ).start();
-            this.setState({audioProgress: '00:00'});
-            this.state.audio.stopAsync();
+            await this.stopAudioSample('userRecord');
+            await this.stopAudioSample('audio');
         } else {
             this.setState({audioButtonExpanded: true});
             if (this.state.audioRecordingButtonExpanded) {
@@ -98,20 +131,23 @@ export default class PhrasesAudioControls extends React.Component<State> {
                 {
                     toValue: 120,
                 }
-            ).start(); 
+            ).start();
             this.playAudioSample();
         }
     }
 
+    stopAudioSample = async (name) => {
+        this.setState({ [`${name}Progress`]: '00:00' });
+        if (this.state[name] && this.state[name].stopAsync) {
+            await this.state[name].stopAsync();
+        }
+    };
+
     playAudioSample = (name = 'audio', url?) => new Promise(async (res, rej) => {
         try {
-            if (url || !this.state.audioLoaded) {
-                await this.loadAudio(name, url);
-            }
-            this.state[name].setOnPlaybackStatusUpdate((playbackStatus) => {
-                if (playbackStatus.didJustFinish) {
-                    res();
-                }
+            await this.loadAudio(name, url, () => {
+                this.state[`${name}Progress`] = '00:00';
+                res();
             });
             this.state[name].playAsync();
         } catch (error) {
@@ -119,22 +155,6 @@ export default class PhrasesAudioControls extends React.Component<State> {
             rej(error);
         }
     });
-
-    renderExpandAudioClose = () => {
-        return this.state.audioButtonExpanded ?  (
-            <View 
-                style={{flexDirection: 'row', flex: 0.7, justifyContent: 'center', alignItems: 'center'}}
-            >
-                <Text style={{color: '#F7F9FC', marginLeft: 10, textAlign:'center'}}>
-                    {this.state.audioProgress}
-                </Text>
-                <Image 
-                    style={styles.closeAudioImage}
-                    source={require('../../assets/close-24px.png')} 
-                />  
-            </View>
-        ) : (<View/>)
-    }
 
     expandAudioRecordingButton = async () => {
         if (this.state.audioRecordingButtonExpanded) {
@@ -145,10 +165,11 @@ export default class PhrasesAudioControls extends React.Component<State> {
                     toValue: 70,
                 }
             ).start();
-            this.setState({recordProgress: '00:00'});
+            this.setState({ recordProgress: '00:00' });
             await this.state.record.stopAndUnloadAsync();
             const fileUrl = this.state.record.getURI();
             this.setState({ recordedFileUrl: fileUrl });
+            this.props.onUserAnswer({ recordedFileUrl: fileUrl });
         }
         else {
             Audio.getPermissionsAsync().then((permission) => {
@@ -194,15 +215,7 @@ export default class PhrasesAudioControls extends React.Component<State> {
             // An error occurred!
         }
     }
-
-    renderExpandAudioRecordingClose = () => {
-        return this.state.audioRecordingButtonExpanded ?  (
-            <Image 
-                style={styles.closeAudioRecordingImage}
-                source={require('../../assets/close-24px.png')} 
-            />  
-        ) : (<View/>)
-    }
+    
 
     expandAudioPlayButton = async () => {
         if (this.state.audioPlayButtonExpanded) {
@@ -213,6 +226,8 @@ export default class PhrasesAudioControls extends React.Component<State> {
                     toValue: 70,
                 }
             ).start();
+            await this.stopAudioSample('userRecord');
+            await this.stopAudioSample('audio');
         } else {
             this.setState({audioPlayButtonExpanded: true});
             if (this.state.audioButtonExpanded) {
@@ -229,15 +244,6 @@ export default class PhrasesAudioControls extends React.Component<State> {
         }
     }
 
-    renderExpandAudioPlayClose = () => {
-        return this.state.audioPlayButtonExpanded ?  (
-            <Image 
-                style={styles.closeAudioPlayImage}
-                source={require('../../assets/close-24px.png')} 
-            />  
-        ) : (<View/>)
-    }
-
     render() {
         return (
             <View style={{ justifyContent: 'center', flex: 1, flexDirection: 'row' }}>
@@ -247,12 +253,14 @@ export default class PhrasesAudioControls extends React.Component<State> {
                         onPress={() => this.expandAudioPlayButton()}
                         disabled={!this.state.recordedFileUrl}
                     >
-                        <Image 
-                            style={styles.audioPlayImage}
-                            source={require('../../assets/repeat.png')} 
-                        />
+                        <Ionicons style={{ opacity: !this.state.recordedFileUrl ? 0.3 : 1 }} name="ios-repeat" size={35} color="#233665" />
                         <View>
-                            {this.renderExpandAudioPlayClose()}
+                            {this.state.audioPlayButtonExpanded ?  (
+                                <Image 
+                                    style={styles.closeAudioPlayImage}
+                                    source={require('../../assets/close-24px.png')} 
+                                />  
+                            ) : (<View/>)}
                         </View>
                     </TouchableOpacity>
                 </Animated.View>
@@ -261,12 +269,14 @@ export default class PhrasesAudioControls extends React.Component<State> {
                         style={styles.audioRecordingButtonTO}
                         onPress={() => this.expandAudioRecordingButton()}
                     >
-                        <Image 
-                            style={styles.audioRecordingImage}
-                            source={require('../../assets/mic-24px.png')} 
-                        />
+                        <MaterialCommunityIcons name="microphone" size={32} color="#233665" />
                         <View>
-                            {this.renderExpandAudioRecordingClose()}
+                            {this.state.audioRecordingButtonExpanded ?  (
+                                <Image 
+                                    style={styles.closeAudioRecordingImage}
+                                    source={require('../../assets/close-24px.png')} 
+                                />  
+                            ) : (<View/>)}
                         </View>
                     </TouchableOpacity>
                 </Animated.View>
@@ -275,11 +285,17 @@ export default class PhrasesAudioControls extends React.Component<State> {
                         style={styles.audioButtonTO}
                         onPress={() => this.expandAudioButton()}
                     >
-                        <Image 
-                            style={styles.audioImage}
-                            source={require('../../assets/volume_up-24px.png')} 
-                        />
-                        {this.renderExpandAudioClose()}
+                        <MaterialIcons name="volume-up" size={32} color="white" />
+                        {this.state.audioButtonExpanded ?  (
+                            <View 
+                                style={{ paddingTop: 20, flexDirection: 'column', flex: 1, justifyContent: 'center', alignItems: 'center'}}
+                            >
+                                <Text style={{color: '#F7F9FC', textAlign:'center'}}>
+                                    {this.state.audioProgress}
+                                </Text>
+                                <Ionicons name="ios-close" size={30} color="white" />
+                            </View>
+                        ) : (<View />)}
                     </TouchableOpacity>
                 </Animated.View>
             </View>
@@ -367,7 +383,7 @@ const styles = StyleSheet.create({
     },
     audioButtonTO: {
         width: 70, 
-        height: 70, 
+        height: 80, 
         borderColor: '#F7F9FC', 
         overflow: 'hidden',
         alignItems: 'center',

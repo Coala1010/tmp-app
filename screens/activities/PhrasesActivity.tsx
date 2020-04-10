@@ -7,293 +7,53 @@ import ActivityFooter from '../../Components/ActivityFooter/ActivityFooter';
 import PhrasesActivityCarousel from '../../Components/PhrasesActivity/PhrasesActivityCarousel';
 import PhrasesAudioControls from '../../Components/PhrasesActivity/AudioControls';
 
-interface State {
-  selectedIndex: Number,
-  audioButtonAnim: Animated.Value,
-  audioButtonExpanded: boolean,
-  audioProgress: string,
-  audio: Sound;
-  audioLoaded: boolean;
-  audioRecordingButtonAnim: Animated.Value,
-  audioRecordingButtonExpanded: boolean,
-  audioPlayButtonAnim: Animated.Value,
-  audioPlayButtonExpanded: boolean,
-  record: Recording,
-  recordProgress: string,
-}
+export default function PhrasesActivity({ videoUrl, lessonTitle, videoTitle, navigation }) {
+    const [answers, setAnswers] = React.useState({});
+    const activityData = [{
+        id: 1,
+        question: 'عمر الذهاب إلى المدرسة.اليوم هو يوم الإثنين، يجب على',
+    }, {
+        id: 2,
+        question: 'عمر الذهاب إلى المدرسة.اليوم هو يوم الإثنين، يجب على وتتكلمها بطلاقة ',
+    }];
 
-export default class PhrasesActivity extends React.Component<State> {
-    state: Readonly<State> = {
-        selectedIndex: -1,
-        audioButtonAnim: new Animated.Value(70),
-        audioButtonExpanded: false,
-        audioRecordingButtonAnim: new Animated.Value(70),
-        audioRecordingButtonExpanded: false,
-        audioProgress: '00:00',
-        audio: null,
-        audioLoaded: false,
-        audioPlayButtonAnim: new Animated.Value(70),
-        audioPlayButtonExpanded: false,
-        record: null,
-        recordProgress: '00:00',
-        recordedFileUrl: null,
-    }
+    const [activeQuestion, setActiveQuestion] = React.useState(0);
+    const uploadData = (data) => {
+        setAnswers({
+            ...answers,
+            [activeQuestion]: data.recordedFileUrl,
+        });
+    };
 
-    constructor(props) {
-        super(props);
-    }
-
-    onAutoPlaybackStatusUpdate = (status: any) => {
-        if (status.positionMillis) {
-            let progress = this.millisecondsToTime(status.positionMillis);
-            this.setState({audioProgress: progress});
-        }
-    } 
-
-    millisecondsToTime = (milli) => {
-        var seconds = Math.floor((milli / 1000) % 60);
-        var minutes = Math.floor((milli / (60 * 1000)) % 60);
-        var secondsString = ('0' + seconds).slice(-2);
-        var minutesString = ('0' + minutes).slice(-2);
-        return minutesString + ":" + secondsString;
-    }
-
-    componentDidMount() {
-        this.loadAudio();
-    }
-
-    componentWillUnmount() {
-        this.state.audio.stopAsync();
-    }
-
-    loadAudio = () => new Promise (async (resolve, reject) => {
-        try {
-            const soundObject = new Audio.Sound();
-            await soundObject.loadAsync({uri: 'https://ccrma.stanford.edu/~jos/mp3/gtr-nylon22.mp3'}, {}, false);
-            soundObject.setOnPlaybackStatusUpdate(this.onAutoPlaybackStatusUpdate);
-            soundObject.setProgressUpdateIntervalAsync(1000);
-            this.setState({audio: soundObject, audioLoaded: true})
-            resolve();
-        } catch (error) {
-            alert('error: ' + error)
-        }
-    })
-
-    expandAudioButton = async () => {
-        if (this.state.audioButtonExpanded) {
-            this.setState({audioButtonExpanded: false});
-            Animated.spring(
-                this.state.audioButtonAnim,
-                {
-                    toValue: 70,
-                }
-            ).start();
-            this.setState({audioProgress: '00:00'});
-            this.state.audio.stopAsync();
-        }
-        else {
-            this.setState({audioButtonExpanded: true});
-            if (this.state.audioRecordingButtonExpanded) {
-                this.expandAudioRecordingButton();
-            }
-            Animated.spring(
-                this.state.audioButtonAnim,
-                {
-                    toValue: 120,
-                }
-            ).start(); 
-
-            try {
-                if (!this.state.audioLoaded) {
-                    await this.loadAudio();
-                }
-
-                this.state.audio.playAsync();
-
-            } catch (error) {
-                alert('error: ' + error)
-            }
-        }
-    }
-
-    renderExpandAudioClose = () => {
-        return this.state.audioButtonExpanded ?  (
-            <View 
-                style={{flexDirection: 'row', flex: 0.7, justifyContent: 'center', alignItems: 'center'}}
-            >
-                <Text style={{color: '#F7F9FC', marginLeft: 10, textAlign:'center'}}>
-                    {this.state.audioProgress}
-                </Text>
-                <Image 
-                    style={styles.closeAudioImage}
-                    source={require('../../assets/close-24px.png')} 
-                />  
-            </View>
-        ) : (<View/>)
-    }
-
-    expandAudioRecordingButton = async () => {
-        if (this.state.audioRecordingButtonExpanded) {
-            this.setState({audioRecordingButtonExpanded: false});
-            Animated.spring(
-                this.state.audioRecordingButtonAnim,
-                {
-                    toValue: 70,
-                }
-            ).start();
-            this.setState({recordProgress: '00:00'});
-            await this.state.record.stopAndUnloadAsync();
-            // const info = await FileSystem.getInfoAsync(this.recording.getURI());
-            // console.log(`FILE INFO: ${JSON.stringify(info)}`);
-            // await Audio.setAudioModeAsync({
-            //   allowsRecordingIOS: false,
-            //   interruptionModeIOS: Audio.INTERRUPTION_MODE_IOS_DO_NOT_MIX,
-            //   playsInSilentModeIOS: true,
-            //   playsInSilentLockedModeIOS: true,
-            //   shouldDuckAndroid: true,
-            //   interruptionModeAndroid: Audio.INTERRUPTION_MODE_ANDROID_DO_NOT_MIX,
-            //   playThroughEarpieceAndroid: false,
-            //   staysActiveInBackground: true,
-            // });
-            // const { sound, status } = await this.recording.createNewLoadedSoundAsync(
-            //   {
-            //     isLooping: true,
-            //     isMuted: this.state.muted,
-            //     volume: this.state.volume,
-            //     rate: this.state.rate,
-            //     shouldCorrectPitch: this.state.shouldCorrectPitch,
-            //   },
-            //   this._updateScreenForSoundStatus
-            // );
-            const fileUrl = this.state.record.getURI();
-            this.setState({ recordedFileUrl: fileUrl });
-        }
-        else {
-            Audio.getPermissionsAsync().then((permission) => {
-                if (!permission.granted) {
-                    //alert("permissions not granted");
-                    //Permissions.askAsync(Permissions.AUDIO_RECORDING);
-                    Audio.requestPermissionsAsync().then(() => this.recordAudio());
-                } else {
-                    alert("permissions granted");
-                    this.recordAudio();
-                }
-            })
-
-            this.expandAudioRecord();
-        }
-    }
-
-    expandAudioRecord = () => {
-        this.setState({audioRecordingButtonExpanded: true});
-        if (this.state.audioButtonExpanded) {
-            this.expandAudioButton();    
-        }
-        Animated.spring(
-            this.state.audioRecordingButtonAnim,
-            {
-                toValue: 120,
-            }
-        ).start();
-    }
-
-    recordAudio = async () => {
-        const recording = new Audio.Recording();
-        try {
-            await Audio.setAudioModeAsync({
-                allowsRecordingIOS: true,
-                interruptionModeIOS: Audio.INTERRUPTION_MODE_IOS_DO_NOT_MIX,
-                playsInSilentModeIOS: true,
-                shouldDuckAndroid: true,
-                interruptionModeAndroid: Audio.INTERRUPTION_MODE_ANDROID_DO_NOT_MIX,
-                playThroughEarpieceAndroid: false,
-                staysActiveInBackground: true,
-              });
-            await recording.prepareToRecordAsync(Audio.RECORDING_OPTIONS_PRESET_LOW_QUALITY);
-            await recording.startAsync();
-            this.setState({ record: recording });
-        } catch (error) {
-            console.log(error);
-            // An error occurred!
-        }
-    }
-
-    renderExpandAudioRecordingClose = () => {
-        return this.state.audioRecordingButtonExpanded ?  (
-            <Image 
-                style={styles.closeAudioRecordingImage}
-                source={require('../../assets/close-24px.png')} 
-            />  
-        ) : (<View/>)
-    }
-
-    expandAudioPlayButton = () => {
-        if (this.state.audioPlayButtonExpanded) {
-            this.setState({audioPlayButtonExpanded: false});
-            Animated.spring(
-                this.state.audioPlayButtonAnim,
-                {
-                    toValue: 70,
-                }
-            ).start();
-        }
-        else {
-            this.setState({audioPlayButtonExpanded: true});
-            if (this.state.audioButtonExpanded) {
-                this.expandAudioButton();
-            }
-            Animated.spring(
-                this.state.audioPlayButtonAnim,
-                {
-                    toValue: 120,
-                }
-            ).start();
-            // this.state.record.playAsync();
-            console.log(this.state.record);
-        }
-    }
-
-    renderExpandAudioPlayClose = () => {
-        return this.state.audioPlayButtonExpanded ?  (
-            <Image 
-                style={styles.closeAudioPlayImage}
-                source={require('../../assets/close-24px.png')} 
-            />  
-        ) : (<View/>)
-    }
-
-    render() {
-        const { videoUrl, lessonTitle, videoTitle } = this.props.route.params; 
-        return (
-            <View style={{flex: 1, width: '100%', backgroundColor: '#FCFDFF'}}>
-                <View style={{ flex: 1 }}>
-                    <View style={{flex: 1, width: '100%', backgroundColor: '#FCFDFF'}}>
-                    <View style={{flex: 1, width: '100%', backgroundColor: '#FCFDFF'}}>
-                        <View style={{
-                            backgroundColor: '#FCFDFF',
-                            borderStyle: 'solid', borderWidth: 3,
-                            borderColor: '#F7F9F7', height: 100,
-                            justifyContent: 'space-around',
-                            flexDirection: 'row'
-                        }}>
-                            <Text style={{textAlign: 'center', marginTop: 50, fontWeight: 'bold', color: '#233665', width: '100%',}}>
-                                {lessonTitle}
-                            </Text>
-                        </View>
-                        <ActivityGroupsProgress navigation={this.props.navigation} chosenActivity='phrases'/>
-                        <PhrasesActivityCarousel onChange={(questionIndex) => {}} />
-                        <PhrasesAudioControls />
+    return (
+        <View style={{flex: 1, width: '100%', backgroundColor: '#FCFDFF'}}>
+            <View style={{ flex: 1 }}>
+                <View style={{flex: 1, width: '100%', backgroundColor: '#FCFDFF'}}>
+                <View style={{flex: 1, width: '100%', backgroundColor: '#FCFDFF'}}>
+                    <View style={{
+                        backgroundColor: '#FCFDFF',
+                        borderStyle: 'solid', borderWidth: 3,
+                        borderColor: '#F7F9F7', height: 100,
+                        justifyContent: 'space-around',
+                        flexDirection: 'row'
+                    }}>
+                        <Text style={{textAlign: 'center', marginTop: 50, fontWeight: 'bold', color: '#233665', width: '100%',}}>
+                            {lessonTitle}
+                        </Text>
                     </View>
-                    <ActivityFooter
-                        toNext="WordsActivity"
-                        toNextPayload={{}}
-                        navigation={this.props.navigation}
-                    />
+                    <ActivityGroupsProgress navigation={navigation} chosenActivity='phrases'/>
+                    <PhrasesActivityCarousel activityData={activityData} onChange={setActiveQuestion} />
+                    <PhrasesAudioControls recordUrl={answers[activeQuestion]} onUserAnswer={uploadData} />
                 </View>
+                <ActivityFooter
+                    toNext="WordsActivity"
+                    toNextPayload={{}}
+                    navigation={navigation}
+                />
             </View>
         </View>
-      );
-    }
+    </View>
+    );
 }
 
 

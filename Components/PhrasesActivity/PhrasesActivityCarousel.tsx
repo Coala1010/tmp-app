@@ -2,14 +2,7 @@ import React from 'react';
 import { View, Text, Dimensions, StyleSheet } from 'react-native';
 import SideSwipe from 'react-native-sideswipe';
 
-export default function PhrasesActivityCarousel({ onChange }) {
-  const activityData = [{
-    id: 1,
-    question: 'عمر الذهاب إلى المدرسة.اليوم هو يوم الإثنين، يجب على',
-  }, {
-    id: 2,
-    question: 'عمر الذهاب إلى المدرسة.اليوم هو يوم الإثنين، يجب على وتتكلمها بطلاقة ',
-  }];
+export default function PhrasesActivityCarousel({ onChange, activityData }) {
   const { width } = Dimensions.get('window');
   const contentOffset = 0;
   const [currentIndex, setCurrentIndex] = React.useState(activityData.length - 1);
@@ -88,69 +81,6 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         fontSize: 18,
     },
-    answers: {
-        paddingVertical: 8,
-    },
-    answerContainer: {
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center',
-        width: Dimensions.get('window').width - 40,
-        height: 70,
-        marginHorizontal: 20,
-        marginBottom: 20,
-        shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 2,
-        },
-        shadowOpacity: 0.1,
-        shadowRadius: 2.22,
-        elevation: 2,
-        backgroundColor: 'white',
-        borderRadius: 20,
-        paddingHorizontal: 10,
-    },
-    answerContainerSelected: {
-        backgroundColor: '#233665',
-    },
-    answerText: {
-        color: '#233665',
-        fontSize: 18,
-        fontWeight: 'bold',
-    },
-    answerTextSelected: {
-        color: 'white',
-    },
-    answerRightLabel: {
-        position: 'absolute',
-        right: 20,
-    },
-    answerNumberContainer: {
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: 'rgba(35, 54, 101, 0.08)',
-        width: 40,
-        borderRadius: 25,
-        height: 40,
-    },
-    answerNumberText: {
-        color: '#24395F',
-        fontWeight: 'bold',
-        fontSize: 20,
-    },
-    answerIconContainer: {
-        width: 40,
-        borderRadius: 25,
-        height: 40,
-        backgroundColor: 'white',
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    answerIconNotSelected: {
-        borderWidth: 1,
-        borderColor: '#24395F',
-    }
 });
 
 // <View 
