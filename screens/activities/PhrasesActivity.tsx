@@ -1,28 +1,52 @@
 import React from 'react';
-import { Text, View, TouchableOpacity, Image, StyleSheet, Animated } from 'react-native';
-import { Audio } from 'expo-av';
-import { Sound, Recording } from 'expo-av/build/Audio';
+import { Text, View, StyleSheet, Platform } from 'react-native';
 import ActivityGroupsProgress from '../../Components/navigation/ActivityGroupsProgress';
 import ActivityFooter from '../../Components/ActivityFooter/ActivityFooter';
 import PhrasesActivityCarousel from '../../Components/PhrasesActivity/PhrasesActivityCarousel';
 import PhrasesAudioControls from '../../Components/PhrasesActivity/AudioControls';
+import { getPhrases, uploadUserPhraseAudio } from '../../providers/activities/PhrasesActivity';
 
-export default function PhrasesActivity({ videoUrl, lessonTitle, videoTitle, navigation }) {
+export default function PhrasesActivity({ lessonTitle, navigation, route }) {
     const [answers, setAnswers] = React.useState({});
-    const activityData = [{
-        id: 1,
-        question: 'عمر الذهاب إلى المدرسة.اليوم هو يوم الإثنين، يجب على',
-    }, {
-        id: 2,
-        question: 'عمر الذهاب إلى المدرسة.اليوم هو يوم الإثنين، يجب على وتتكلمها بطلاقة ',
-    }];
+    const [activityData, setActivityData] = React.useState(null);
+
+    React.useEffect(() => {
+        getPhrases(route.params.userGroupId).then((res) => {
+            setActivityData(
+                res.map(
+                    answer => ({
+                        ...answer,
+                        audioUrl: 'https://ccrma.stanford.edu/~jos/mp3/gtr-nylon22.mp3',
+                    }),
+                ),
+            );
+        });
+    }, []);
 
     const [activeQuestion, setActiveQuestion] = React.useState(0);
-    const uploadData = (data) => {
+    const uploadData = async (data) => {
         setAnswers({
             ...answers,
             [activeQuestion]: data.recordedFileUrl,
         });
+
+        try {
+            const uriParts = data.recordedFileUrl.split('.');
+            const fileType = uriParts[uriParts.length - 1];
+            const formData = new FormData();
+
+            formData.append('userAudio', {
+                uri: Platform.OS === 'android' ? data.recordedFileUrl : data.recordedFileUrl.replace('file://', ''),
+                name: `recording.${fileType}`,
+                type: `audio/x-${fileType}`,
+            });
+            formData.append('id', activityData[activeQuestion].id);
+            formData.append('token', 1);
+            const res = await uploadUserPhraseAudio(formData);
+            console.log('RESPONSE: ', res);
+        } catch (err) {
+            console.log(err);
+        }
     };
 
     return (
@@ -42,8 +66,16 @@ export default function PhrasesActivity({ videoUrl, lessonTitle, videoTitle, nav
                         </Text>
                     </View>
                     <ActivityGroupsProgress navigation={navigation} chosenActivity='phrases'/>
-                    <PhrasesActivityCarousel activityData={activityData} onChange={setActiveQuestion} />
-                    <PhrasesAudioControls recordUrl={answers[activeQuestion]} onUserAnswer={uploadData} />
+                    {activityData &&  (
+                        <>
+                            <PhrasesActivityCarousel activityData={activityData} onChange={setActiveQuestion} />
+                            <PhrasesAudioControls
+                                recordUrl={answers[activeQuestion]}
+                                onUserAnswer={uploadData}
+                                sampleUrl={activityData[activeQuestion].audioUrl}
+                            />
+                        </>
+                    )}
                 </View>
                 <ActivityFooter
                     toNext="WordsActivity"
@@ -55,190 +87,3 @@ export default function PhrasesActivity({ videoUrl, lessonTitle, videoTitle, nav
     </View>
     );
 }
-
-
-const styles = StyleSheet.create({
-    audioPlayImage: {
-        height: 26,
-        resizeMode: 'contain'
-    },
-    closeAudioPlayImage: {
-        height: 24,
-        width: 24, 
-        resizeMode: 'contain'
-    },
-    audioPlayButtonTO: {
-        width: 70, 
-        height: 70, 
-        borderColor: '#F7F9FC', 
-        overflow: 'hidden',
-        alignItems: 'center',
-        justifyContent: 'center',
-        flexDirection: 'column'
-    },
-    audioPlayButton: {
-        width: 70,
-        height: 70, 
-        marginTop: 30, 
-        justifyContent: 'space-around',
-        color: '#233665', 
-        backgroundColor: '#F7F9FC',
-        borderColor: 'black',
-        borderStyle: 'solid',
-        borderWidth: 0,
-        shadowColor: 'lightgray',
-        shadowOpacity: 0.6,
-        borderRadius: 45,
-        marginLeft: 20,
-        marginRight: 20,
-        alignItems: 'center'
-    },
-    closeAudioRecordingImage: {
-        height: 24,
-        width: 24, 
-        resizeMode: 'contain'
-    },
-    audioRecordingButtonTO: {
-        width: 70, 
-        height: 70, 
-        borderColor: '#F7F9FC', 
-        overflow: 'hidden',
-        alignItems: 'center',
-        justifyContent: 'center',
-        flexDirection: 'column'
-    },
-    audioRecordingButton: {
-        width: 70,
-        height: 70, 
-        marginTop: 30, 
-        justifyContent: 'space-around',
-        color: '#233665', 
-        backgroundColor: '#F7F9FC',
-        borderColor: 'black',
-        borderStyle: 'solid',
-        borderWidth: 0,
-        shadowColor: 'lightgray',
-        shadowOpacity: 0.6,
-        borderRadius: 45,
-        marginLeft: 20,
-        marginRight: 20,
-        alignItems: 'center',
-    },
-    audioRecordingImage: {
-        height: 26,
-        // width: 19,
-        resizeMode: 'contain'
-    },
-    closeAudioImage: {
-        height: 24,
-        width: 24, 
-        resizeMode: 'contain'
-    },
-    audioButtonTO: {
-        width: 70, 
-        height: 70, 
-        borderColor: '#F7F9FC', 
-        overflow: 'hidden',
-        alignItems: 'center',
-        justifyContent: 'center',
-        flexDirection: 'column',
-        flex: 1
-    },
-    audioButton: {
-        width: 70,
-        height: 70, 
-        marginTop: 30, 
-        justifyContent: 'flex-start',
-        backgroundColor: '#233665',
-        borderColor: 'black',
-        borderStyle: 'solid',
-        borderWidth: 0,
-        shadowColor: 'lightgray',
-        shadowOpacity: 0.6,
-        borderRadius: 45,
-        marginLeft: 20,
-        marginRight: 20,
-        alignItems: 'center',
-        flexDirection: 'row',
-    },
-    audioImage: {
-        height: 20,
-        width: 22,
-        resizeMode: 'contain'
-    },
-    image: {
-        height: 24,
-        width: 24,
-    },
-    backgroundVideo: {
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        bottom: 0,
-        right: 0,
-    },
-    forwardImage: {
-        height: 24,
-        width: 14,
-    },
-    backImage: {
-        height: 24,
-        width: 24,
-    },
-    backImageWrapper: {
-        color: '#233665', 
-        width: 30, 
-        height: 30, 
-        backgroundColor: '#F7F9FC',
-        fontWeight: 'bold', 
-        borderStyle: 'solid', 
-        borderRadius: 5, 
-        borderWidth: 1,
-        borderColor: '#F7F9FC', 
-        overflow: 'hidden',
-        alignItems: 'center',
-    },
-    backButtonTO: {
-        width: 60, 
-        height: 30, 
-        borderColor: '#F7F9FC', 
-        overflow: 'hidden',
-        alignItems: 'center',
-    },
-    backButton: {
-        width: 60, 
-        marginTop: 10, 
-        justifyContent: 'space-around',
-        backgroundColor: '#FCFDFF',
-        borderColor: 'black',
-        borderStyle: 'solid',
-        borderWidth: 0,
-        shadowColor: 'lightgray',
-        shadowOpacity: 0.6,
-        borderRadius: 15,
-        marginLeft: 10,
-        marginRight: 10,
-        alignItems: 'center',
-    },
-    forwardButton: {
-        marginTop: 10,
-        marginLeft: 20,
-        marginRight: 10, 
-        justifyContent: 'space-around',
-        backgroundColor: '#FCFDFF',
-        borderColor: 'black',
-        borderStyle: 'solid',
-        borderWidth: 0,
-        shadowColor: 'lightgray',
-        shadowOpacity: 0.6,
-        borderRadius: 15,
-        width: '70%'
-    },
-    forwardButtonInner: {
-        alignItems: 'center', 
-        backgroundColor: '#FCFDFF', 
-        justifyContent: 'space-around', 
-        height: 60,
-        flexDirection: 'row'
-    }
-});

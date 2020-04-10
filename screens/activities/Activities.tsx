@@ -63,11 +63,15 @@ export default class Activities extends React.Component<State> {
                         //key={i} 
                         style={styles.activity}>
 
-                        <TouchableOpacity style={{padding: 5}} 
+                        <TouchableOpacity
+                            style={{padding: 5}}
                             onPress={() => this.props.navigation.navigate('PhrasesActivity', { 
                                 userGroupId: this.state.userActivities.phrasesActivityGroup.userGroupId,
+                                groupId: this.state.userActivities.phrasesActivityGroup.groupId,
                                 lessonTitle: lessonTitle,
-                                lessonId: lessonId})}>
+                                lessonId: lessonId
+                            })}
+                        >
                             <View style = {{alignItems: 'center', backgroundColor: '#FCFDFF', 
                                 justifyContent: 'space-around', height: 60,
                                 flexDirection: 'row'

@@ -4,7 +4,6 @@ import { Audio } from 'expo-av';
 import { Sound, Recording } from 'expo-av/build/Audio';
 import { MaterialCommunityIcons, Ionicons, MaterialIcons } from '@expo/vector-icons';
 
-
 interface State {
     selectedIndex: Number,
     audioButtonAnim: Animated.Value,
@@ -23,8 +22,9 @@ interface State {
     userRecordProgress: string,
 }
 
-interface Props {
+type Props = {
     onUserAnswer: Function,
+    sampleUrl: string,
 }
 
 export default class PhrasesAudioControls extends React.Component<State> {
@@ -55,11 +55,11 @@ export default class PhrasesAudioControls extends React.Component<State> {
     }
 
     componentWillUnmount() {
-        this.state.audio.stopAsync();
+        this.stopAudioSample('userRecord');
+        this.stopAudioSample('audio');
     }
 
     static getDerivedStateFromProps(props, state) {
-        console.log(props.recordUrl, state.recordedFileUrl);
         if (!props.recordUrl) {
             return { recordedFileUrl: null };
         }
@@ -84,7 +84,11 @@ export default class PhrasesAudioControls extends React.Component<State> {
         return minutesString + ":" + secondsString;
     }
 
-    loadAudio = async (name = 'audio', uri = 'https://ccrma.stanford.edu/~jos/mp3/gtr-nylon22.mp3', onFinished?) => {
+    loadAudio = async (name = 'audio', uri?, onFinished?) => {
+        if (name === 'audio') {
+            uri = this.props.sampleUrl;
+        }
+
         if (this.state[name === 'audio' ? 'sampleLoaded' : `${name}Loaded`] === uri) {
             return;
         }
