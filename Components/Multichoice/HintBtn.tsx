@@ -18,9 +18,8 @@ export default function HintBtn({ hintText }) {
             <Tooltip
                 backgroundColor="transparent"
                 overlayColor="rgba(0, 0, 0, 0.3)"
-                containerStyle={{ bottom: -10, justifyContent: 'flex-end', padding: 0 }}
-                pointerStyle={{ right: 10 }}
-                width={Dimensions.get('window').width - 40}
+                containerStyle={styles.container}
+                width={Dimensions.get('window').width - 10}
                 height={height}
                 popover={(
                     <View style={styles.tooltipBody}>
@@ -47,6 +46,12 @@ export default function HintBtn({ hintText }) {
 }
 
 const styles = StyleSheet.create({
+    container: {
+        bottom: -10,
+        justifyContent: 'flex-end',
+        padding: 0,
+        width: Dimensions.get('window').width - 40,
+    },
     tooltipBody: {
         shadowColor: '#000',
         shadowOffset: {
@@ -56,6 +61,8 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.20,
         shadowRadius: 1.41,
         elevation: 2,
+        width: Dimensions.get('window').width - 40,
+        marginRight: -20,
     },
     tooltipText: {
         fontSize: 18,
@@ -100,7 +107,7 @@ const styles = StyleSheet.create({
         borderBottomColor: 'white',
         position: 'absolute',
         bottom: -15,
-        right: 20,
+        right: 25,
         transform: [{ rotate: '180deg' }],
     },
     img: {
