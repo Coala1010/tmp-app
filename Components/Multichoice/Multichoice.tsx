@@ -60,6 +60,7 @@ export default function Multichoice({ activityData, setHintText }) {
                         styles.questionCard,
                         itemIndex === 0 && { marginRight: 20 },
                         itemIndex === activityData.length - 1 && { marginLeft: 20 },
+                        activityData.length === 1 && { marginRight: 50, marginLeft: 50 },
                     ]}>
                         <View style={{ width: 30 }} />
                         <View style={{ flex: 1 }}>
