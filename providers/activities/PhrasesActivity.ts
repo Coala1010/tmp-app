@@ -10,5 +10,5 @@ export function uploadUserPhraseAudio(body): Promise<any> {
     return fetch(
         url,
         { method: 'PUT', body },
-    ).then((response) => response.json());;
+    ).then((response) => response.json());
 }

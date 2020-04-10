@@ -26,13 +26,12 @@ export default class VideoActivity extends React.Component<State> {
                     shouldPlay
                     isLooping
                     style={{ width: '100%', height: 300 }}
-                />    
+                />
             </View>
             <Text style={{textAlign: 'right', marginTop: 20, marginRight:50, fontWeight: 'bold', color: '#233665', width: '90%',}}>
                 {videoTitle}
             </Text>
-            
-        </View>    
+        </View>
       )
     }
   

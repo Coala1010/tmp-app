@@ -87,30 +87,25 @@ export default class Activities extends React.Component<State> {
                 ) : <View/>
             }
             {
-                this.state.userActivities.wordActivityGroup && this.state.userActivities.wordActivityGroup.userGroupId ? ( 
-                    <View 
-                        //key={i} 
-                        style={styles.activity}>
-
-                        <TouchableOpacity style={{padding: 5}} 
-                            onPress={() => this.props.navigation.navigate('WordsActivity', { 
-                                userGroupId: this.state.userActivities.wordActivityGroup.userGroupId,
-                                lessonTitle: lessonTitle,
-                                lessonId: lessonId
-                            })}>
-                            <View style = {{alignItems: 'center', backgroundColor: '#FCFDFF', 
-                                justifyContent: 'space-around', height: 60,
-                                flexDirection: 'row'
-                                }}>
-                            <Text style = {styles.activityText}>Words Activity</Text>
-                            <Image 
-                                            style={styles.image}
-                                            source={require('../../assets/photo-24px.png')} 
-                                            />
-                            </View>
-                        </TouchableOpacity>
-                    </View>
-               ) : <View/>
+                <View style={styles.activity}>
+                    <TouchableOpacity style={{padding: 5}} 
+                        onPress={() => this.props.navigation.navigate('WordsActivity', { 
+                            userGroupId: this.state.userActivities.wordActivityGroup.userGroupId,
+                            lessonTitle: lessonTitle,
+                            lessonId: lessonId
+                        })}>
+                        <View style = {{alignItems: 'center', backgroundColor: '#FCFDFF', 
+                            justifyContent: 'space-around', height: 60,
+                            flexDirection: 'row'
+                            }}>
+                        <Text style = {styles.activityText}>Words Activity</Text>
+                        <Image 
+                                        style={styles.image}
+                                        source={require('../../assets/photo-24px.png')} 
+                                        />
+                        </View>
+                    </TouchableOpacity>
+                </View>
             }
             {
                 this.state.userActivities.multichoiceActivityGroup && this.state.userActivities.multichoiceActivityGroup.userGroupId ? ( 

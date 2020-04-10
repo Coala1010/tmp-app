@@ -41,7 +41,8 @@ export default function PhrasesActivity({ lessonTitle, navigation, route }) {
                 type: `audio/x-${fileType}`,
             });
             formData.append('id', activityData[activeQuestion].id);
-            formData.append('token', 1);
+            // TODO: replace a token:
+            formData.append('token', '1');
             const res = await uploadUserPhraseAudio(formData);
             console.log('RESPONSE: ', res);
         } catch (err) {
@@ -53,37 +54,37 @@ export default function PhrasesActivity({ lessonTitle, navigation, route }) {
         <View style={{flex: 1, width: '100%', backgroundColor: '#FCFDFF'}}>
             <View style={{ flex: 1 }}>
                 <View style={{flex: 1, width: '100%', backgroundColor: '#FCFDFF'}}>
-                <View style={{flex: 1, width: '100%', backgroundColor: '#FCFDFF'}}>
-                    <View style={{
-                        backgroundColor: '#FCFDFF',
-                        borderStyle: 'solid', borderWidth: 3,
-                        borderColor: '#F7F9F7', height: 100,
-                        justifyContent: 'space-around',
-                        flexDirection: 'row'
-                    }}>
-                        <Text style={{textAlign: 'center', marginTop: 50, fontWeight: 'bold', color: '#233665', width: '100%',}}>
-                            {lessonTitle}
-                        </Text>
+                    <View style={{flex: 1, width: '100%', backgroundColor: '#FCFDFF'}}>
+                        <View style={{
+                            backgroundColor: '#FCFDFF',
+                            borderStyle: 'solid', borderWidth: 3,
+                            borderColor: '#F7F9F7', height: 100,
+                            justifyContent: 'space-around',
+                            flexDirection: 'row'
+                        }}>
+                            <Text style={{textAlign: 'center', marginTop: 50, fontWeight: 'bold', color: '#233665', width: '100%',}}>
+                                {lessonTitle}
+                            </Text>
+                        </View>
+                        <ActivityGroupsProgress navigation={navigation} chosenActivity='phrases'/>
+                        {activityData &&  (
+                            <>
+                                <PhrasesActivityCarousel activityData={activityData} onChange={setActiveQuestion} />
+                                <PhrasesAudioControls
+                                    recordUrl={answers[activeQuestion]}
+                                    onUserAnswer={uploadData}
+                                    sampleUrl={activityData[activeQuestion].audioUrl}
+                                />
+                            </>
+                        )}
                     </View>
-                    <ActivityGroupsProgress navigation={navigation} chosenActivity='phrases'/>
-                    {activityData &&  (
-                        <>
-                            <PhrasesActivityCarousel activityData={activityData} onChange={setActiveQuestion} />
-                            <PhrasesAudioControls
-                                recordUrl={answers[activeQuestion]}
-                                onUserAnswer={uploadData}
-                                sampleUrl={activityData[activeQuestion].audioUrl}
-                            />
-                        </>
-                    )}
+                    <ActivityFooter
+                        toNext="WordsActivity"
+                        toNextPayload={{}}
+                        navigation={navigation}
+                    />
                 </View>
-                <ActivityFooter
-                    toNext="WordsActivity"
-                    toNextPayload={{}}
-                    navigation={navigation}
-                />
             </View>
         </View>
-    </View>
     );
 }

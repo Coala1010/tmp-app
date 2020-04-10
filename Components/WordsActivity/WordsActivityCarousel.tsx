@@ -1,8 +1,8 @@
 import React from 'react';
-import { View, Text, Dimensions, StyleSheet } from 'react-native';
+import { Image, View, Text, Dimensions, StyleSheet } from 'react-native';
 import SideSwipe from 'react-native-sideswipe';
 
-export default function PhrasesActivityCarousel({ onChange, activityData }) {
+export default function WordActivityCarousel({ onChange, activityData }) {
   const { width } = Dimensions.get('window');
   const contentOffset = 0;
   const [currentIndex, setCurrentIndex] = React.useState(activityData.length - 1);
@@ -26,9 +26,12 @@ export default function PhrasesActivityCarousel({ onChange, activityData }) {
                 itemIndex === activityData.length - 1 && { marginLeft: 20 },
                 activityData.length === 1 && { marginRight: 50, marginLeft: 50 },
             ]}>
-                <Text style={styles.questionText}>{item.title}</Text>
+                <Image style={styles.img} source={{ uri: item.imageUrl }} />
                 <View style={styles.numberContainer}>
                     <Text style={styles.number}>{activityData.length}/{itemIndex + 1}</Text>
+                </View>
+                <View style={styles.titleContainer}>
+                    <Text style={styles.title}>{item.title}</Text>
                 </View>
             </View>
         )}
@@ -37,6 +40,12 @@ export default function PhrasesActivityCarousel({ onChange, activityData }) {
 }
 
 const styles = StyleSheet.create({
+    img: {
+        flex: 1,
+        borderRadius: 20,
+        width: '100%',
+        height: '100%',
+    },
     swipperContainer: {
         flexDirection: 'row-reverse',
     },
@@ -45,7 +54,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'flex-start',
         width: Dimensions.get('window').width - 100,
-        minHeight: 120,
+        height: 350,
         margin: 10,
         shadowColor: "#000",
         shadowOffset: {
@@ -57,8 +66,6 @@ const styles = StyleSheet.create({
         elevation: 2,
         backgroundColor: 'white',
         borderRadius: 20,
-        paddingHorizontal: 10,
-        paddingVertical: 10,
     },
     questionText: {
         textAlign: 'right',
@@ -71,15 +78,34 @@ const styles = StyleSheet.create({
         paddingVertical: 10,
     },
     numberContainer: {
-        backgroundColor: 'rgba(35, 54, 101, 0.08)',
+        backgroundColor: 'rgba(255, 255, 255, 0.5)',
+        position: 'absolute',
+        top: 20,
+        right: 23,
         padding: 10,
         borderRadius: 10,
-        height: 45,
-        marginLeft: 10,
     },
     number: {
         color: '#24395F',
         fontWeight: 'bold',
-        fontSize: 18,
+        fontSize: 22,
+    },
+    titleContainer: {
+        position: 'absolute',
+        bottom: 7,
+        left: 0,
+        right: 0,
+        justifyContent: 'center',
+        flexDirection: 'row',
+    },
+    title: {
+        backgroundColor: 'rgba(255, 255, 255, 0.5)',
+        paddingHorizontal: 25,
+        paddingVertical: 5,
+        borderRadius: 10,
+        overflow: 'hidden',
+        color: '#24395F',
+        fontWeight: 'bold',
+        fontSize: 16,
     },
 });

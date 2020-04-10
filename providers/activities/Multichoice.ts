@@ -16,5 +16,5 @@ export function updateMultichoiceActivity(body): Promise<any> {
             },
             body: JSON.stringify(body),
         },
-    ).then((response) => response.json());;
+    ).then((response) => response.json());
 }

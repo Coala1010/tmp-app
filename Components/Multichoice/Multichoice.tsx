@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, ScrollView, StyleSheet, Dimensions, TouchableOpacity } from 'react-native';
 import SideSwipe from 'react-native-sideswipe';
 import { Feather, AntDesign } from '@expo/vector-icons';
-import { updateMultichoiceActivity } from '../../providers/activities/Multichoice';
+import { uploadMultichoiceActivityRecord } from '../../providers/activities/Multichoice';
 
 export default function Multichoice({ activityData, setHintText }) {
     const [currentIndex, setCurrentIndex] = React.useState(activityData.length - 1);
@@ -24,7 +24,7 @@ export default function Multichoice({ activityData, setHintText }) {
                 [currentQuestion]: id,
             });
             try {
-                await updateMultichoiceActivity({
+                await uploadMultichoiceActivityRecord({
                     id: activityData[currentQuestion].id,
                     userAnswerId: activityData[currentQuestion].userAnswerId,
                     answerId: id,
