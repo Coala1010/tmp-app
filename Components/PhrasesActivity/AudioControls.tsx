@@ -2,27 +2,25 @@ import React from 'react';
 import { Text, View, TouchableOpacity, Image, StyleSheet, Animated } from 'react-native';
 import { Audio } from 'expo-av';
 import { Sound, Recording } from 'expo-av/build/Audio';
-import ActivityGroupsProgress from '../../Components/navigation/ActivityGroupsProgress';
-import ActivityFooter from '../../Components/ActivityFooter/ActivityFooter';
-import PhrasesActivityCarousel from '../../Components/PhrasesActivity/PhrasesActivityCarousel';
-import PhrasesAudioControls from '../../Components/PhrasesActivity/AudioControls';
 
 interface State {
-  selectedIndex: Number,
-  audioButtonAnim: Animated.Value,
-  audioButtonExpanded: boolean,
-  audioProgress: string,
-  audio: Sound;
-  audioLoaded: boolean;
-  audioRecordingButtonAnim: Animated.Value,
-  audioRecordingButtonExpanded: boolean,
-  audioPlayButtonAnim: Animated.Value,
-  audioPlayButtonExpanded: boolean,
-  record: Recording,
-  recordProgress: string,
+    selectedIndex: Number,
+    audioButtonAnim: Animated.Value,
+    audioButtonExpanded: boolean,
+    audioProgress: string,
+    audio: Sound;
+    audioLoaded: boolean;
+    audioRecordingButtonAnim: Animated.Value,
+    audioRecordingButtonExpanded: boolean,
+    audioPlayButtonAnim: Animated.Value,
+    audioPlayButtonExpanded: boolean,
+    record: Recording,
+    recordProgress: string,
+    recordedFileUrl: string,
+    userRecord: Sound,
 }
 
-export default class PhrasesActivity extends React.Component<State> {
+export default class PhrasesAudioControls extends React.Component<State> {
     state: Readonly<State> = {
         selectedIndex: -1,
         audioButtonAnim: new Animated.Value(70),
@@ -37,6 +35,7 @@ export default class PhrasesActivity extends React.Component<State> {
         record: null,
         recordProgress: '00:00',
         recordedFileUrl: null,
+        userRecord: null,
     }
 
     constructor(props) {
@@ -51,10 +50,10 @@ export default class PhrasesActivity extends React.Component<State> {
     } 
 
     millisecondsToTime = (milli) => {
-        var seconds = Math.floor((milli / 1000) % 60);
-        var minutes = Math.floor((milli / (60 * 1000)) % 60);
-        var secondsString = ('0' + seconds).slice(-2);
-        var minutesString = ('0' + minutes).slice(-2);
+        const seconds = Math.floor((milli / 1000) % 60);
+        const minutes = Math.floor((milli / (60 * 1000)) % 60);
+        const secondsString = ('0' + seconds).slice(-2);
+        const minutesString = ('0' + minutes).slice(-2);
         return minutesString + ":" + secondsString;
     }
 
@@ -66,18 +65,17 @@ export default class PhrasesActivity extends React.Component<State> {
         this.state.audio.stopAsync();
     }
 
-    loadAudio = () => new Promise (async (resolve, reject) => {
+    loadAudio = async (name = 'audio', uri = 'https://ccrma.stanford.edu/~jos/mp3/gtr-nylon22.mp3') => {
         try {
             const soundObject = new Audio.Sound();
-            await soundObject.loadAsync({uri: 'https://ccrma.stanford.edu/~jos/mp3/gtr-nylon22.mp3'}, {}, false);
+            await soundObject.loadAsync({ uri }, {}, false);
             soundObject.setOnPlaybackStatusUpdate(this.onAutoPlaybackStatusUpdate);
             soundObject.setProgressUpdateIntervalAsync(1000);
-            this.setState({audio: soundObject, audioLoaded: true})
-            resolve();
+            this.setState({[name]: soundObject, audioLoaded: true})
         } catch (error) {
             alert('error: ' + error)
         }
-    })
+    }
 
     expandAudioButton = async () => {
         if (this.state.audioButtonExpanded) {
@@ -90,8 +88,7 @@ export default class PhrasesActivity extends React.Component<State> {
             ).start();
             this.setState({audioProgress: '00:00'});
             this.state.audio.stopAsync();
-        }
-        else {
+        } else {
             this.setState({audioButtonExpanded: true});
             if (this.state.audioRecordingButtonExpanded) {
                 this.expandAudioRecordingButton();
@@ -102,19 +99,26 @@ export default class PhrasesActivity extends React.Component<State> {
                     toValue: 120,
                 }
             ).start(); 
-
-            try {
-                if (!this.state.audioLoaded) {
-                    await this.loadAudio();
-                }
-
-                this.state.audio.playAsync();
-
-            } catch (error) {
-                alert('error: ' + error)
-            }
+            this.playAudioSample();
         }
     }
+
+    playAudioSample = (name = 'audio', url?) => new Promise(async (res, rej) => {
+        try {
+            if (url || !this.state.audioLoaded) {
+                await this.loadAudio(name, url);
+            }
+            this.state[name].setOnPlaybackStatusUpdate((playbackStatus) => {
+                if (playbackStatus.didJustFinish) {
+                    res();
+                }
+            });
+            this.state[name].playAsync();
+        } catch (error) {
+            alert('error: ' + error);
+            rej(error);
+        }
+    });
 
     renderExpandAudioClose = () => {
         return this.state.audioButtonExpanded ?  (
@@ -143,39 +147,14 @@ export default class PhrasesActivity extends React.Component<State> {
             ).start();
             this.setState({recordProgress: '00:00'});
             await this.state.record.stopAndUnloadAsync();
-            // const info = await FileSystem.getInfoAsync(this.recording.getURI());
-            // console.log(`FILE INFO: ${JSON.stringify(info)}`);
-            // await Audio.setAudioModeAsync({
-            //   allowsRecordingIOS: false,
-            //   interruptionModeIOS: Audio.INTERRUPTION_MODE_IOS_DO_NOT_MIX,
-            //   playsInSilentModeIOS: true,
-            //   playsInSilentLockedModeIOS: true,
-            //   shouldDuckAndroid: true,
-            //   interruptionModeAndroid: Audio.INTERRUPTION_MODE_ANDROID_DO_NOT_MIX,
-            //   playThroughEarpieceAndroid: false,
-            //   staysActiveInBackground: true,
-            // });
-            // const { sound, status } = await this.recording.createNewLoadedSoundAsync(
-            //   {
-            //     isLooping: true,
-            //     isMuted: this.state.muted,
-            //     volume: this.state.volume,
-            //     rate: this.state.rate,
-            //     shouldCorrectPitch: this.state.shouldCorrectPitch,
-            //   },
-            //   this._updateScreenForSoundStatus
-            // );
             const fileUrl = this.state.record.getURI();
             this.setState({ recordedFileUrl: fileUrl });
         }
         else {
             Audio.getPermissionsAsync().then((permission) => {
                 if (!permission.granted) {
-                    //alert("permissions not granted");
-                    //Permissions.askAsync(Permissions.AUDIO_RECORDING);
                     Audio.requestPermissionsAsync().then(() => this.recordAudio());
                 } else {
-                    alert("permissions granted");
                     this.recordAudio();
                 }
             })
@@ -187,13 +166,11 @@ export default class PhrasesActivity extends React.Component<State> {
     expandAudioRecord = () => {
         this.setState({audioRecordingButtonExpanded: true});
         if (this.state.audioButtonExpanded) {
-            this.expandAudioButton();    
+            this.expandAudioButton();
         }
         Animated.spring(
             this.state.audioRecordingButtonAnim,
-            {
-                toValue: 120,
-            }
+            { toValue: 120 },
         ).start();
     }
 
@@ -227,7 +204,7 @@ export default class PhrasesActivity extends React.Component<State> {
         ) : (<View/>)
     }
 
-    expandAudioPlayButton = () => {
+    expandAudioPlayButton = async () => {
         if (this.state.audioPlayButtonExpanded) {
             this.setState({audioPlayButtonExpanded: false});
             Animated.spring(
@@ -236,8 +213,7 @@ export default class PhrasesActivity extends React.Component<State> {
                     toValue: 70,
                 }
             ).start();
-        }
-        else {
+        } else {
             this.setState({audioPlayButtonExpanded: true});
             if (this.state.audioButtonExpanded) {
                 this.expandAudioButton();
@@ -248,8 +224,8 @@ export default class PhrasesActivity extends React.Component<State> {
                     toValue: 120,
                 }
             ).start();
-            // this.state.record.playAsync();
-            console.log(this.state.record);
+            await this.playAudioSample('userRecord', this.state.recordedFileUrl);
+            await this.playAudioSample();
         }
     }
 
@@ -263,36 +239,51 @@ export default class PhrasesActivity extends React.Component<State> {
     }
 
     render() {
-        const { videoUrl, lessonTitle, videoTitle } = this.props.route.params; 
         return (
-            <View style={{flex: 1, width: '100%', backgroundColor: '#FCFDFF'}}>
-                <View style={{ flex: 1 }}>
-                    <View style={{flex: 1, width: '100%', backgroundColor: '#FCFDFF'}}>
-                    <View style={{flex: 1, width: '100%', backgroundColor: '#FCFDFF'}}>
-                        <View style={{
-                            backgroundColor: '#FCFDFF',
-                            borderStyle: 'solid', borderWidth: 3,
-                            borderColor: '#F7F9F7', height: 100,
-                            justifyContent: 'space-around',
-                            flexDirection: 'row'
-                        }}>
-                            <Text style={{textAlign: 'center', marginTop: 50, fontWeight: 'bold', color: '#233665', width: '100%',}}>
-                                {lessonTitle}
-                            </Text>
+            <View style={{ justifyContent: 'center', flex: 1, flexDirection: 'row' }}>
+                <Animated.View style={[styles.audioPlayButton, {height: this.state.audioPlayButtonAnim}]}>
+                    <TouchableOpacity 
+                        style={styles.audioPlayButtonTO}
+                        onPress={() => this.expandAudioPlayButton()}
+                        disabled={!this.state.recordedFileUrl}
+                    >
+                        <Image 
+                            style={styles.audioPlayImage}
+                            source={require('../../assets/repeat.png')} 
+                        />
+                        <View>
+                            {this.renderExpandAudioPlayClose()}
                         </View>
-                        <ActivityGroupsProgress navigation={this.props.navigation} chosenActivity='phrases'/>
-                        <PhrasesActivityCarousel onChange={(questionIndex) => {}} />
-                        <PhrasesAudioControls />
-                    </View>
-                    <ActivityFooter
-                        toNext="WordsActivity"
-                        toNextPayload={{}}
-                        navigation={this.props.navigation}
-                    />
-                </View>
+                    </TouchableOpacity>
+                </Animated.View>
+                <Animated.View style={[styles.audioRecordingButton, {height: this.state.audioRecordingButtonAnim}]}>
+                    <TouchableOpacity 
+                        style={styles.audioRecordingButtonTO}
+                        onPress={() => this.expandAudioRecordingButton()}
+                    >
+                        <Image 
+                            style={styles.audioRecordingImage}
+                            source={require('../../assets/mic-24px.png')} 
+                        />
+                        <View>
+                            {this.renderExpandAudioRecordingClose()}
+                        </View>
+                    </TouchableOpacity>
+                </Animated.View>
+                <Animated.View style={[styles.audioButton, {height: this.state.audioButtonAnim}]}>
+                    <TouchableOpacity 
+                        style={styles.audioButtonTO}
+                        onPress={() => this.expandAudioButton()}
+                    >
+                        <Image 
+                            style={styles.audioImage}
+                            source={require('../../assets/volume_up-24px.png')} 
+                        />
+                        {this.renderExpandAudioClose()}
+                    </TouchableOpacity>
+                </Animated.View>
             </View>
-        </View>
-      );
+        );
     }
 }
 
