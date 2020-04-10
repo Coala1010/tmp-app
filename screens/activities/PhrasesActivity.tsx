@@ -1,11 +1,10 @@
 import React from 'react';
 import { Text, View, TouchableOpacity, Image, StyleSheet, Animated } from 'react-native';
-import ActivityGroupsProgress from '../../Components/navigation/ActivityGroupsProgress';
 import { Audio } from 'expo-av';
 import { Sound } from 'expo-av/build/Audio';
-// import { AVPlaybackStatus } from 'AV';
-// import SoundPlayer from 'react-native-sound-player'
-// import BottomNavigation from '../../Components/navigation/BottomNavigation';
+import ActivityGroupsProgress from '../../Components/navigation/ActivityGroupsProgress';
+import ActivityFooter from '../../Components/ActivityFooter/ActivityFooter';
+import PhrasesActivityCarousel from '../../Components/PhrasesActivity/PhrasesActivityCarousel';
 
 interface State {
   selectedIndex: Number,
@@ -33,17 +32,17 @@ export default class PhrasesActivity extends React.Component<State> {
         audioPlayButtonAnim: new Animated.Value(70),
         audioPlayButtonExpanded: false
     }
-    
+
     constructor(props) {
         super(props);
-    } 
+    }
+
     onAutoPlaybackStatusUpdate = (status: any) => {
         if (status.positionMillis) {
             let progress = this.millisecondsToTime(status.positionMillis);
             this.setState({audioProgress: progress});
         }
     } 
-    // + '/' + this.millisecondsToTime(status.durationMillis)
 
     millisecondsToTime = (milli) => {
         var seconds = Math.floor((milli / 1000) % 60);
@@ -89,7 +88,7 @@ export default class PhrasesActivity extends React.Component<State> {
         else {
             this.setState({audioButtonExpanded: true});
             if (this.state.audioRecordingButtonExpanded) {
-                this.expandAudioRecordingButton();    
+                this.expandAudioRecordingButton();
             }
             Animated.spring(
                 this.state.audioButtonAnim,
@@ -100,7 +99,7 @@ export default class PhrasesActivity extends React.Component<State> {
             
             try {
                 if (!this.state.audioLoaded) {
-                    await this.loadAudio();       
+                    await this.loadAudio();
                 }
 
                 this.state.audio.playAsync();
@@ -192,161 +191,86 @@ export default class PhrasesActivity extends React.Component<State> {
             />  
         ) : (<View/>)
     }
-    
-    renderPhraseActivity(videoTitle: String){
-      const { videoUrl, lessonTitle } = this.props.route.params; 
-      return (
-        <View 
-        //   key={i} 
-          style={{
-          marginTop: 10, 
-          backgroundColor: '#FCFDFF',
-          borderColor: 'black',
-          borderStyle: 'solid',
-          borderWidth: 0,
-          shadowColor: 'lightgray',
-          shadowOpacity: 0.6,
-          borderRadius: 15, 
-          width: '80%',
-          marginRight: 10}}>
 
-          {/* <TouchableOpacity style={{padding: 5}} onPress = {() => {this.handleOnPress(i)}}> */}
-            <View style = {{backgroundColor: '#FCFDFF', 
-                    flexDirection: 'row-reverse', flexWrap: 'wrap',
-                    marginRight: 10, justifyContent:'flex-start', alignContent: 'space-around'
-                  }}>
-                      
-                {/* <Text style={{flex: 1, alignContent: 'space-around'}}> */}
-                <Text style = {{marginRight: 10, color: '#233665', alignContent: 'flex-end', padding: 7,
-                            backgroundColor: '#F7F9FC',
-                            fontWeight: 'bold', borderStyle: 'solid', borderRadius: 5, borderWidth: 1,
-                            borderColor: '#F7F9FC', overflow: 'hidden', width: 20, height: 30}}>1</Text>    
-                    <Text style = {{marginLeft: 10, color: '#233665', alignContent: 'flex-end',
-                        padding: 10, fontWeight: 'bold', alignItems: 'flex-end',
-                        flexWrap: 'wrap'}}>One idea that comes to mind that would be worth tinkering around with is measuring the text, dimensions and/or character count, and depending on the size of the image, divide the text into two Text components, one that goes to the right/left and the other that goes below the image.</Text>
-                    
-                {/* </Text> */}
-            </View>
-          {/* </TouchableOpacity> */}
-        
-        </View> 
-      )
-    }
-  
     render() {
         const { videoUrl, lessonTitle, videoTitle } = this.props.route.params; 
         return (
             <View style={{flex: 1, width: '100%', backgroundColor: '#FCFDFF'}}>
-                <View style={{flex: 1, width: '100%', backgroundColor: '#FCFDFF'}}>
+                <View style={{ flex: 1 }}>
                     <View style={{flex: 1, width: '100%', backgroundColor: '#FCFDFF'}}>
-                        <View style={{backgroundColor: '#FCFDFF',
-                                borderStyle: 'solid', borderWidth: 3,
+                    <View style={{flex: 1, width: '100%', backgroundColor: '#FCFDFF'}}>
+                        <View style={{
+                            backgroundColor: '#FCFDFF',
+                            borderStyle: 'solid', borderWidth: 3,
                             borderColor: '#F7F9F7', height: 100,
                             justifyContent: 'space-around',
-                            flexDirection: 'row'}}>
+                            flexDirection: 'row'
+                        }}>
                             <Text style={{textAlign: 'center', marginTop: 50, fontWeight: 'bold', color: '#233665', width: '100%',}}>
                                 {lessonTitle}
                             </Text>
                         </View>
                         <ActivityGroupsProgress navigation={this.props.navigation} chosenActivity='phrases'/>
-                    <View style={{alignItems: 'flex-end'}}>
-                        {this.renderPhraseActivity(videoTitle)}
-                    </View>  
-
-                    <View style={{justifyContent: 'center', flex: 1, flexDirection: 'row'}}>
-                        <Animated.View style={[styles.audioPlayButton, {height: this.state.audioPlayButtonAnim}]}>
-                            <TouchableOpacity 
-                                style={styles.audioPlayButtonTO}
-                                onPress={() => this.expandAudioPlayButton()}>
-                                {/* <View style={styles.audioImageWrapper}> */}
-                                <Image 
-                                    style={styles.audioPlayImage}
-                                    source={require('../../assets/repeat.png')} 
-                                />
-                                <View>
-                                    {this.renderExpandAudioPlayClose()}
-                                </View>
-                                {/* </View> */}
-                            </TouchableOpacity>
-                        </Animated.View>
-                        <Animated.View style={[styles.audioRecordingButton, {height: this.state.audioRecordingButtonAnim}]}>
-                            <TouchableOpacity 
-                                style={styles.audioRecordingButtonTO}
-                                onPress={() => this.expandAudioRecordingButton()}>
-                                {/* <View style={styles.audioImageWrapper}> */}
-                                <Image 
-                                    style={styles.audioRecordingImage}
-                                    source={require('../../assets/mic-24px.png')} 
-                                />
-                                <View>
-                                    {this.renderExpandAudioRecordingClose()}
-                                </View>
-                                {/* </View> */}
-                            </TouchableOpacity>
-                        </Animated.View>
-                        <Animated.View style={[styles.audioButton, {height: this.state.audioButtonAnim}]}>
-                            <TouchableOpacity 
-                                style={styles.audioButtonTO}
-                                onPress={() => this.expandAudioButton()}>
-                                {/* <View style={styles.audioImageWrapper}> */}
-                                <Image 
-                                    style={styles.audioImage}
-                                    source={require('../../assets/volume_up-24px.png')} 
-                                />
-                                {/* <View> */}
+                        <PhrasesActivityCarousel onChange={(questionIndex) => {}} />
+                        <View style={{justifyContent: 'center', flex: 1, flexDirection: 'row'}}>
+                            <Animated.View style={[styles.audioPlayButton, {height: this.state.audioPlayButtonAnim}]}>
+                                <TouchableOpacity 
+                                    style={styles.audioPlayButtonTO}
+                                    onPress={() => this.expandAudioPlayButton()}
+                                >
+                                    <Image 
+                                        style={styles.audioPlayImage}
+                                        source={require('../../assets/repeat.png')} 
+                                    />
+                                    <View>
+                                        {this.renderExpandAudioPlayClose()}
+                                    </View>
+                                </TouchableOpacity>
+                            </Animated.View>
+                            <Animated.View style={[styles.audioRecordingButton, {height: this.state.audioRecordingButtonAnim}]}>
+                                <TouchableOpacity 
+                                    style={styles.audioRecordingButtonTO}
+                                    onPress={() => this.expandAudioRecordingButton()}
+                                >
+                                    <Image 
+                                        style={styles.audioRecordingImage}
+                                        source={require('../../assets/mic-24px.png')} 
+                                    />
+                                    <View>
+                                        {this.renderExpandAudioRecordingClose()}
+                                    </View>
+                                </TouchableOpacity>
+                            </Animated.View>
+                            <Animated.View style={[styles.audioButton, {height: this.state.audioButtonAnim}]}>
+                                <TouchableOpacity 
+                                    style={styles.audioButtonTO}
+                                    onPress={() => this.expandAudioButton()}
+                                >
+                                    <Image 
+                                        style={styles.audioImage}
+                                        source={require('../../assets/volume_up-24px.png')} 
+                                    />
                                     {this.renderExpandAudioClose()}
-                                {/* </View> */}
-                                {/* </View> */}
-                            </TouchableOpacity>
-                        </Animated.View>
+                                </TouchableOpacity>
+                            </Animated.View>
+                        </View>
                     </View>
+                    <ActivityFooter
+                        toNext="WordsActivity"
+                        toNextPayload={{}}
+                        navigation={this.props.navigation}
+                    />
                 </View>
-
-
-                {/* <BottomNavigation/> */}
-                <View style={{flexDirection: 'row', marginBottom: 50, marginBottom: 50}}>
-                    <View style={styles.forwardButton}>
-                        <TouchableOpacity style={{padding: 5}} 
-                            onPress={() => this.props.navigation.navigate('WordsActivity', 
-                            { 
-                                // videoUrl: userActivities.videoActivity.videoUrl,lessonTitle: lessonTitle
-                            })
-                            }>
-                            <View style = {styles.forwardButtonInner}>
-                                <Image 
-                                    style={styles.forwardImage}
-                                    source={require('../../assets/keyboard_arrow_left-24px.png')} 
-                                />
-                                <Text style = {{ color: '#233665', alignContent: 'center', display: 'flex', 
-                                            padding: 10, fontWeight: 'bold'}}>Forward</Text>
-                            </View>
-                        </TouchableOpacity>
-                    </View>
-                    <View style={styles.backButton}>
-                        <TouchableOpacity 
-                            style={styles.backButtonTO}
-                            onPress={() => this.props.navigation.goBack()}>
-                            <View style={styles.backImageWrapper}>
-                                <Image 
-                                    style={styles.backImage}
-                                    source={require('../../assets/exit_to_app-24px.png')} 
-                                />
-                            </View>
-                        </TouchableOpacity>
-                    </View>
-                </View>
-
             </View>
         </View>
       );
-    } 
-  }
+    }
+}
 
 
-  const styles = StyleSheet.create({
+const styles = StyleSheet.create({
     audioPlayImage: {
         height: 26,
-        // width: 19,
         resizeMode: 'contain'
     },
     closeAudioPlayImage: {
@@ -446,27 +370,13 @@ export default class PhrasesActivity extends React.Component<State> {
         marginLeft: 20,
         marginRight: 20,
         alignItems: 'center',
-        flexDirection: 'row', 
-        // flex: 1
+        flexDirection: 'row',
     },
     audioImage: {
         height: 20,
         width: 22,
         resizeMode: 'contain'
     },
-    // audioImageWrapper: {
-    //     color: '#233665', 
-    //     width: 30, 
-    //     height: 30, 
-    //     backgroundColor: '#F7F9FC',
-    //     fontWeight: 'bold', 
-    //     borderStyle: 'solid', 
-    //     borderRadius: 5, 
-    //     borderWidth: 1,
-    //     borderColor: '#F7F9FC', 
-    //     overflow: 'hidden',
-    //     alignItems: 'center',
-    // },
     image: {
         height: 24,
         width: 24,
@@ -542,4 +452,4 @@ export default class PhrasesActivity extends React.Component<State> {
         height: 60,
         flexDirection: 'row'
     }
-  });
+});
