@@ -6,17 +6,20 @@ import UserActivitiesProvider from '../../providers/activities/UserActivitiesPro
 interface State {
   selectedIndex: Number,
   userActivities: UserActivities,
+  userToken: string
 }
 
 export default class Activities extends React.Component<State> {
     state: Readonly<State> = {
         selectedIndex: -1,
-        userActivities: null
+        userActivities: null,
+        userToken: null
     }
 
     constructor (props) {
         super(props)
-        const { lessonTitle, lessonId } = this.props.route.params; 
+        const { lessonTitle, lessonId, userToken } = this.props.route.params; 
+        this.setState({userToken: userToken});
         UserActivitiesProvider(lessonId, (json) => {
             let userActivities : UserActivities = json;
             this.setState({userActivities : userActivities});
@@ -30,7 +33,8 @@ export default class Activities extends React.Component<State> {
       return this.state.userActivities ? (
         <View style={{flex: 1, justifyContent:'flex-start', padding: 10, width: '100%'}}>
             {
-                this.state.userActivities.videoActivityGroup && this.state.userActivities.videoActivityGroup.userGroupId ? (
+                // this.state.userActivities.videoActivityGroup && this.state.userActivities.videoActivityGroup.userGroupId ? 
+                (
                     <View 
                         //style={{alignContent: 'flex-end', alignItems: 'flex-start', }}
                         //key={i} 
@@ -41,7 +45,8 @@ export default class Activities extends React.Component<State> {
                             onPress={() => this.props.navigation.navigate('VideoActivity', { 
                                 userGroupId: this.state.userActivities.videoActivityGroup.userGroupId,
                                 lessonTitle: lessonTitle,
-                                lessonId: lessonId})}>
+                                lessonId: lessonId,
+                                userToken: this.state.userToken})}>
                             <View style = {{alignItems: 'center', backgroundColor: '#FCFDFF', 
                                 justifyContent: 'space-around', height: 60,
                                 flexDirection: 'row'
@@ -55,7 +60,8 @@ export default class Activities extends React.Component<State> {
                         </TouchableOpacity>
                     
                    </View>
-                ) : <View/>
+                ) 
+                // : <View/>
             }
             {
                 this.state.userActivities.phrasesActivityGroup && this.state.userActivities.phrasesActivityGroup.userGroupId ? (
@@ -69,7 +75,8 @@ export default class Activities extends React.Component<State> {
                                 userGroupId: this.state.userActivities.phrasesActivityGroup.userGroupId,
                                 groupId: this.state.userActivities.phrasesActivityGroup.groupId,
                                 lessonTitle: lessonTitle,
-                                lessonId: lessonId
+                                lessonId: lessonId,
+                                userToken: this.state.userToken
                             })}
                         >
                             <View style = {{alignItems: 'center', backgroundColor: '#FCFDFF', 
@@ -87,25 +94,31 @@ export default class Activities extends React.Component<State> {
                 ) : <View/>
             }
             {
-                <View style={styles.activity}>
-                    <TouchableOpacity style={{padding: 5}} 
-                        onPress={() => this.props.navigation.navigate('WordsActivity', { 
-                            userGroupId: this.state.userActivities.wordActivityGroup.userGroupId,
-                            lessonTitle: lessonTitle,
-                            lessonId: lessonId
-                        })}>
-                        <View style = {{alignItems: 'center', backgroundColor: '#FCFDFF', 
-                            justifyContent: 'space-around', height: 60,
-                            flexDirection: 'row'
-                            }}>
-                        <Text style = {styles.activityText}>Words Activity</Text>
-                        <Image 
-                                        style={styles.image}
-                                        source={require('../../assets/photo-24px.png')} 
-                                        />
-                        </View>
-                    </TouchableOpacity>
-                </View>
+                this.state.userActivities.wordActivityGroup && this.state.userActivities.wordActivityGroup.userGroupId ? ( 
+                    <View 
+                        //key={i} 
+                        style={styles.activity}>
+
+                        <TouchableOpacity style={{padding: 5}} 
+                            onPress={() => this.props.navigation.navigate('WordsActivity', { 
+                                userGroupId: this.state.userActivities.wordActivityGroup.userGroupId,
+                                lessonTitle: lessonTitle,
+                                lessonId: lessonId,
+                                userToken: this.state.userToken
+                            })}>
+                            <View style = {{alignItems: 'center', backgroundColor: '#FCFDFF', 
+                                justifyContent: 'space-around', height: 60,
+                                flexDirection: 'row'
+                                }}>
+                            <Text style = {styles.activityText}>Words Activity</Text>
+                            <Image 
+                                            style={styles.image}
+                                            source={require('../../assets/photo-24px.png')} 
+                                            />
+                            </View>
+                        </TouchableOpacity>
+                    </View>
+               ) : <View/>
             }
             {
                 this.state.userActivities.multichoiceActivityGroup && this.state.userActivities.multichoiceActivityGroup.userGroupId ? ( 
@@ -117,7 +130,8 @@ export default class Activities extends React.Component<State> {
                             onPress={() => this.props.navigation.navigate('MultichoiceActivity', { 
                                 userGroupId: this.state.userActivities.multichoiceActivityGroup.userGroupId,
                                 lessonTitle: lessonTitle,
-                                lessonId: lessonId})}>
+                                lessonId: lessonId,
+                                userToken: this.state.userToken})}>
                             <View style = {{alignItems: 'center', backgroundColor: '#FCFDFF', 
                                 justifyContent: 'space-around', height: 60,
                                 flexDirection: 'row'
@@ -139,7 +153,8 @@ export default class Activities extends React.Component<State> {
                             onPress={() => this.props.navigation.navigate('DragAndDropActivity', { 
                                 userGroupId: this.state.userActivities.dragAndDropActivityGroup.userGroupId,
                                 lessonTitle: lessonTitle,
-                                lessonId: lessonId
+                                lessonId: lessonId,
+                                userToken: this.state.userToken
                              })}>
                             <View style={{alignItems: 'center', backgroundColor: '#FCFDFF', 
                                 justifyContent: 'space-around', height: 60,

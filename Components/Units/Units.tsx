@@ -8,8 +8,9 @@ import {
 
 interface Props {
   visible: boolean,
-  userUnits: Array<UserUnit>
-  navigation: NavigationScreenProp<any,any>;
+  userUnits: Array<UserUnit>,
+  navigation: NavigationScreenProp<any,any>,
+  token: string
 }
 
 export default class Units extends React.Component<Props> {
@@ -21,7 +22,11 @@ export default class Units extends React.Component<Props> {
   _renderItem = ({item, index}) => {
     return (
     <View style={styles.unitContainer} >
-      <TouchableOpacity onPress={() => this.props.navigation.navigate('Lessons', { unitTitle: this._unitTitle(item, index), unitId: item.unitId})}>
+      <TouchableOpacity onPress={() => this.props.navigation.navigate('Lessons', { 
+          unitTitle: this._unitTitle(item, index), 
+          unitId: item.unitId,
+          token: this.props.token
+        })}>
         <View style={styles.imageContainer}>
           <Image style={styles.image}
               source={require('../../assets/family.png')} 

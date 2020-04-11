@@ -6,7 +6,7 @@ import PhrasesActivityCarousel from '../../Components/PhrasesActivity/PhrasesAct
 import PhrasesAudioControls from '../../Components/PhrasesActivity/AudioControls';
 import { getPhrases, uploadUserPhraseAudio } from '../../providers/activities/PhrasesActivity';
 
-export default function PhrasesActivity({ lessonTitle, navigation, route }) {
+export default function PhrasesActivity({ lessonTitle, navigation, route, userToken }) {
     const [answers, setAnswers] = React.useState({});
     const [activityData, setActivityData] = React.useState(null);
 
@@ -42,7 +42,7 @@ export default function PhrasesActivity({ lessonTitle, navigation, route }) {
             });
             formData.append('id', activityData[activeQuestion].id);
             // TODO: replace a token:
-            formData.append('token', '1');
+            formData.append('token', userToken);
             await uploadUserPhraseAudio(formData);
         } catch (err) {
             console.log(err);
