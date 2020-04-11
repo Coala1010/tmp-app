@@ -9,7 +9,8 @@ interface Props {
 interface State {
   selectedIndex: Number,
   userLessons: UserLessons,
-  unitId: Number
+  unitId: Number,
+  token: string
 }
 
 export default class Lessons extends React.Component<Props, State> {
@@ -17,7 +18,8 @@ export default class Lessons extends React.Component<Props, State> {
   state: Readonly<State> = {
       selectedIndex: -1,
       userLessons: null,
-      unitId: null
+      unitId: null,
+      token: null
   } 
  
   constructor (props) {
@@ -25,9 +27,9 @@ export default class Lessons extends React.Component<Props, State> {
   } 
 
   componentDidMount() {
-    const { unitId } = this.props.route.params; 
-    this.setState({unitId : unitId});
-    UserLessonsProvider("1", unitId, (json) => {
+    const { unitId, token } = this.props.route.params; 
+    this.setState({unitId : unitId, token: token});
+    UserLessonsProvider(token, unitId, (json) => {
       let userLessons : UserLessons = new UserLessons();
       userLessons.userLessonsArray = json;
       this.setState({userLessons : userLessons});
@@ -51,7 +53,10 @@ export default class Lessons extends React.Component<Props, State> {
         borderRadius: 15}}>
 
         <TouchableOpacity style={{padding: 5}} 
-        onPress={() => this.props.navigation.navigate('Activities', {lessonTitle: userLesson.title, lessonId: userLesson.lessonId})}>
+        onPress={() => this.props.navigation.navigate('Activities', {
+            lessonTitle: userLesson.title, 
+            lessonId: userLesson.lessonId,
+            userToken: this.state.token})}>
           <View style = {{alignItems: 'center', backgroundColor: '#FCFDFF', 
                 justifyContent: 'space-around', height: 60,
                 flexDirection: 'row'

@@ -6,17 +6,20 @@ import UserActivitiesProvider from '../../providers/activities/UserActivitiesPro
 interface State {
   selectedIndex: Number,
   userActivities: UserActivities,
+  userToken: string
 }
 
 export default class Activities extends React.Component<State> {
     state: Readonly<State> = {
         selectedIndex: -1,
-        userActivities: null
+        userActivities: null,
+        userToken: null
     }
 
     constructor (props) {
         super(props)
-        const { lessonTitle, lessonId } = this.props.route.params; 
+        const { lessonTitle, lessonId, userToken } = this.props.route.params; 
+        this.setState({userToken: userToken});
         UserActivitiesProvider(lessonId, (json) => {
             let userActivities : UserActivities = json;
             this.setState({userActivities : userActivities});
@@ -42,7 +45,8 @@ export default class Activities extends React.Component<State> {
                             onPress={() => this.props.navigation.navigate('VideoActivity', { 
                                 userGroupId: this.state.userActivities.videoActivityGroup.userGroupId,
                                 lessonTitle: lessonTitle,
-                                lessonId: lessonId})}>
+                                lessonId: lessonId,
+                                userToken: this.state.userToken})}>
                             <View style = {{alignItems: 'center', backgroundColor: '#FCFDFF', 
                                 justifyContent: 'space-around', height: 60,
                                 flexDirection: 'row'
@@ -69,7 +73,8 @@ export default class Activities extends React.Component<State> {
                             onPress={() => this.props.navigation.navigate('PhrasesActivity', { 
                                 userGroupId: this.state.userActivities.phrasesActivityGroup.userGroupId,
                                 lessonTitle: lessonTitle,
-                                lessonId: lessonId})}>
+                                lessonId: lessonId,
+                                userToken: this.state.userToken})}>
                             <View style = {{alignItems: 'center', backgroundColor: '#FCFDFF', 
                                 justifyContent: 'space-around', height: 60,
                                 flexDirection: 'row'
@@ -94,7 +99,8 @@ export default class Activities extends React.Component<State> {
                             onPress={() => this.props.navigation.navigate('WordsActivity', { 
                                 userGroupId: this.state.userActivities.wordActivityGroup.userGroupId,
                                 lessonTitle: lessonTitle,
-                                lessonId: lessonId
+                                lessonId: lessonId,
+                                userToken: this.state.userToken
                             })}>
                             <View style = {{alignItems: 'center', backgroundColor: '#FCFDFF', 
                                 justifyContent: 'space-around', height: 60,
@@ -120,7 +126,8 @@ export default class Activities extends React.Component<State> {
                             onPress={() => this.props.navigation.navigate('MultichoiceActivity', { 
                                 userGroupId: this.state.userActivities.multichoiceActivityGroup.userGroupId,
                                 lessonTitle: lessonTitle,
-                                lessonId: lessonId})}>
+                                lessonId: lessonId,
+                                userToken: this.state.userToken})}>
                             <View style = {{alignItems: 'center', backgroundColor: '#FCFDFF', 
                                 justifyContent: 'space-around', height: 60,
                                 flexDirection: 'row'
@@ -142,7 +149,8 @@ export default class Activities extends React.Component<State> {
                             onPress={() => this.props.navigation.navigate('DragAndDropActivity', { 
                                 userGroupId: this.state.userActivities.dragAndDropActivityGroup.userGroupId,
                                 lessonTitle: lessonTitle,
-                                lessonId: lessonId
+                                lessonId: lessonId,
+                                userToken: this.state.userToken
                              })}>
                             <View style={{alignItems: 'center', backgroundColor: '#FCFDFF', 
                                 justifyContent: 'space-around', height: 60,

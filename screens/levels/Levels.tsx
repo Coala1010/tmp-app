@@ -6,6 +6,7 @@ import Units from '../../Components/Units/Units';
 import UserLevels from '../../types/UserLevels';
 
 import UserLevelsProvider from '../../providers/UserLevelsProvider';
+import UserProvider from '../../providers/UserProvider';
 
 import {
     NavigationParams,
@@ -16,7 +17,8 @@ import {
 
 interface State {
     selectedIndex: Number,
-    userLevels: UserLevels
+    userLevels: UserLevels,
+    userToken: string
 }
 
 export default class Levels extends React.Component<State> {
@@ -24,16 +26,21 @@ export default class Levels extends React.Component<State> {
     constructor (props) {
         super(props)
         this.updateIndex = this.updateIndex.bind(this)
-        UserLevelsProvider("1", (json) => {
-          let userLevels : UserLevels = new UserLevels();
-          userLevels.userLevelsArray = json;
-          this.setState({userLevels : userLevels});
-      })
+        UserProvider((json) => {
+          const token = json.token;
+          this.setState({userToken: token});
+          UserLevelsProvider(token, (json) => {
+            let userLevels : UserLevels = new UserLevels();
+            userLevels.userLevelsArray = json;
+            this.setState({userLevels : userLevels});
+        })
+        });
     }
 
     state: Readonly<State> = {
         selectedIndex: -1,
-        userLevels: null
+        userLevels: null,
+        userToken: null
     }  
   
     updateIndex (selectedIndex) {
@@ -76,7 +83,7 @@ export default class Levels extends React.Component<State> {
           </TouchableOpacity>
           
           <Units userUnits={userLevel.userUnits} visible={this.state.selectedIndex == i} 
-                navigation = {this.props.navigation}/>
+                navigation = {this.props.navigation} token={this.state.userToken}/>
         
         </View>
       )
