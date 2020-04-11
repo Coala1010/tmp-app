@@ -170,10 +170,12 @@ export default class PhrasesAudioControls extends React.Component<State> {
                 }
             ).start();
             this.setState({ recordProgress: '00:00' });
-            await this.state.record.stopAndUnloadAsync();
-            const fileUrl = this.state.record.getURI();
-            this.setState({ recordedFileUrl: fileUrl });
-            this.props.onUserAnswer({ recordedFileUrl: fileUrl });
+            if (this.state.record) {
+                await this.state.record.stopAndUnloadAsync();
+                const fileUrl = this.state.record.getURI();
+                this.setState({ recordedFileUrl: fileUrl });
+                this.props.onUserAnswer({ recordedFileUrl: fileUrl });
+            }
         }
         else {
             Audio.getPermissionsAsync().then((permission) => {
