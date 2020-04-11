@@ -18,7 +18,8 @@ export default class VideoActivity extends React.Component<State> {
         <View style={{flex: 1, justifyContent:'flex-start', width: '100%', backgroundColor: '#FCFDFF'}}>
             <View>
                 <Video
-                    source={require('../../assets/video_sample.mov')}
+                    // source={require('../../assets/video_sample.mov')}
+                    source={{ uri: 'https://vimeo.com/user111253504/review/406465830/06caa8aaba'}}
                     rate={1.0}
                     volume={1.0}
                     isMuted={false}

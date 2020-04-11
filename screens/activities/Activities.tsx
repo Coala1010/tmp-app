@@ -30,7 +30,8 @@ export default class Activities extends React.Component<State> {
       return this.state.userActivities ? (
         <View style={{flex: 1, justifyContent:'flex-start', padding: 10, width: '100%'}}>
             {
-                this.state.userActivities.videoActivityGroup && this.state.userActivities.videoActivityGroup.userGroupId ? (
+                // this.state.userActivities.videoActivityGroup && this.state.userActivities.videoActivityGroup.userGroupId ? 
+                (
                     <View 
                         //style={{alignContent: 'flex-end', alignItems: 'flex-start', }}
                         //key={i} 
@@ -55,7 +56,8 @@ export default class Activities extends React.Component<State> {
                         </TouchableOpacity>
                     
                    </View>
-                ) : <View/>
+                ) 
+                // : <View/>
             }
             {
                 this.state.userActivities.phrasesActivityGroup && this.state.userActivities.phrasesActivityGroup.userGroupId ? (
