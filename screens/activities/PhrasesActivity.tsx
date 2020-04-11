@@ -5,6 +5,7 @@ import ActivityFooter from '../../Components/ActivityFooter/ActivityFooter';
 import PhrasesActivityCarousel from '../../Components/PhrasesActivity/PhrasesActivityCarousel';
 import PhrasesAudioControls from '../../Components/PhrasesActivity/AudioControls';
 import { getPhrases, uploadUserPhraseAudio } from '../../providers/activities/PhrasesActivity';
+import environment from '../../development.json';
 
 export default function PhrasesActivity({ lessonTitle, navigation, route, userToken }) {
     const [answers, setAnswers] = React.useState({});
@@ -13,12 +14,17 @@ export default function PhrasesActivity({ lessonTitle, navigation, route, userTo
     React.useEffect(() => {
         getPhrases(route.params.userGroupId).then((res) => {
             setActivityData(
-                res.map(
-                    answer => ({
+                res.map(answer => {
+                    return ({
                         ...answer,
-                        audioUrl: 'https://ccrma.stanford.edu/~jos/mp3/gtr-nylon22.mp3',
-                    }),
-                ),
+                        userAudioRecordUrl: answer.userAudioRecordUrl
+                            ? `${environment.API_URL}/api/v1/admin/phrases/${answer.phrasesActivityId}/audio/${answer.audioUrl}`
+                            : null,
+                        audioUrl: !answer.audioUrl
+                            ? 'https://ccrma.stanford.edu/~jos/mp3/gtr-nylon22.mp3'
+                            : `${environment.API_URL}/api/v1/admin/phrases/${answer.phrasesActivityId}/audio/${answer.audioUrl}`,
+                    });
+                }),
             );
         });
     }, []);
@@ -70,9 +76,9 @@ export default function PhrasesActivity({ lessonTitle, navigation, route, userTo
                             <>
                                 <PhrasesActivityCarousel activityData={activityData} onChange={setActiveQuestion} />
                                 <PhrasesAudioControls
-                                    recordUrl={answers[activeQuestion]}
                                     onUserAnswer={uploadData}
                                     sampleUrl={activityData[activeQuestion].audioUrl}
+                                    userAudioRecordUrl={activityData[activeQuestion].userAudioRecordUrl}
                                     id={activityData[activeQuestion].id}
                                 />
                             </>

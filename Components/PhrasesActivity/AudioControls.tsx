@@ -3,7 +3,28 @@ import { Text, View, TouchableOpacity, Image, StyleSheet, Animated } from 'react
 import { Audio } from 'expo-av';
 import { Sound, Recording } from 'expo-av/build/Audio';
 import { MaterialCommunityIcons, Ionicons, MaterialIcons } from '@expo/vector-icons';
-import sequential from 'promise-sequential';
+
+const RECORDING_QUALITY = {
+    android: {
+        extension: '.m4a',
+        outputFormat: Audio.RECORDING_OPTION_ANDROID_OUTPUT_FORMAT_MPEG_4,
+        audioEncoder: Audio.RECORDING_OPTION_ANDROID_AUDIO_ENCODER_AAC,
+        sampleRate: 44100,
+        numberOfChannels: 2,
+        bitRate: 128000,
+    },
+    ios: {
+        extension: '.m4a',
+        outputFormat: Audio.RECORDING_OPTION_IOS_OUTPUT_FORMAT_MPEG4AAC,
+        audioQuality: Audio.RECORDING_OPTION_IOS_AUDIO_QUALITY_MEDIUM,
+        sampleRate: 44100,
+        numberOfChannels: 1,
+        bitRate: 96400,
+        linearPCMBitDepth: 16,
+        linearPCMIsBigEndian: false,
+        linearPCMIsFloat: false,
+    },
+};
 
 interface State {
     selectedIndex: Number,
@@ -24,6 +45,7 @@ interface State {
     playedAudios: Array<string>,
     replayProgress: string,
     replayProgressInterval: number,
+    id: number,
 }
 
 type Props = {
@@ -51,6 +73,7 @@ export default class PhrasesAudioControls extends React.Component<State> {
         playedAudios: [],
         replayProgress: '00:00',
         replayProgressInterval: null,
+        id: null,
     }
 
     constructor(props) {
@@ -64,16 +87,6 @@ export default class PhrasesAudioControls extends React.Component<State> {
     componentWillUnmount() {
         this.stopAudioSample('userRecord');
         this.stopAudioSample('audio');
-    }
-
-    static getDerivedStateFromProps(props, state) {
-        if (!props.recordUrl) {
-            return { recordedFileUrl: null };
-        }
-        if (props.recordUrl !== state.recordedFileUrl) {
-            return { recordedFileUrl: props.recordUrl };
-        }
-        return null;
     }
 
     onAutoPlaybackStatusUpdate = (name: string, status: any) => {
@@ -104,10 +117,12 @@ export default class PhrasesAudioControls extends React.Component<State> {
         }
 
         try {
-            let soundObject = this.state[name];
-            if (this.state[name === 'audio' ? 'sampleLoaded' : `${name}Loaded`] !== uri) {
-                soundObject = new Audio.Sound();
+            await Audio.setIsEnabledAsync(true);
+            let soundObject = new Audio.Sound();
+            try {
                 await soundObject.loadAsync({ uri }, {}, false);
+            } catch (err) {
+                console.log('ERROR while loading sound file: ', uri, err);
             }
             soundObject.setOnPlaybackStatusUpdate(
                 (status: any) => {
@@ -166,10 +181,12 @@ export default class PhrasesAudioControls extends React.Component<State> {
     }
 
     stopAudioSample = async (name) => {
-        this.setState({ [`${name}Progress`]: '00:00' });
-        if (this.state[name] && this.state[name].stopAsync) {
-            await this.state[name].stopAsync();
-        }
+        try {
+            this.setState({ [`${name}Progress`]: '00:00' });
+            if (this.state[name] && this.state[name].stopAsync) {
+                await this.state[name].stopAsync();
+            }
+        } catch (err) { }
     };
 
     playAudioSample = (name = 'audio', url?, onProgress?) => new Promise(async (res, rej) => {
@@ -179,7 +196,7 @@ export default class PhrasesAudioControls extends React.Component<State> {
                 this.state[`${name}Progress`] = '00:00';
                 res();
             }, onProgress);
-            this.state[name].playAsync();
+            this.state[name].playFromPositionAsync(0);
         } catch (error) {
             alert('error: ' + error);
             rej(error);
@@ -241,7 +258,7 @@ export default class PhrasesAudioControls extends React.Component<State> {
             recording.setOnRecordingStatusUpdate(
                 (status) => this.onRecordStatusUpdate('userRecord', status),
             );
-            await recording.prepareToRecordAsync(Audio.RECORDING_OPTIONS_PRESET_LOW_QUALITY);
+            await recording.prepareToRecordAsync(RECORDING_QUALITY);
             await recording.startAsync();
             this.setState({ record: recording });
         } catch (error) {
@@ -299,11 +316,13 @@ export default class PhrasesAudioControls extends React.Component<State> {
         this.setState({
             replayProgressInterval: interval,
         });
-        await this.playAudioSample('userRecord', this.state.recordedFileUrl);
+        await this.playAudioSample('userRecord', this.state.recordedFileUrl || this.props.userAudioRecordUrl);
         await this.playAudioSample('audio', null);
         clearInterval(this.state.replayProgressInterval);
         this.setState({ replayProgressInterval: null, replayProgress: '00:00' });
     }
+
+    shouldDisableReplayBtn = () => !(this.state.recordedFileUrl || this.props.userAudioRecordUrl);
 
     render() {
         return (
@@ -312,9 +331,9 @@ export default class PhrasesAudioControls extends React.Component<State> {
                     <TouchableOpacity
                         style={styles.audioPlayButtonTO}
                         onPress={() => this.expandPlaybackButton()}
-                        disabled={!this.state.recordedFileUrl}
+                        disabled={this.shouldDisableReplayBtn()}
                     >
-                        <Ionicons style={{ opacity: !this.state.recordedFileUrl ? 0.3 : 1 }} name="ios-repeat" size={35} color="#233665" />
+                        <Ionicons style={{ opacity: this.shouldDisableReplayBtn() ? 0.3 : 1 }} name="ios-repeat" size={35} color="#233665" />
                         {this.state.audioPlayButtonExpanded && (
                             <View style={styles.expandedBtnContent}>
                                 <Text style={{color: '#233665', textAlign:'center'}}>

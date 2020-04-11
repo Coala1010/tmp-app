@@ -93,8 +93,8 @@ export default class Activities extends React.Component<State> {
                     </View>
                 ) : <View/>
             }
-            {
-                this.state.userActivities.wordActivityGroup && this.state.userActivities.wordActivityGroup.userGroupId ? ( 
+            {/* {
+                this.state.userActivities.wordActivityGroup && this.state.userActivities.wordActivityGroup.userGroupId ? (  */}
                     <View 
                         //key={i} 
                         style={styles.activity}>
@@ -118,8 +118,8 @@ export default class Activities extends React.Component<State> {
                             </View>
                         </TouchableOpacity>
                     </View>
-               ) : <View/>
-            }
+               {/* ) : <View/>
+            } */}
             {
                 this.state.userActivities.multichoiceActivityGroup && this.state.userActivities.multichoiceActivityGroup.userGroupId ? ( 
                     <View 

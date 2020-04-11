@@ -23,6 +23,11 @@ export default function WordsActivity({ navigation, lessonTitle, route }) {
                 audioUrl: 'https://ccrma.stanford.edu/~jos/mp3/gtr-nylon22.mp3',
                 imageUrl: 'https://images.unsplash.com/photo-1469474968028-56623f02e42e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1653&q=80',
                 title: 'الأسرة22',
+            }, {
+                id: 3,
+                audioUrl: 'https://ccrma.stanford.edu/~jos/mp3/gtr-nylon22.mp3',
+                imageUrl: 'https://images.unsplash.com/photo-1469474968028-56623f02e42e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1653&q=80',
+                title: 'الأسرة22',
             }]);
         });
     }, []);
