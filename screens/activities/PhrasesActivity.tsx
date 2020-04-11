@@ -74,6 +74,7 @@ export default function PhrasesActivity({ lessonTitle, navigation, route }) {
                                     recordUrl={answers[activeQuestion]}
                                     onUserAnswer={uploadData}
                                     sampleUrl={activityData[activeQuestion].audioUrl}
+                                    id={activityData[activeQuestion].id}
                                 />
                             </>
                         )}

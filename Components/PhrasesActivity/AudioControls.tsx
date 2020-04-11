@@ -20,6 +20,7 @@ interface State {
     recordedFileUrl: string,
     userRecord: Sound,
     userRecordProgress: string,
+    playedAudios: Array<string>,
 }
 
 type Props = {
@@ -44,6 +45,7 @@ export default class PhrasesAudioControls extends React.Component<State> {
         recordedFileUrl: null,
         userRecord: null,
         userRecordProgress: null,
+        playedAudios: [],
     }
 
     constructor(props) {
@@ -137,6 +139,19 @@ export default class PhrasesAudioControls extends React.Component<State> {
                 }
             ).start();
             this.playAudioSample();
+            this.setState(state => {
+                const playedAudios = state.playedAudios.includes(this.props.id)
+                    ? state.playedAudios
+                    : [...state.playedAudios, this.props.id];
+
+                console.log(playedAudios);
+
+                return { playedAudios };
+            });
+
+            this.setState({
+
+            })
         }
     }
 
@@ -176,8 +191,7 @@ export default class PhrasesAudioControls extends React.Component<State> {
                 this.setState({ recordedFileUrl: fileUrl });
                 this.props.onUserAnswer({ recordedFileUrl: fileUrl });
             }
-        }
-        else {
+        } else {
             Audio.getPermissionsAsync().then((permission) => {
                 if (!permission.granted) {
                     Audio.requestPermissionsAsync().then(() => this.recordAudio());
@@ -274,8 +288,14 @@ export default class PhrasesAudioControls extends React.Component<State> {
                     <TouchableOpacity 
                         style={styles.audioRecordingButtonTO}
                         onPress={() => this.expandAudioRecordingButton()}
+                        disabled={!this.state.playedAudios.includes(this.props.id)}
                     >
-                        <MaterialCommunityIcons name="microphone" size={32} color="#233665" />
+                        <MaterialCommunityIcons
+                            style={{ opacity: !this.state.playedAudios.includes(this.props.id) ? 0.3 : 1 }}
+                            name="microphone"
+                            size={32}
+                            color="#233665"
+                        />
                         <View>
                             {this.state.audioRecordingButtonExpanded ?  (
                                 <Image 
@@ -308,7 +328,6 @@ export default class PhrasesAudioControls extends React.Component<State> {
         );
     }
 }
-
 
 const styles = StyleSheet.create({
     audioPlayImage: {

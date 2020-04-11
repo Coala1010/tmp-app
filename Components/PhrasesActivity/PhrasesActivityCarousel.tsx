@@ -4,7 +4,6 @@ import SideSwipe from 'react-native-sideswipe';
 
 export default function PhrasesActivityCarousel({ onChange, activityData }) {
   const { width } = Dimensions.get('window');
-  const contentOffset = 0;
   const [currentIndex, setCurrentIndex] = React.useState(activityData.length - 1);
 
   return (
@@ -14,7 +13,7 @@ export default function PhrasesActivityCarousel({ onChange, activityData }) {
         itemWidth={width - 80}
         style={{ width }}
         data={activityData}
-        contentOffset={contentOffset}
+        contentOffset={activityData.length > 2 ? 40 : 0}
         onIndexChange={index => {
             setCurrentIndex(index);
             onChange(activityData.length - 1 - index);
@@ -22,6 +21,7 @@ export default function PhrasesActivityCarousel({ onChange, activityData }) {
         renderItem={({ itemIndex, currentIndex, item, animatedValue }) => (
             <View style={[
                 styles.questionCard,
+                itemIndex !== 0 && itemIndex !== activityData.length - 1 && { width: Dimensions.get('window').width - 120 },
                 itemIndex === 0 && { marginRight: 20 },
                 itemIndex === activityData.length - 1 && { marginLeft: 20 },
                 activityData.length === 1 && { marginRight: 50, marginLeft: 50 },
