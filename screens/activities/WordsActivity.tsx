@@ -45,8 +45,7 @@ export default function WordsActivity({ navigation, lessonTitle, route }) {
             formData.append('id', activityData[activeQuestion].id);
             // TODO: replace a token:
             formData.append('token', '1');
-            const res = await uploadWordsActivityRecord(formData);
-            console.log('RESPONSE: ', res);
+            await uploadWordsActivityRecord(formData);
         } catch (err) {
             console.log(err);
         }

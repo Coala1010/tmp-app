@@ -43,8 +43,7 @@ export default function PhrasesActivity({ lessonTitle, navigation, route }) {
             formData.append('id', activityData[activeQuestion].id);
             // TODO: replace a token:
             formData.append('token', '1');
-            const res = await uploadUserPhraseAudio(formData);
-            console.log('RESPONSE: ', res);
+            await uploadUserPhraseAudio(formData);
         } catch (err) {
             console.log(err);
         }
