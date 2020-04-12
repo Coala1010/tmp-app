@@ -1,9 +1,8 @@
 import React from 'react';
 import { Text, View, TouchableOpacity, Button, Image, StyleSheet } from 'react-native';
 import { Video } from 'expo-av';
+import VideoPlayer from 'expo-video-player';
 // import BottomNavigation from '../../Components/navigation/BottomNavigation';
-// import { Video } from "expo";
-import { WebView } from 'react-native-webview';
 
 interface State {
   selectedIndex: Number,
@@ -16,16 +15,12 @@ export default class VideoActivity extends React.Component<State> {
     
     renderVideo(videoTitle: String){
       const { videoUrl, lessonTitle } = this.props.route.params; 
-      const Lights = { uri: "https://player.vimeo.com/video/406469772" }
-
-      const vimeo = `<iframe src="https://player.vimeo.com/video/406469772" width="300" height="200" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>`;
-
       return (
         <View style={{flex: 1, justifyContent:'flex-start', width: '100%', backgroundColor: '#FCFDFF'}}>
             <View>
                 {/* <Video
                     // source={require('../../assets/video_sample.mov')}
-                    source={{ uri: 'https://vimeo.com/406469772'}}
+                    source={{ uri: 'https://player.vimeo.com/external/406465830.sd.mp4?s=33c0d009f20c32506b9922d17c85cb5f5c1575b0&profile_id=164&download=1'}}
                     rate={1.0}
                     volume={1.0}
                     isMuted={false}
@@ -33,31 +28,25 @@ export default class VideoActivity extends React.Component<State> {
                     shouldPlay
                     isLooping
                     style={{ width: '100%', height: 300 }}
-                />     */}
-                {/* <Video isLooping style={StyleSheet.absoluteFill} source={Lights} resizeMode="contain" /> */}
-                {/* <Video
-                    // source={require('../../assets/video_sample.mov')}
-                    source={Lights}
-                    rate={1.0}
-                    volume={1.0}
-                    isMuted={false}
-                    resizeMode="contain"
-                    shouldPlay
-                    isLooping
-                    style={{ width: '100%', height: 300 }}
-                />   */}
+                /> */}
 
-                <WebView 
-                    originWhitelist={['*']}
-                    source={{html: vimeo}}
-                    style={{width: 300, height: 200}}
-                />  
+<VideoPlayer
+  videoProps={{
+    shouldPlay: true,
+    resizeMode: Video.RESIZE_MODE_CONTAIN, 
+    source: {
+      uri: 'https://player.vimeo.com/external/406465830.sd.mp4?s=33c0d009f20c32506b9922d17c85cb5f5c1575b0&profile_id=164&download=1',
+    },
+  }}
+  showControlsOnLoad={true}
+//   APPEARANCE={{}}
+  inFullscreen={false}
+/>
             </View>
             <Text style={{textAlign: 'right', marginTop: 20, marginRight:50, fontWeight: 'bold', color: '#233665', width: '90%',}}>
                 {videoTitle}
             </Text>
-            
-        </View>    
+        </View>
       )
     }
   
