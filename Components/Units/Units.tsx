@@ -6,6 +6,8 @@ import {
   NavigationScreenProp
 } from 'react-navigation';
 
+import environment from '../../development.json';
+
 interface Props {
   visible: boolean,
   userUnits: Array<UserUnit>,
@@ -17,7 +19,7 @@ export default class Units extends React.Component<Props> {
 
   _keyExtractor = (item, index) => index.toString();
 
-  _unitTitle = (item, index) => item.title + ' .' + (index+1);
+  _unitTitle = (item, index) => (index+1) + '. ' + item.title;
 
   _renderItem = ({item, index}) => {
     return (
@@ -29,7 +31,7 @@ export default class Units extends React.Component<Props> {
         })}>
         <View style={styles.imageContainer}>
           <Image style={styles.image}
-              source={require('../../assets/family.png')} 
+              source={{ uri: environment.API_URL + '/api/v1/admin/unit/image/' + item.pictureUrl}}
               key={item.title} />
         </View>
         <Text style={styles.text}>{this._unitTitle(item, index)}</Text>     
