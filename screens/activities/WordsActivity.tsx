@@ -36,24 +36,6 @@ export default function WordsActivity({ navigation, lessonTitle, route }) {
             ...answers,
             [activeQuestion]: data.recordedFileUrl,
         });
-
-        try {
-            const uriParts = data.recordedFileUrl.split('.');
-            const fileType = uriParts[uriParts.length - 1];
-            const formData = new FormData();
-
-            formData.append('userAudio', {
-                uri: Platform.OS === 'android' ? data.recordedFileUrl : data.recordedFileUrl.replace('file://', ''),
-                name: `recording.${fileType}`,
-                type: `audio/x-${fileType}`,
-            });
-            formData.append('id', activityData[activeQuestion].id);
-            // TODO: replace a token:
-            formData.append('token', '1');
-            await uploadWordsActivityRecord(formData);
-        } catch (err) {
-            console.log(err);
-        }
     };
 
     return (
@@ -75,9 +57,10 @@ export default function WordsActivity({ navigation, lessonTitle, route }) {
                     <>
                         <WordsActivityCarousel activityData={activityData} onChange={setActiveQuestion} />
                         <PhrasesAudioControls
-                            recordUrl={answers[activeQuestion]}
                             onUserAnswer={uploadData}
                             sampleUrl={activityData[activeQuestion].audioUrl}
+                            userAudioRecordUrl={activityData[activeQuestion].userAudioRecordUrl}
+                            id={activityData[activeQuestion].id}
                         />
                     </>
                 )}

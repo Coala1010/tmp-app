@@ -81,12 +81,14 @@ export default class PhrasesAudioControls extends React.Component<State> {
     }
 
     componentDidMount() {
+        Audio.setIsEnabledAsync(true);
         this.loadAudio();
     }
 
     componentWillUnmount() {
         this.stopAudioSample('userRecord');
         this.stopAudioSample('audio');
+        Audio.setIsEnabledAsync(false);
     }
 
     onAutoPlaybackStatusUpdate = (name: string, status: any) => {
@@ -117,13 +119,9 @@ export default class PhrasesAudioControls extends React.Component<State> {
         }
 
         try {
-            await Audio.setIsEnabledAsync(true);
-            let soundObject = new Audio.Sound();
-            try {
-                await soundObject.loadAsync({ uri }, {}, false);
-            } catch (err) {
-                console.log('ERROR while loading sound file: ', uri, err);
-            }
+            let soundObject = this[name] || new Audio.Sound();
+            await soundObject.unloadAsync();
+            await soundObject.loadAsync({ uri }, {}, false);
             soundObject.setOnPlaybackStatusUpdate(
                 (status: any) => {
                     if (status.didJustFinish && onFinished) {
@@ -160,9 +158,15 @@ export default class PhrasesAudioControls extends React.Component<State> {
             await this.stopAudioSample('audio');
         } else {
             this.setState({ audioButtonExpanded: true });
+
             if (this.state.audioRecordingButtonExpanded) {
                 this.expandAudioRecordingButton();
             }
+
+            if (this.state.audioPlayButtonExpanded) {
+                this.expandPlaybackButton();
+            }
+
             Animated.spring(
                 this.state.audioButtonAnim,
                 {
@@ -214,10 +218,12 @@ export default class PhrasesAudioControls extends React.Component<State> {
             ).start();
             this.setState({ recordProgress: '00:00' });
             if (this.state.record) {
-                await this.state.record.stopAndUnloadAsync();
-                const fileUrl = this.state.record.getURI();
-                this.setState({ recordedFileUrl: fileUrl });
-                this.props.onUserAnswer({ recordedFileUrl: fileUrl });
+                try {
+                    await this.state.record.stopAndUnloadAsync();
+                    const fileUrl = this.state.record.getURI();
+                    this.setState({ recordedFileUrl: fileUrl });
+                    this.props.onUserAnswer({ recordedFileUrl: fileUrl });
+                } catch (err) {}
             }
         } else {
             Audio.getPermissionsAsync().then((permission) => {
@@ -226,21 +232,22 @@ export default class PhrasesAudioControls extends React.Component<State> {
                 } else {
                     this.recordAudio();
                 }
-            })
+            });
+            this.setState({ audioRecordingButtonExpanded: true });
 
-            this.expandAudioRecord();
-        }
-    }
+            if (this.state.audioButtonExpanded) {
+                this.expandAudioButton();
+            }
 
-    expandAudioRecord = () => {
-        this.setState({audioRecordingButtonExpanded: true});
-        if (this.state.audioButtonExpanded) {
-            this.expandAudioButton();
+            if (this.state.audioPlayButtonExpanded) {
+                this.expandPlaybackButton();
+            }
+
+            Animated.spring(
+                this.state.audioRecordingButtonAnim,
+                { toValue: 120 },
+            ).start();
         }
-        Animated.spring(
-            this.state.audioRecordingButtonAnim,
-            { toValue: 120 },
-        ).start();
     }
 
     recordAudio = async () => {
@@ -274,8 +281,8 @@ export default class PhrasesAudioControls extends React.Component<State> {
                 clearInterval(this.state.replayProgressInterval);
                 this.setState({ replayProgressInterval: null });
             }
-            this.stopAudioSample('userRecord');
-            this.stopAudioSample('audio');
+            await this.stopAudioSample('userRecord');
+            await this.stopAudioSample('audio');
             this.setState({ audioPlayButtonExpanded: false });
             Animated.spring(
                 this.state.audioPlayButtonAnim,
@@ -289,10 +296,17 @@ export default class PhrasesAudioControls extends React.Component<State> {
                 clearInterval(this.state.replayProgressInterval);
                 this.setState({ replayProgressInterval: null });
             }
-            this.setState({audioPlayButtonExpanded: true});
+
+            this.setState({ audioPlayButtonExpanded: true });
+
             if (this.state.audioButtonExpanded) {
                 this.expandAudioButton();
             }
+
+            if (this.state.audioRecordingButtonExpanded) {
+                this.expandAudioRecordingButton();
+            }
+
             Animated.spring(
                 this.state.audioPlayButtonAnim,
                 {
@@ -316,8 +330,10 @@ export default class PhrasesAudioControls extends React.Component<State> {
         this.setState({
             replayProgressInterval: interval,
         });
-        await this.playAudioSample('userRecord', this.state.recordedFileUrl || this.props.userAudioRecordUrl);
-        await this.playAudioSample('audio', null);
+        try {
+            await this.playAudioSample('userRecord', this.state.recordedFileUrl || this.props.userAudioRecordUrl);
+            await this.playAudioSample('audio', null);
+        } catch (err) {}
         clearInterval(this.state.replayProgressInterval);
         this.setState({ replayProgressInterval: null, replayProgress: '00:00' });
     }

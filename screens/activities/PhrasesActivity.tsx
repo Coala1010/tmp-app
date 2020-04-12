@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, StyleSheet, Platform } from 'react-native';
+import { Text, View, Platform } from 'react-native';
 import ActivityGroupsProgress from '../../Components/navigation/ActivityGroupsProgress';
 import ActivityFooter from '../../Components/ActivityFooter/ActivityFooter';
 import PhrasesActivityCarousel from '../../Components/PhrasesActivity/PhrasesActivityCarousel';
