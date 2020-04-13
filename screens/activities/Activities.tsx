@@ -69,12 +69,16 @@ export default class Activities extends React.Component<State> {
                         //key={i} 
                         style={styles.activity}>
 
-                        <TouchableOpacity style={{padding: 5}} 
+                        <TouchableOpacity
+                            style={{padding: 5}}
                             onPress={() => this.props.navigation.navigate('PhrasesActivity', { 
                                 userGroupId: this.state.userActivities.phrasesActivityGroup.userGroupId,
+                                groupId: this.state.userActivities.phrasesActivityGroup.groupId,
                                 lessonTitle: lessonTitle,
                                 lessonId: lessonId,
-                                userToken: this.state.userToken})}>
+                                userToken: this.state.userToken
+                            })}
+                        >
                             <View style = {{alignItems: 'center', backgroundColor: '#FCFDFF', 
                                 justifyContent: 'space-around', height: 60,
                                 flexDirection: 'row'
@@ -89,8 +93,8 @@ export default class Activities extends React.Component<State> {
                     </View>
                 ) : <View/>
             }
-            {
-                this.state.userActivities.wordActivityGroup && this.state.userActivities.wordActivityGroup.userGroupId ? ( 
+            {/* {
+                this.state.userActivities.wordActivityGroup && this.state.userActivities.wordActivityGroup.userGroupId ? (  */}
                     <View 
                         //key={i} 
                         style={styles.activity}>
@@ -114,8 +118,8 @@ export default class Activities extends React.Component<State> {
                             </View>
                         </TouchableOpacity>
                     </View>
-               ) : <View/>
-            }
+               {/* ) : <View/>
+            } */}
             {
                 this.state.userActivities.multichoiceActivityGroup && this.state.userActivities.multichoiceActivityGroup.userGroupId ? ( 
                     <View 

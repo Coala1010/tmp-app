@@ -28,20 +28,7 @@ export default class VideoActivity extends React.Component<State> {
                     shouldPlay
                     isLooping
                     style={{ width: '100%', height: 300 }}
-                /> */}
-
-<VideoPlayer
-  videoProps={{
-    shouldPlay: true,
-    resizeMode: Video.RESIZE_MODE_CONTAIN, 
-    source: {
-      uri: 'https://player.vimeo.com/external/406465830.sd.mp4?s=33c0d009f20c32506b9922d17c85cb5f5c1575b0&profile_id=164&download=1',
-    },
-  }}
-  showControlsOnLoad={true}
-//   APPEARANCE={{}}
-  inFullscreen={false}
-/>
+                />
             </View>
             <Text style={{textAlign: 'right', marginTop: 20, marginRight:50, fontWeight: 'bold', color: '#233665', width: '90%',}}>
                 {videoTitle}

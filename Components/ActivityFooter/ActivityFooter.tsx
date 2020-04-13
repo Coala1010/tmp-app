@@ -2,39 +2,36 @@ import React from 'react';
 import { Text, View, TouchableOpacity, Image, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
-export default function ActivityFooter({ userActivities, lessonTitle, navigation, leftBtn }) {
-  return (
-    <View style={styles.footerContainer}>
-        <View style={styles.footer}>
-            <TouchableOpacity
-                style={{padding: 5}} 
-                onPress={() => navigation.navigate(
-                    'VideoActivity',
-                    { videoUrl: userActivities.videoActivity.videoUrl, lessonTitle }
-                )}
-            >
-                <View style = {styles.forwardButtonInner}>
-                    <Image 
-                        style={styles.forwardImage}
-                        source={require('../../assets/keyboard_arrow_left-24px.png')} 
-                    />
-                </View>
-            </TouchableOpacity>
-            <Text style={styles.footerTitle}>
-                Forward
-            </Text>
-            <View style={{ width: 24 }} />
-        </View>
-
-        {leftBtn ? leftBtn : (
-            <View style={styles.backBtnContainer}>
-                <TouchableOpacity style={styles.backBtn} onPress={() => navigation.goBack()}>
-                    <Ionicons name="md-exit" size={32} color="#24395F" />
+export default function ActivityFooter({ userActivities, lessonTitle, navigation, leftBtn, toNext, toNextPayload }) {
+    return (
+        <View style={styles.footerContainer}>
+            <View style={styles.footer}>
+                <TouchableOpacity
+                    style={{padding: 5}} 
+                    onPress={() => navigation.navigate(toNext, toNextPayload)}
+                >
+                    <View style = {styles.forwardButtonInner}>
+                        <Image 
+                            style={styles.forwardImage}
+                            source={require('../../assets/keyboard_arrow_left-24px.png')} 
+                        />
+                    </View>
                 </TouchableOpacity>
+                <Text style={styles.footerTitle}>
+                    Forward
+                </Text>
+                <View style={{ width: 24 }} />
             </View>
-        )}
-    </View>
-  );
+
+            {leftBtn ? leftBtn : (
+                <View style={styles.backBtnContainer}>
+                    <TouchableOpacity style={styles.backBtn} onPress={() => navigation.goBack()}>
+                        <Ionicons name="md-exit" size={32} color="#24395F" />
+                    </TouchableOpacity>
+                </View>
+            )}
+        </View>
+    );
 }
 
 const styles = StyleSheet.create({
