@@ -1,6 +1,7 @@
 import React from 'react';
 import { Text, View, TouchableOpacity, Button, Image, StyleSheet } from 'react-native';
 import { Video } from 'expo-av';
+import VideoPlayer from 'expo-video-player';
 // import BottomNavigation from '../../Components/navigation/BottomNavigation';
 
 interface State {
@@ -17,9 +18,9 @@ export default class VideoActivity extends React.Component<State> {
       return (
         <View style={{flex: 1, justifyContent:'flex-start', width: '100%', backgroundColor: '#FCFDFF'}}>
             <View>
-                <Video
+                {/* <Video
                     // source={require('../../assets/video_sample.mov')}
-                    source={{ uri: 'https://vimeo.com/user111253504/review/406465830/06caa8aaba'}}
+                    source={{ uri: 'https://player.vimeo.com/external/406465830.sd.mp4?s=33c0d009f20c32506b9922d17c85cb5f5c1575b0&profile_id=164&download=1'}}
                     rate={1.0}
                     volume={1.0}
                     isMuted={false}
