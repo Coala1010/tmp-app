@@ -1,10 +1,11 @@
 import React from 'react';
-import { Text, View } from 'react-native';
+import { Text, View, Platform } from 'react-native';
 import ActivityGroupsProgress from '../../Components/navigation/ActivityGroupsProgress';
 import ActivityFooter from '../../Components/ActivityFooter/ActivityFooter';
 import { getWordsActivity, uploadWordsActivityRecord } from '../../providers/activities/WordsActivity';
 import PhrasesAudioControls from '../../Components/PhrasesActivity/AudioControls';
 import WordsActivityCarousel from '../../Components/WordsActivity/WordsActivityCarousel';
+import environment from '../../development.json';
 
 export default function WordsActivity({ navigation, lessonTitle, route }) {
     const [answers, setAnswers] = React.useState({});
@@ -13,22 +14,16 @@ export default function WordsActivity({ navigation, lessonTitle, route }) {
 
     React.useEffect(() => {
         getWordsActivity(route.params.userGroupId).then((res) => {
-            setActivityData([{
-                id: 1,
-                audioUrl: 'https://ccrma.stanford.edu/~jos/mp3/gtr-nylon22.mp3',
-                imageUrl: 'https://images.unsplash.com/photo-1469474968028-56623f02e42e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1653&q=80',
-                title: 'الأسرة'
-            }, {
-                id: 2,
-                audioUrl: 'https://ccrma.stanford.edu/~jos/mp3/gtr-nylon22.mp3',
-                imageUrl: 'https://images.unsplash.com/photo-1469474968028-56623f02e42e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1653&q=80',
-                title: 'الأسرة22',
-            }, {
-                id: 3,
-                audioUrl: 'https://ccrma.stanford.edu/~jos/mp3/gtr-nylon22.mp3',
-                imageUrl: 'https://images.unsplash.com/photo-1469474968028-56623f02e42e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1653&q=80',
-                title: 'الأسرة22',
-            }]);
+            setActivityData(res.map((item) => ({
+                ...item,
+                imageUrl: item.imageUrl
+                    ? `${environment.API_URL}/api/v1/app/words/${item.wordActivityId}/image/${item.imageUrl}/`
+                    : null,
+                audioUrl: item.audioUrl
+                    ? `${environment.API_URL}/api/v1/app/words/${item.wordActivityId}/audio/${item.audioUrl}/`
+                    : null,
+                title: 'الأسرة',
+            })));
         });
     }, []);
     const uploadData = async (data) => {
@@ -36,7 +31,27 @@ export default function WordsActivity({ navigation, lessonTitle, route }) {
             ...answers,
             [activeQuestion]: data.recordedFileUrl,
         });
+
+        try {
+            const uriParts = data.recordedFileUrl.split('.');
+            const fileType = uriParts[uriParts.length - 1];
+            const formData = new FormData();
+
+            formData.append('userAudio', {
+                uri: Platform.OS === 'android' ? data.recordedFileUrl : data.recordedFileUrl.replace('file://', ''),
+                name: `recording.${fileType}`,
+                type: `audio/x-${fileType}`,
+            });
+            formData.append('id', activityData[activeQuestion].id);
+            formData.append('token', route.params.userToken);
+            const res = await uploadWordsActivityRecord(formData);
+            console.log(res);
+        } catch (err) {
+            console.log(err);
+        }
     };
+
+    console.log(activityData);
 
     return (
         <View style={{flex: 1, justifyContent:'flex-start', width: '100%', backgroundColor: '#FCFDFF'}}>

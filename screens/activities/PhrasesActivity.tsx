@@ -7,27 +7,30 @@ import PhrasesAudioControls from '../../Components/PhrasesActivity/AudioControls
 import { getPhrases, uploadUserPhraseAudio } from '../../providers/activities/PhrasesActivity';
 import environment from '../../development.json';
 
-export default function PhrasesActivity({ lessonTitle, navigation, route, userToken }) {
+export default function PhrasesActivity({ lessonTitle, navigation, route }) {
     const [answers, setAnswers] = React.useState({});
     const [activityData, setActivityData] = React.useState(null);
 
     React.useEffect(() => {
+        console.log(route.params);
         getPhrases(route.params.userGroupId).then((res) => {
             setActivityData(
                 res.map(answer => {
                     return ({
                         ...answer,
-                        userAudioRecordUrl: answer.userAudioRecordUrl
-                            ? `${environment.API_URL}/api/v1/admin/phrases/${answer.phrasesActivityId}/audio/${answer.audioUrl}`
+                        userAudioRecordUrl: answer.userAudioRecordUrl && route.params.userToken
+                            ? `${environment.API_URL}/api/v1/app/phrases/progress/${answer.phrasesActivityId}/user/${route.params.userToken}/`
                             : null,
-                        audioUrl: !answer.audioUrl
-                            ? 'https://ccrma.stanford.edu/~jos/mp3/gtr-nylon22.mp3'
-                            : `${environment.API_URL}/api/v1/admin/phrases/${answer.phrasesActivityId}/audio/${answer.audioUrl}`,
+                        audioUrl: answer.audioUrl
+                            ? `${environment.API_URL}/api/v1/admin/phrases/${answer.phrasesActivityId}/audio/${answer.audioUrl}/`
+                            : null,
                     });
                 }),
             );
         });
     }, []);
+
+    console.log(activityData);
 
     const [activeQuestion, setActiveQuestion] = React.useState(0);
     const uploadData = async (data) => {
@@ -48,7 +51,7 @@ export default function PhrasesActivity({ lessonTitle, navigation, route, userTo
             });
             formData.append('id', activityData[activeQuestion].id);
             // TODO: replace a token:
-            formData.append('token', userToken);
+            formData.append('token', route.params.userToken);
             await uploadUserPhraseAudio(formData);
         } catch (err) {
             console.log(err);
