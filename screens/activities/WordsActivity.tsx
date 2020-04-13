@@ -22,10 +22,14 @@ export default function WordsActivity({ navigation, lessonTitle, route }) {
                 audioUrl: item.audioUrl
                     ? `${environment.API_URL}/api/v1/app/words/${item.wordActivityId}/audio/${item.audioUrl}/`
                     : null,
+                userAudioRecordUrl: item.userAudioRecordUrl && route.params.userToken
+                    ? `${environment.API_URL}/api/v1/app/words/progress/${item.userAudioRecordUrl}/user/${route.params.userToken}/`
+                    : null,
                 title: 'الأسرة',
             })));
         });
     }, []);
+
     const uploadData = async (data) => {
         setAnswers({
             ...answers,
@@ -50,8 +54,6 @@ export default function WordsActivity({ navigation, lessonTitle, route }) {
             console.log(err);
         }
     };
-
-    console.log(activityData);
 
     return (
         <View style={{flex: 1, justifyContent:'flex-start', width: '100%', backgroundColor: '#FCFDFF'}}>

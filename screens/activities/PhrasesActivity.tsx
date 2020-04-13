@@ -12,7 +12,6 @@ export default function PhrasesActivity({ lessonTitle, navigation, route }) {
     const [activityData, setActivityData] = React.useState(null);
 
     React.useEffect(() => {
-        console.log(route.params);
         getPhrases(route.params.userGroupId).then((res) => {
             setActivityData(
                 res.map(answer => {
@@ -29,8 +28,6 @@ export default function PhrasesActivity({ lessonTitle, navigation, route }) {
             );
         });
     }, []);
-
-    console.log(activityData);
 
     const [activeQuestion, setActiveQuestion] = React.useState(0);
     const uploadData = async (data) => {

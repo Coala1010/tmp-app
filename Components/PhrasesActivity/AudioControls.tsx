@@ -202,7 +202,7 @@ export default class PhrasesAudioControls extends React.Component<State> {
             }, onProgress);
             this.state[name].playFromPositionAsync(0);
         } catch (error) {
-            alert('error: ' + error);
+            console.log(error);
             rej(error);
         }
     });

@@ -18,14 +18,17 @@ export default class Activities extends React.Component<State> {
 
     constructor (props) {
         super(props)
-        const { lessonTitle, lessonId, userToken } = this.props.route.params; 
+    }
+
+    componentDidMount() {
+        const { lessonTitle, lessonId, userToken } = this.props.route.params;
         this.setState({userToken: userToken});
         UserActivitiesProvider(lessonId, (json) => {
             let userActivities : UserActivities = json;
             this.setState({userActivities : userActivities});
         });
     }
-    
+
     renderActivitiesList(){
       const { lessonTitle, lessonId } = this.props.route.params; 
       // const userActivities = 
