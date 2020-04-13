@@ -89,7 +89,7 @@ export default function Multichoice({ activityData, setHintText }) {
                             selected[currentQuestion] === answer.id
                             || (
                                 selected[currentQuestion]
-                                && activityData[currentQuestion].answers[selected[currentQuestion] - 1].isCorrect
+                                && activityData[currentQuestion].answers.find(({ id }) => selected[currentQuestion] === id).isCorrect
                             ) ? (
                                 <View style={[styles.answerIconContainer, selected[currentQuestion] !== answer.id && styles.answerIconNotSelected]}>
                                     {answer.isCorrect ? (
