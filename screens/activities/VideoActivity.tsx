@@ -3,32 +3,49 @@ import { Text, View, TouchableOpacity, Button, Image, StyleSheet } from 'react-n
 import { Video } from 'expo-av';
 import VideoPlayer from 'expo-video-player';
 // import BottomNavigation from '../../Components/navigation/BottomNavigation';
+import VideoProvider from '../../providers/activities/VideoProvider';
 
 interface State {
-  selectedIndex: Number,
+  videoUrl: string,
+  videoTimer: number
 }
 
 export default class VideoActivity extends React.Component<State> {
     state: Readonly<State> = {
-        selectedIndex: -1,
+        videoUrl: '',
+        videoTimer: 0,
     }  
+
+    componentDidMount() {
+        const { userGroupId } = this.props.route.params;
+        VideoProvider(userGroupId, (json) => {
+          const videoProgress = json;
+          this.setState({videoUrl : videoProgress.videoUrl, videoTimer: videoProgress.videoTimer});
+        })
+      }
     
     renderVideo(videoTitle: String){
-      const { videoUrl, lessonTitle } = this.props.route.params; 
+    //   const { videoUrl, lessonTitle } = this.props.route.params; 
       return (
         <View style={{flex: 1, justifyContent:'flex-start', width: '100%', backgroundColor: '#FCFDFF'}}>
-            <View>
-                {/* <Video
-                    // source={require('../../assets/video_sample.mov')}
-                    source={{ uri: 'https://player.vimeo.com/external/406465830.sd.mp4?s=33c0d009f20c32506b9922d17c85cb5f5c1575b0&profile_id=164&download=1'}}
-                    rate={1.0}
-                    volume={1.0}
-                    isMuted={false}
-                    resizeMode="cover"
-                    shouldPlay
-                    isLooping
-                    style={{ width: '100%', height: 300 }}
-                />
+            <View style={{flex: 1, justifyContent: 'flex-start', flexDirection: 'column', alignItems:'flex-start', width: '100%', backgroundColor: '#FCFDFF'}}>
+                {
+                    this.state.videoUrl ? (<VideoPlayer
+                        videoProps={{
+                            shouldPlay: true,
+                            resizeMode: Video.RESIZE_MODE_CONTAIN,
+                            source: {
+                                uri: this.state.videoUrl,
+                            }
+                        }}
+                        height={360}
+                        inFullscreen={false}
+                        showControlsOnLoad={true}
+                        videoBackground='transparent'
+                        sliderColor='#233665'
+                    />)
+                    : <View/>
+                }
             </View>
             <Text style={{textAlign: 'right', marginTop: 20, marginRight:50, fontWeight: 'bold', color: '#233665', width: '90%',}}>
                 {videoTitle}
