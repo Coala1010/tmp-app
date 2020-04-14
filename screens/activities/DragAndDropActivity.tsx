@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View } from 'react-native';
+import { Text, View, TouchableOpacity, Image, StyleSheet } from 'react-native';
 
 import ActivityGroupsProgress from '../../Components/navigation/ActivityGroupsProgress';
 import DragNDrop from '../../Components/DragNDrop/DragNDrop';
@@ -9,7 +9,8 @@ import environment from '../../development.json';
 
 export default function DragAndDropActivity({ route, navigation }) {
     const [activityData, setActivityData] = React.useState(null);
-    const { lessonTitle } = route.params;
+    const { lessonTitle, activities } = route.params;
+    const nextActivity = activities.get('dragndrop').nextActivity;
 
     React.useEffect(() => {
         try {
@@ -35,11 +36,53 @@ export default function DragAndDropActivity({ route, navigation }) {
                     <Text style={{textAlign: 'center', marginTop: 50, fontWeight: 'bold', color: '#233665', width: '100%',}}>
                         {lessonTitle}
                     </Text>
+                    <TouchableOpacity 
+                        style={styles.backButton}
+                        onPress={() => navigation.goBack()}>
+                        <Image 
+                            style={styles.image}
+                            source={require('../../assets/arrow_back-24px.png')} 
+                        />
+                    </TouchableOpacity>
                 </View>
-                <ActivityGroupsProgress chosenActivity='dragndrop'/>
+                <ActivityGroupsProgress chosenActivity='dragndrop' navigation={navigation} activities={activities}/>
                 <DragNDrop activityData={activityData} />
-                <ActivityFooter navigation={navigation} />
+                <ActivityFooter navigation={navigation} 
+                    toNext={nextActivity.navigationScreen}
+                    toNextPayload={{ 
+                        userGroupId: nextActivity.userGroupId,
+                        lessonTitle: nextActivity.lessonTitle,
+                        lessonId: nextActivity.lessonId,
+                        userToken: nextActivity.userToken,
+                        unitId: nextActivity.unitId,
+                        unitTitle: nextActivity.unitTitle,
+                        activities: activities
+                }}
+                />
             </View>
         </View>
     );
 }
+
+const styles = StyleSheet.create({
+    image: {
+      height: 24,
+      width: 24,
+      //resizeMode: 'contain',  
+    },
+    backButton: {
+      marginTop: 50, 
+      color: '#233665', 
+      width: 30, 
+      height: 30, 
+      marginRight: 30,
+      backgroundColor: '#F7F9FC',
+      fontWeight: 'bold', 
+      borderStyle: 'solid', 
+      borderRadius: 5, 
+      borderWidth: 1,
+      borderColor: '#F7F9FC', 
+      overflow: 'hidden',
+      alignItems: 'center'
+    }
+  });

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, Platform } from 'react-native';
+import { Text, View, Platform, TouchableOpacity, Image, StyleSheet } from 'react-native';
 import ActivityGroupsProgress from '../../Components/navigation/ActivityGroupsProgress';
 import ActivityFooter from '../../Components/ActivityFooter/ActivityFooter';
 import PhrasesActivityCarousel from '../../Components/PhrasesActivity/PhrasesActivityCarousel';
@@ -10,6 +10,8 @@ import environment from '../../development.json';
 export default function PhrasesActivity({ lessonTitle, navigation, route }) {
     const [answers, setAnswers] = React.useState({});
     const [activityData, setActivityData] = React.useState(null);
+    const { activities } = route.params;
+    const nextActivity = activities.get('phrases').nextActivity;
 
     React.useEffect(() => {
         getPhrases(route.params.userGroupId).then((res) => {
@@ -70,8 +72,16 @@ export default function PhrasesActivity({ lessonTitle, navigation, route }) {
                             <Text style={{textAlign: 'center', marginTop: 50, fontWeight: 'bold', color: '#233665', width: '100%',}}>
                                 {lessonTitle}
                             </Text>
+                            <TouchableOpacity 
+                                style={styles.backButton}
+                                onPress={() => navigation.goBack()}>
+                                <Image 
+                                    style={styles.image}
+                                    source={require('../../assets/arrow_back-24px.png')} 
+                                />
+                            </TouchableOpacity>
                         </View>
-                        <ActivityGroupsProgress navigation={navigation} chosenActivity='phrases'/>
+                        <ActivityGroupsProgress navigation={navigation} chosenActivity='phrases' activities={route.params.activities}/>
                         {activityData &&  (
                             <>
                                 <PhrasesActivityCarousel activityData={activityData} onChange={setActiveQuestion} />
@@ -85,12 +95,42 @@ export default function PhrasesActivity({ lessonTitle, navigation, route }) {
                         )}
                     </View>
                     <ActivityFooter
-                        toNext="WordsActivity"
-                        toNextPayload={{}}
                         navigation={navigation}
+                        toNext={nextActivity.navigationScreen}
+                        toNextPayload={{ 
+                            userGroupId: nextActivity.userGroupId,
+                            lessonTitle: nextActivity.lessonTitle,
+                            lessonId: nextActivity.lessonId,
+                            userToken: nextActivity.userToken,
+                            unitTitle: nextActivity.unitTitle,
+                            activities: activities
+                        }}
                     />
                 </View>
             </View>
         </View>
     );
 }
+
+const styles = StyleSheet.create({
+    image: {
+      height: 24,
+      width: 24,
+      //resizeMode: 'contain',  
+    },
+    backButton: {
+      marginTop: 50, 
+      color: '#233665', 
+      width: 30, 
+      height: 30, 
+      marginRight: 30,
+      backgroundColor: '#F7F9FC',
+      fontWeight: 'bold', 
+      borderStyle: 'solid', 
+      borderRadius: 5, 
+      borderWidth: 1,
+      borderColor: '#F7F9FC', 
+      overflow: 'hidden',
+      alignItems: 'center'
+    }
+  });

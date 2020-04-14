@@ -4,6 +4,7 @@ import { Video } from 'expo-av';
 import VideoPlayer from 'expo-video-player';
 // import BottomNavigation from '../../Components/navigation/BottomNavigation';
 import VideoProvider from '../../providers/activities/VideoProvider';
+import ActivityFooter from '../../Components/ActivityFooter/ActivityFooter';
 
 interface State {
   videoUrl: string,
@@ -26,6 +27,8 @@ export default class VideoActivity extends React.Component<State> {
     
     renderVideo(videoTitle: String){
     //   const { videoUrl, lessonTitle } = this.props.route.params; 
+        // const { activities } = this.props.route.params;
+        // const nextActivity = activities.get('video').nextActivity;
       return (
         <View style={{flex: 1, justifyContent:'flex-start', width: '100%', backgroundColor: '#FCFDFF'}}>
             <View style={{flex: 1, justifyContent: 'flex-start', flexDirection: 'column', alignItems:'flex-start', width: '100%', backgroundColor: '#FCFDFF'}}>
@@ -55,7 +58,8 @@ export default class VideoActivity extends React.Component<State> {
     }
   
     render() {
-        const { videoUrl, lessonTitle, videoTitle } = this.props.route.params; 
+        const { videoUrl, lessonTitle, videoTitle, activities } = this.props.route.params; 
+        const nextActivity = activities.get('video').nextActivity;
         return (
             <View style={{flex: 1, justifyContent:'flex-start', width: '100%', backgroundColor: '#FCFDFF'}}>
                 <View style={{flex: 1, justifyContent:'flex-start', width: '100%', backgroundColor: '#FCFDFF'}}>
@@ -71,7 +75,19 @@ export default class VideoActivity extends React.Component<State> {
                 {this.renderVideo(videoTitle)}
 
                 {/* <BottomNavigation/> */}
-                <View style={{flexDirection: 'row', marginBottom: 50}}>
+                <ActivityFooter
+                        navigation={this.props.navigation}
+                        toNext={nextActivity.navigationScreen}
+                        toNextPayload={{ 
+                            userGroupId: nextActivity.userGroupId,
+                            lessonTitle: nextActivity.lessonTitle,
+                            lessonId: nextActivity.lessonId,
+                            userToken: nextActivity.userToken,
+                            unitTitle: nextActivity.unitTitle,
+                            activities: activities
+                        }}
+                    />
+                {/* <View style={{flexDirection: 'row', marginBottom: 50}}>
                     <View style={styles.forwardButton}>
                         <TouchableOpacity style={{padding: 5}} 
                             onPress={() => this.props.navigation.navigate('VideoActivity', { videoUrl: userActivities.videoActivity.videoUrl,
@@ -98,7 +114,7 @@ export default class VideoActivity extends React.Component<State> {
                             </View>
                         </TouchableOpacity>
                     </View>
-                </View>
+                </View> */}
 
             </View>
         </View>

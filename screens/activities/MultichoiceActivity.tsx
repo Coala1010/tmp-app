@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
+import { Text, View, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import ActivityGroupsProgress from '../../Components/navigation/ActivityGroupsProgress';
 import ActivityFooter from '../../Components/ActivityFooter/ActivityFooter';
 import Multichoice from '../../Components/Multichoice/Multichoice';
@@ -10,7 +10,8 @@ export default function MultichoiceActivityScreen({ navigation, route }) {
     const [activityData, setActivityData] = React.useState(null);
     const [hintText, setHintText] = React.useState(null);
 
-    const { lessonTitle } = route.params;
+    const { lessonTitle, activities } = route.params;
+    const nextActivity = activities.get('multichoice').nextActivity;
 
     React.useEffect(() => {
         try {
@@ -34,8 +35,16 @@ export default function MultichoiceActivityScreen({ navigation, route }) {
                     <Text style={{textAlign: 'center', marginTop: 50, fontWeight: 'bold', color: '#233665', width: '100%',}}>
                         {lessonTitle}
                     </Text>
+                    <TouchableOpacity 
+                        style={styles.backButton}
+                        onPress={() => navigation.goBack()}>
+                        <Image 
+                            style={styles.image}
+                            source={require('../../assets/arrow_back-24px.png')} 
+                        />
+                    </TouchableOpacity>
                 </View>
-                <ActivityGroupsProgress navigation={navigation} chosenActivity='multichoice'/>
+                <ActivityGroupsProgress navigation={navigation} chosenActivity='multichoice' activities={activities}/>
                 <View style={{ flex: 1 }}>
                     {activityData ? (
                         <Multichoice
@@ -46,9 +55,41 @@ export default function MultichoiceActivityScreen({ navigation, route }) {
                     <ActivityFooter
                         navigation={navigation}
                         leftBtn={<HintBtn hintText={hintText} />}
+                        toNext={nextActivity.navigationScreen}
+                        toNextPayload={{ 
+                            userGroupId: nextActivity.userGroupId,
+                            lessonTitle: nextActivity.lessonTitle,
+                            lessonId: nextActivity.lessonId,
+                            userToken: nextActivity.userToken,
+                            unitTitle: nextActivity.unitTitle,
+                            activities: activities
+                        }}
                     />
                 </View>
             </View>
         </View>
     );
 }
+
+const styles = StyleSheet.create({
+    image: {
+      height: 24,
+      width: 24,
+      //resizeMode: 'contain',  
+    },
+    backButton: {
+      marginTop: 50, 
+      color: '#233665', 
+      width: 30, 
+      height: 30, 
+      marginRight: 30,
+      backgroundColor: '#F7F9FC',
+      fontWeight: 'bold', 
+      borderStyle: 'solid', 
+      borderRadius: 5, 
+      borderWidth: 1,
+      borderColor: '#F7F9FC', 
+      overflow: 'hidden',
+      alignItems: 'center'
+    }
+  });

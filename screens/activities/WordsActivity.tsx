@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, Platform } from 'react-native';
+import { Text, View, Platform, TouchableOpacity, Image, StyleSheet } from 'react-native';
 import ActivityGroupsProgress from '../../Components/navigation/ActivityGroupsProgress';
 import ActivityFooter from '../../Components/ActivityFooter/ActivityFooter';
 import { getWordsActivity, uploadWordsActivityRecord } from '../../providers/activities/WordsActivity';
@@ -11,6 +11,9 @@ export default function WordsActivity({ navigation, lessonTitle, route }) {
     const [answers, setAnswers] = React.useState({});
     const [activityData, setActivityData] = React.useState(null);
     const [activeQuestion, setActiveQuestion] = React.useState(0);
+
+    const { activities } = route.params;
+    const nextActivity = activities.get('words').nextActivity;
 
     React.useEffect(() => {
         getWordsActivity(route.params.userGroupId).then((res) => {
@@ -68,8 +71,16 @@ export default function WordsActivity({ navigation, lessonTitle, route }) {
                     <Text style={{textAlign: 'center', marginTop: 50, fontWeight: 'bold', color: '#233665', width: '100%',}}>
                         {lessonTitle}
                     </Text>
+                    <TouchableOpacity 
+                        style={styles.backButton}
+                        onPress={() => navigation.goBack()}>
+                        <Image 
+                            style={styles.image}
+                            source={require('../../assets/arrow_back-24px.png')} 
+                        />
+                    </TouchableOpacity>
                 </View>
-                <ActivityGroupsProgress navigation={navigation} chosenActivity='phrases'/>
+                <ActivityGroupsProgress navigation={navigation} chosenActivity='words' activities={route.params.activities}/>
                 {activityData &&  (
                     <>
                         <WordsActivityCarousel activityData={activityData} onChange={setActiveQuestion} />
@@ -83,10 +94,42 @@ export default function WordsActivity({ navigation, lessonTitle, route }) {
                 )}
             </View>
             <ActivityFooter
-                toNext="WordsActivity"
-                toNextPayload={{}}
+                // toNext="WordsActivity"
+                // toNextPayload={{}}
                 navigation={navigation}
+                toNext={nextActivity.navigationScreen}
+                toNextPayload={{ 
+                    userGroupId: nextActivity.userGroupId,
+                    lessonTitle: nextActivity.lessonTitle,
+                    lessonId: nextActivity.lessonId,
+                    userToken: nextActivity.userToken,
+                    unitTitle: nextActivity.unitTitle,
+                    activities: activities
+                }}
             />
         </View>
     );
 }
+
+const styles = StyleSheet.create({
+    image: {
+      height: 24,
+      width: 24,
+      //resizeMode: 'contain',  
+    },
+    backButton: {
+      marginTop: 50, 
+      color: '#233665', 
+      width: 30, 
+      height: 30, 
+      marginRight: 30,
+      backgroundColor: '#F7F9FC',
+      fontWeight: 'bold', 
+      borderStyle: 'solid', 
+      borderRadius: 5, 
+      borderWidth: 1,
+      borderColor: '#F7F9FC', 
+      overflow: 'hidden',
+      alignItems: 'center'
+    }
+  });

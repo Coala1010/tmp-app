@@ -2,18 +2,21 @@ import React from 'react';
 import { Text, View, TouchableOpacity, Button, Image, StyleSheet } from 'react-native';
 import UserActivities from '../../types/activities/UserActivities';
 import UserActivitiesProvider from '../../providers/activities/UserActivitiesProvider';
+import NavigationActivity from '../../Components/navigation/NavigationActivity';
 
 interface State {
   selectedIndex: Number,
   userActivities: UserActivities,
-  userToken: string
+  userToken: string,
+  activities: Map<string, NavigationActivity>
 }
 
 export default class Activities extends React.Component<State> {
     state: Readonly<State> = {
         selectedIndex: -1,
         userActivities: null,
-        userToken: null
+        userToken: null,
+        activities: null
     }
 
     constructor (props) {
@@ -21,12 +24,100 @@ export default class Activities extends React.Component<State> {
     }
 
     componentDidMount() {
-        const { lessonTitle, lessonId, userToken } = this.props.route.params;
+        const { lessonTitle, lessonId, userToken, unitId, unitTitle } = this.props.route.params;
         this.setState({userToken: userToken});
         UserActivitiesProvider(lessonId, (json) => {
             let userActivities : UserActivities = json;
             this.setState({userActivities : userActivities});
+            this.createActivitiesMap(lessonId, lessonTitle, userToken, userActivities, unitId, unitTitle);
         });
+    }
+
+    createActivitiesMap = (lessonId: number, lessonTitle: string, userToken: string, userActivities : UserActivities, unitId: number, unitTitle: string) => {
+        const activities = new Map<string, NavigationActivity>()
+
+        let nextActivity = new NavigationActivity();
+        nextActivity.lessonId = lessonId;
+        nextActivity.lessonTitle = lessonTitle;
+        nextActivity.userGroupId = userActivities.dragAndDropActivityGroup.userGroupId;
+        nextActivity.userToken = userToken;
+        nextActivity.navigationScreen = 'Lessons';
+        nextActivity.nextActivity = nextActivity;
+        nextActivity.unitId = unitId;
+        nextActivity.unitTitle = unitTitle;
+        activities.set('lessons', nextActivity);
+
+        if (userActivities.dragAndDropActivityGroup && userActivities.dragAndDropActivityGroup.userGroupId) {
+            const phrasesNavigation = new NavigationActivity();
+            phrasesNavigation.lessonId = lessonId;
+            phrasesNavigation.lessonTitle = lessonTitle;
+            phrasesNavigation.userGroupId = userActivities.dragAndDropActivityGroup.userGroupId;
+            phrasesNavigation.userToken = userToken;
+            phrasesNavigation.navigationScreen = 'DragAndDropActivity';
+            phrasesNavigation.nextActivity = nextActivity;
+            phrasesNavigation.unitId = unitId;
+            phrasesNavigation.unitTitle = unitTitle;
+            activities.set('dragndrop', phrasesNavigation);
+            nextActivity = phrasesNavigation;
+        }
+
+        if (userActivities.multichoiceActivityGroup && userActivities.multichoiceActivityGroup.userGroupId) {
+            const phrasesNavigation = new NavigationActivity();
+            phrasesNavigation.lessonId = lessonId;
+            phrasesNavigation.lessonTitle = lessonTitle;
+            phrasesNavigation.userGroupId = userActivities.multichoiceActivityGroup.userGroupId;
+            phrasesNavigation.userToken = userToken;
+            phrasesNavigation.navigationScreen = 'MultichoiceActivity';
+            phrasesNavigation.nextActivity = nextActivity;
+            phrasesNavigation.unitId = unitId;
+            phrasesNavigation.unitTitle = unitTitle;
+            activities.set('multichoice', phrasesNavigation);
+            nextActivity = phrasesNavigation;
+        }
+
+        if (userActivities.wordActivityGroup && userActivities.wordActivityGroup.userGroupId) {
+            const phrasesNavigation = new NavigationActivity();
+            phrasesNavigation.lessonId = lessonId;
+            phrasesNavigation.lessonTitle = lessonTitle;
+            phrasesNavigation.userGroupId = userActivities.wordActivityGroup.userGroupId;
+            phrasesNavigation.userToken = userToken;
+            phrasesNavigation.navigationScreen = 'WordsActivity';
+            phrasesNavigation.nextActivity = nextActivity;
+            phrasesNavigation.unitId = unitId;
+            phrasesNavigation.unitTitle = unitTitle;
+            activities.set('words', phrasesNavigation);
+            nextActivity = phrasesNavigation;
+        }
+
+        if (userActivities.phrasesActivityGroup && userActivities.phrasesActivityGroup.userGroupId) {
+            const phrasesNavigation = new NavigationActivity();
+            phrasesNavigation.lessonId = lessonId;
+            phrasesNavigation.lessonTitle = lessonTitle;
+            phrasesNavigation.userGroupId = userActivities.phrasesActivityGroup.userGroupId;
+            phrasesNavigation.userToken = userToken;
+            phrasesNavigation.navigationScreen = 'PhrasesActivity';
+            phrasesNavigation.nextActivity = nextActivity;
+            phrasesNavigation.unitId = unitId;
+            phrasesNavigation.unitTitle = unitTitle;
+            activities.set('phrases', phrasesNavigation);
+            nextActivity = phrasesNavigation;
+        }
+
+        if (userActivities.videoActivityGroup && userActivities.videoActivityGroup.userGroupId) {
+            const phrasesNavigation = new NavigationActivity();
+            phrasesNavigation.lessonId = lessonId;
+            phrasesNavigation.lessonTitle = lessonTitle;
+            phrasesNavigation.userGroupId = userActivities.dragAndDropActivityGroup.userGroupId;
+            phrasesNavigation.userToken = userToken;
+            phrasesNavigation.navigationScreen = 'VideoActivity';
+            phrasesNavigation.nextActivity = nextActivity;
+            phrasesNavigation.unitId = unitId;
+            phrasesNavigation.unitTitle = unitTitle;
+            activities.set('video', phrasesNavigation);
+            nextActivity = phrasesNavigation;
+        }
+
+        this.setState({activities: activities});
     }
 
     renderActivitiesList(){
@@ -49,7 +140,9 @@ export default class Activities extends React.Component<State> {
                                 userGroupId: this.state.userActivities.videoActivityGroup.userGroupId,
                                 lessonTitle: lessonTitle,
                                 lessonId: lessonId,
-                                userToken: this.state.userToken})}>
+                                userToken: this.state.userToken,
+                                activities: this.state.activities
+                                })}>
                             <View style = {{alignItems: 'center', backgroundColor: '#FCFDFF', 
                                 justifyContent: 'space-around', height: 60,
                                 flexDirection: 'row'
@@ -80,6 +173,7 @@ export default class Activities extends React.Component<State> {
                                 lessonTitle: lessonTitle,
                                 lessonId: lessonId,
                                 userToken: this.state.userToken,
+                                activities: this.state.activities
                             })}
                         >
                             <View style = {{alignItems: 'center', backgroundColor: '#FCFDFF', 
@@ -107,7 +201,8 @@ export default class Activities extends React.Component<State> {
                                 userGroupId: this.state.userActivities.wordActivityGroup.userGroupId,
                                 lessonTitle: lessonTitle,
                                 lessonId: lessonId,
-                                userToken: this.state.userToken
+                                userToken: this.state.userToken,
+                                activities: this.state.activities
                             })}>
                             <View style = {{alignItems: 'center', backgroundColor: '#FCFDFF', 
                                 justifyContent: 'space-around', height: 60,
@@ -134,7 +229,9 @@ export default class Activities extends React.Component<State> {
                                 userGroupId: this.state.userActivities.multichoiceActivityGroup.userGroupId,
                                 lessonTitle: lessonTitle,
                                 lessonId: lessonId,
-                                userToken: this.state.userToken})}>
+                                userToken: this.state.userToken,
+                                activities: this.state.activities
+                                })}>
                             <View style = {{alignItems: 'center', backgroundColor: '#FCFDFF', 
                                 justifyContent: 'space-around', height: 60,
                                 flexDirection: 'row'
@@ -157,7 +254,8 @@ export default class Activities extends React.Component<State> {
                                 userGroupId: this.state.userActivities.dragAndDropActivityGroup.userGroupId,
                                 lessonTitle: lessonTitle,
                                 lessonId: lessonId,
-                                userToken: this.state.userToken
+                                userToken: this.state.userToken,
+                                activities: this.state.activities
                              })}>
                             <View style={{alignItems: 'center', backgroundColor: '#FCFDFF', 
                                 justifyContent: 'space-around', height: 60,

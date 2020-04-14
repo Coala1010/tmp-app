@@ -8,7 +8,7 @@ export default function ActivityFooter({ userActivities, lessonTitle, navigation
             <View style={styles.footer}>
                 <TouchableOpacity
                     style={{padding: 5}} 
-                    onPress={() => navigation.navigate(toNext, toNextPayload)}
+                    onPress={() => navigation.push(toNext, toNextPayload)}
                 >
                     <View style = {styles.forwardButtonInner}>
                         <Image 
@@ -23,13 +23,15 @@ export default function ActivityFooter({ userActivities, lessonTitle, navigation
                 <View style={{ width: 24 }} />
             </View>
 
-            {leftBtn ? leftBtn : (
-                <View style={styles.backBtnContainer}>
-                    <TouchableOpacity style={styles.backBtn} onPress={() => navigation.goBack()}>
-                        <Ionicons name="md-exit" size={32} color="#24395F" />
-                    </TouchableOpacity>
-                </View>
-            )}
+            {leftBtn ? leftBtn : <View/>
+            // (
+            //     <View style={styles.backBtnContainer}>
+            //         <TouchableOpacity style={styles.backBtn} onPress={() => navigation.goBack()}>
+            //             <Ionicons name="md-exit" size={32} color="#24395F" />
+            //         </TouchableOpacity>
+            //     </View>
+            // )
+            }
         </View>
     );
 }
