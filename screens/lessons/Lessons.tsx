@@ -38,6 +38,7 @@ export default class Lessons extends React.Component<Props, State> {
     
   renderLessonsList(){
     const userLessons = this.state.userLessons;
+    const { unitTitle } = this.props.route.params; 
     return userLessons.userLessonsArray.map((userLesson, i, levelArray) =>
       <View 
         key={i} 
@@ -56,7 +57,10 @@ export default class Lessons extends React.Component<Props, State> {
         onPress={() => this.props.navigation.navigate('Activities', {
             lessonTitle: userLesson.title, 
             lessonId: userLesson.lessonId,
-            userToken: this.state.token})}>
+            userToken: this.state.token,
+            unitId: this.state.unitId,
+            unitTitle: unitTitle
+            })}>
           <View style = {{alignItems: 'center', backgroundColor: '#FCFDFF', 
                 justifyContent: 'space-around', height: 60,
                 flexDirection: 'row'
@@ -94,7 +98,7 @@ export default class Lessons extends React.Component<Props, State> {
                 </Text>
                 <TouchableOpacity 
                     style={styles.backButton}
-                   onPress={() => this.props.navigation.goBack()}>
+                   onPress={() => this.props.navigation.navigate('Home')}>
                   <Image 
                       style={styles.image}
                       source={require('../../assets/arrow_back-24px.png')} 

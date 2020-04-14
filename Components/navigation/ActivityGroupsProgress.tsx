@@ -1,9 +1,11 @@
 import React from 'react';
 import { Text, View, TouchableOpacity, Button, Image, StyleSheet } from 'react-native';
+import NavigationActivity from './NavigationActivity';
 
 interface Props {
     chosenActivity: string,
-    navigation: any
+    navigation: any,
+    activities: Map<string, NavigationActivity>
 }
 export default class ActivityGroupsProgress extends React.Component<Props> {
 
@@ -12,36 +14,89 @@ export default class ActivityGroupsProgress extends React.Component<Props> {
         return (
             <View style={{flexDirection: 'row', width: '100%', justifyContent: 'center', marginTop: 5, marginBottom: 5}}>
                 <View style={{flexDirection: 'row', width: '90%', justifyContent: 'center'}}>
-                    <TouchableOpacity onPress={() => this.props.navigation.navigate('DragAndDropActivity', { })}>
-                        <View style={styles.activityGroup}
-                            >
-                            <Image 
-                                style={[styles.activityImage, chosenActivity == 'dragndrop' ? styles.activeImage : styles.inActiveImage]}
-                                source={require('../../assets/extension-24px.png')} 
-                            />
-                        </View>
-                    </TouchableOpacity>
-                    <View style={styles.grayLine}/>
-                    <View style={styles.activityGroup}>
-                        <Image 
-                            style={[styles.activityImage, chosenActivity == 'multichoice' ? styles.activeImage : styles.inActiveImage]}
-                            source={require('../../assets/format_list_bulleted-24px.png')} 
-                        />
-                    </View>
-                    <View style={styles.grayLine}/>
-                    <View style={styles.activityGroup}>
-                        <Image 
-                            style={[styles.activityImage, chosenActivity == 'words' ? styles.activeImage : styles.inActiveImage]}
-                            source={require('../../assets/photo-24px.png')} 
-                        />
-                    </View>
-                    <View style={styles.grayLine}/>
-                    <View style={styles.activityGroup}>
-                        <Image 
-                            style={[styles.activityImage, chosenActivity == 'phrases' ? styles.activeImage : styles.inActiveImage]}
-                            source={require('../../assets/headset-24px.png')} 
-                        />
-                    </View>
+                    {
+                        this.props.activities.get('dragndrop') ? (
+                            <View style={styles.activityGroup}>
+                                <TouchableOpacity onPress={() => this.props.navigation.push('DragAndDropActivity', {
+                                    userGroupId: this.props.activities.get('dragndrop').userGroupId,
+                                    lessonTitle: this.props.activities.get('dragndrop').lessonTitle,
+                                    lessonId: this.props.activities.get('dragndrop').lessonId,
+                                    userToken: this.props.activities.get('dragndrop').userToken,
+                                    activities: this.props.activities
+                                    })}>
+                                    <View style={styles.activityGroup}>
+                                        <Image 
+                                            style={[styles.activityImage, chosenActivity == 'dragndrop' ? styles.activeImage : styles.inActiveImage]}
+                                            source={require('../../assets/extension-24px.png')} 
+                                        />
+                                    </View>
+                                </TouchableOpacity>
+                            </View>    
+                        ) : <View/>
+                    }  
+                    {
+                        this.props.activities.get('multichoice') ? (
+                            <View style={styles.activityWrapper}>
+                                <View style={styles.grayLine}/>
+                                <View style={styles.activityGroup}>
+                                    <TouchableOpacity onPress={() => this.props.navigation.push('MultichoiceActivity', { 
+                                        userGroupId: this.props.activities.get('multichoice').userGroupId,
+                                        lessonTitle: this.props.activities.get('multichoice').lessonTitle,
+                                        lessonId: this.props.activities.get('multichoice').lessonId,
+                                        userToken: this.props.activities.get('multichoice').userToken,
+                                        activities: this.props.activities
+                                    })}>  
+                                        <Image 
+                                            style={[styles.activityImage, chosenActivity == 'multichoice' ? styles.activeImage : styles.inActiveImage]}
+                                            source={require('../../assets/format_list_bulleted-24px.png')} 
+                                        />
+                                    </TouchableOpacity>
+                                </View>
+                            </View>
+                        ) : <View/>    
+                    }
+                    {
+                        this.props.activities.get('words') ? (
+                            <View style={styles.activityWrapper}>
+                                <View style={styles.grayLine}/>
+                                    <TouchableOpacity onPress={() => this.props.navigation.push('WordsActivity', { 
+                                        userGroupId: this.props.activities.get('words').userGroupId,
+                                        lessonTitle: this.props.activities.get('words').lessonTitle,
+                                        lessonId: this.props.activities.get('words').lessonId,
+                                        userToken: this.props.activities.get('words').userToken,
+                                        activities: this.props.activities
+                                    })}>  
+                                <View style={styles.activityGroup}>
+                                    <Image 
+                                        style={[styles.activityImage, chosenActivity == 'words' ? styles.activeImage : styles.inActiveImage]}
+                                        source={require('../../assets/photo-24px.png')} 
+                                    />
+                                </View>
+                            </TouchableOpacity>
+                            </View>
+                        ) : <View/>
+                    }       
+                    {
+                        this.props.activities.get('phrases') ? (
+                            <View style={styles.activityWrapper}>
+                                <View style={styles.grayLine}/>
+                                <TouchableOpacity onPress={() => this.props.navigation.push('PhrasesActivity', { 
+                                    userGroupId: this.props.activities.get('phrases').userGroupId,
+                                    lessonTitle: this.props.activities.get('phrases').lessonTitle,
+                                    lessonId: this.props.activities.get('phrases').lessonId,
+                                    userToken: this.props.activities.get('phrases').userToken,
+                                    activities: this.props.activities
+                                })}>   
+                                    <View style={styles.activityGroup}>
+                                        <Image 
+                                            style={[styles.activityImage, chosenActivity == 'phrases' ? styles.activeImage : styles.inActiveImage]}
+                                            source={require('../../assets/headset-24px.png')} 
+                                        />
+                                    </View>
+                                </TouchableOpacity>
+                            </View>
+                        ) : <View/>
+                    }  
                 </View>
             </View>
         )
@@ -49,8 +104,16 @@ export default class ActivityGroupsProgress extends React.Component<Props> {
 }   
 
 const styles = StyleSheet.create({
+    activityWrapper: {
+        width: '20%',
+        height: 30,
+        marginLeft: 2,
+        marginRight: 2,
+        flexDirection: 'row',
+        justifyContent: 'space-between'
+    },
     grayLine: {
-        width: '10%',
+        width: '20%',
         height: 25,
         marginLeft: 2,
         marginRight: 2,
