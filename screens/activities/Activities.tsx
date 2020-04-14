@@ -18,14 +18,17 @@ export default class Activities extends React.Component<State> {
 
     constructor (props) {
         super(props)
-        const { lessonTitle, lessonId, userToken } = this.props.route.params; 
+    }
+
+    componentDidMount() {
+        const { lessonTitle, lessonId, userToken } = this.props.route.params;
         this.setState({userToken: userToken});
         UserActivitiesProvider(lessonId, (json) => {
             let userActivities : UserActivities = json;
             this.setState({userActivities : userActivities});
         });
     }
-    
+
     renderActivitiesList(){
       const { lessonTitle, lessonId } = this.props.route.params; 
       // const userActivities = 
@@ -76,7 +79,7 @@ export default class Activities extends React.Component<State> {
                                 groupId: this.state.userActivities.phrasesActivityGroup.groupId,
                                 lessonTitle: lessonTitle,
                                 lessonId: lessonId,
-                                userToken: this.state.userToken
+                                userToken: this.state.userToken,
                             })}
                         >
                             <View style = {{alignItems: 'center', backgroundColor: '#FCFDFF', 
@@ -93,8 +96,8 @@ export default class Activities extends React.Component<State> {
                     </View>
                 ) : <View/>
             }
-            {/* {
-                this.state.userActivities.wordActivityGroup && this.state.userActivities.wordActivityGroup.userGroupId ? (  */}
+            {
+                this.state.userActivities.wordActivityGroup && this.state.userActivities.wordActivityGroup.userGroupId ? ( 
                     <View 
                         //key={i} 
                         style={styles.activity}>
@@ -118,8 +121,8 @@ export default class Activities extends React.Component<State> {
                             </View>
                         </TouchableOpacity>
                     </View>
-               {/* ) : <View/>
-            } */}
+                ) : <View/>
+            }
             {
                 this.state.userActivities.multichoiceActivityGroup && this.state.userActivities.multichoiceActivityGroup.userGroupId ? ( 
                     <View 

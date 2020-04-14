@@ -31,7 +31,7 @@ export default function WordActivityCarousel({ onChange, activityData }) {
                     <Text style={styles.number}>{activityData.length}/{itemIndex + 1}</Text>
                 </View>
                 <View style={styles.titleContainer}>
-                    <Text style={styles.title}>{item.title}</Text>
+                    <Text style={styles.title}>{item.phrase}</Text>
                 </View>
             </View>
         )}

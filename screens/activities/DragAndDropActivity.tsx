@@ -5,6 +5,7 @@ import ActivityGroupsProgress from '../../Components/navigation/ActivityGroupsPr
 import DragNDrop from '../../Components/DragNDrop/DragNDrop';
 import { getDnDActivity } from '../../providers/activities/DragNDropActivity';
 import ActivityFooter from '../../Components/ActivityFooter/ActivityFooter';
+import environment from '../../development.json';
 
 export default function DragAndDropActivity({ route, navigation }) {
     const [activityData, setActivityData] = React.useState(null);
@@ -12,9 +13,12 @@ export default function DragAndDropActivity({ route, navigation }) {
 
     React.useEffect(() => {
         try {
-            getDnDActivity(1).then((res) => {
-                setActivityData(res);
-            });
+            getDnDActivity(route.params.userGroupId).then((res) => {
+                setActivityData(res.map(item => ({
+                    ...item,
+                    imgUrl: `${environment.API_URL}/api/v1/admin/dragndrop/${item.pictureId}/picture/${item.pictureUrl}`,
+                })));
+            }); 
         } catch (err) {
             console.log(err);
         }

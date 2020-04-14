@@ -13,8 +13,8 @@ export const Carousel = ({ activityData, onChange }) => {
             index={currentIndex}
             itemWidth={width - 50}
             style={{ width }}
-            data={activityData.map(() => ({
-                imgUrl: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1701&q=80',
+            data={activityData.map((item) => ({
+                ...item,
             }))}
             contentOffset={contentOffset}
             onIndexChange={index => {

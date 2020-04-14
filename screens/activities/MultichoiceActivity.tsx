@@ -14,7 +14,7 @@ export default function MultichoiceActivityScreen({ navigation, route }) {
 
     React.useEffect(() => {
         try {
-            getMultichoice(1).then((res) => {
+            getMultichoice(route.params.userGroupId).then((res) => {
                 setActivityData(res);
             });
         } catch (err) {
