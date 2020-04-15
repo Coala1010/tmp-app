@@ -4,7 +4,7 @@ import SideSwipe from 'react-native-sideswipe';
 import { Feather, AntDesign } from '@expo/vector-icons';
 import { uploadMultichoiceActivityRecord } from '../../providers/activities/Multichoice';
 
-export default function Multichoice({ activityData, setHintText }) {
+export default function Multichoice({ activityData, setHintText, onSuccess }) {
     const [currentIndex, setCurrentIndex] = React.useState(activityData.length - 1);
     const [selected, setSelected] = React.useState({});
     const [currentQuestion, setCurrentQuestion] = React.useState(0);
@@ -15,7 +15,8 @@ export default function Multichoice({ activityData, setHintText }) {
             [currentQuestion]: null,
         });
     };
-    const setCurrentSelected = async (id) => {
+    const setCurrentSelected = async (answer) => {
+        const id = answer.id;
         if (selected[currentQuestion] === id) {
             clearSelected();
         } else {
@@ -32,6 +33,17 @@ export default function Multichoice({ activityData, setHintText }) {
             } catch (err) {
                 console.log(err);
             }
+
+            if (answer.isCorrect) {
+                setTimeout(() => {
+                    if (currentIndex > 0) {
+                        setCurrentQuestion(activityData.length - currentIndex);//activityData.length - 1 - index)
+                        setCurrentIndex(currentIndex - 1);
+                    } else {
+                        onSuccess();
+                    }
+                }, 2000);
+            }    
         }
     };
 
@@ -75,7 +87,7 @@ export default function Multichoice({ activityData, setHintText }) {
             <ScrollView style={styles.answers}>
                 {activityData[currentQuestion].answers.map((answer, id) => (
                     <TouchableOpacity
-                        onPress={() => setCurrentSelected(answer.id)}
+                        onPress={() => setCurrentSelected(answer)}
                         key={answer.id}
                         style={[styles.answerContainer, selected[currentQuestion] === answer.id && styles.answerContainerSelected]}
                     >

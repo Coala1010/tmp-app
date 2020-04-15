@@ -23,6 +23,30 @@ export default function MultichoiceActivityScreen({ navigation, route }) {
         }
     }, []);
 
+    const onAllChoicesAnswered = () =>{        
+        navigation.push(nextActivity.navigationScreen, { 
+            userGroupId: nextActivity.userGroupId,
+            lessonTitle: nextActivity.lessonTitle,
+            lessonId: nextActivity.lessonId,
+            userToken: nextActivity.userToken,
+            unitTitle: nextActivity.unitTitle,
+            unitId: nextActivity.unitId,
+            activities: activities
+        });
+    }
+
+    const backToLessons = () =>{        
+        navigation.push('Lessons', { 
+            userGroupId: nextActivity.userGroupId,
+            lessonTitle: nextActivity.lessonTitle,
+            lessonId: nextActivity.lessonId,
+            userToken: nextActivity.userToken,
+            unitTitle: nextActivity.unitTitle,
+            unitId: nextActivity.unitId,
+            activities: activities
+        });
+    }
+
     return (
         <View style={{flex: 1, justifyContent:'flex-start', width: '100%', backgroundColor: '#FCFDFF'}}>
             <View style={{flex: 1, justifyContent:'flex-start', width: '100%', backgroundColor: '#FCFDFF'}}>
@@ -37,7 +61,9 @@ export default function MultichoiceActivityScreen({ navigation, route }) {
                     </Text>
                     <TouchableOpacity 
                         style={styles.backButton}
-                        onPress={() => navigation.goBack()}>
+                        //onPress={() => navigation.goBack()}
+                        onPress={() => backToLessons()}
+                        >
                         <Image 
                             style={styles.image}
                             source={require('../../assets/arrow_back-24px.png')} 
@@ -50,6 +76,7 @@ export default function MultichoiceActivityScreen({ navigation, route }) {
                         <Multichoice
                             activityData={activityData}
                             setHintText={setHintText}
+                            onSuccess={onAllChoicesAnswered}
                         />
                     ): <View style={{ flex: 1 }} />}
                     <ActivityFooter
@@ -62,6 +89,7 @@ export default function MultichoiceActivityScreen({ navigation, route }) {
                             lessonId: nextActivity.lessonId,
                             userToken: nextActivity.userToken,
                             unitTitle: nextActivity.unitTitle,
+                            unitId: nextActivity.unitI,
                             activities: activities
                         }}
                     />

@@ -89,7 +89,7 @@ const Dropbox = ({ setSelected, clearSelected, selected, answers }) => (
     </Droppable>
 );
 
-export default function DragNDrop({ activityData }) {
+export default function DragNDrop({ activityData, onSuccess }) {
     const [currentQuest, setQurrentQuest] = React.useState(0);
     const [selected, setSelected] = React.useState({});
     const [dragging, setDragging] = React.useState(null);
@@ -115,6 +115,18 @@ export default function DragNDrop({ activityData }) {
         } catch (err) {
             console.log(err);
         }
+
+        alert(activityData.length + " : " + currentQuest);
+        if (activityData[currentQuest].answers.find(({ id }) => id === val).isCorrect) {
+            setTimeout(() => {
+                if (currentQuest + 1 < activityData.length) {
+                    setQurrentQuest(currentQuest + 1);//activityData.length - 1 - index)
+                    // setCurrentIndex(currentIndex - 1);
+                } else {
+                    onSuccess();
+                }
+            }, 2000);
+        } 
     };
 
     return !activityData || !activityData.length ? null : (

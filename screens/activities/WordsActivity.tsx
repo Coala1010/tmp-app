@@ -58,6 +58,18 @@ export default function WordsActivity({ navigation, lessonTitle, route }) {
         }
     };
 
+    const backToLessons = () =>{        
+        navigation.push('Lessons', { 
+            userGroupId: nextActivity.userGroupId,
+            lessonTitle: nextActivity.lessonTitle,
+            lessonId: nextActivity.lessonId,
+            userToken: nextActivity.userToken,
+            unitTitle: nextActivity.unitTitle,
+            unitId: nextActivity.unitId,
+            activities: activities
+        });
+    };
+
     return (
         <View style={{flex: 1, justifyContent:'flex-start', width: '100%', backgroundColor: '#FCFDFF'}}>
             <View style={{flex: 1, justifyContent:'flex-start', width: '100%', backgroundColor: '#FCFDFF'}}>
@@ -73,7 +85,9 @@ export default function WordsActivity({ navigation, lessonTitle, route }) {
                     </Text>
                     <TouchableOpacity 
                         style={styles.backButton}
-                        onPress={() => navigation.goBack()}>
+                        //onPress={() => navigation.goBack()}
+                        onPress={() => backToLessons()}
+                        >
                         <Image 
                             style={styles.image}
                             source={require('../../assets/arrow_back-24px.png')} 
@@ -104,6 +118,7 @@ export default function WordsActivity({ navigation, lessonTitle, route }) {
                     lessonId: nextActivity.lessonId,
                     userToken: nextActivity.userToken,
                     unitTitle: nextActivity.unitTitle,
+                    unitId: nextActivity.unitId,
                     activities: activities
                 }}
             />

@@ -25,6 +25,30 @@ export default function DragAndDropActivity({ route, navigation }) {
         }
     }, []);
 
+    const onAllChoicesAnswered = () =>{        
+        navigation.push(nextActivity.navigationScreen, { 
+            userGroupId: nextActivity.userGroupId,
+            lessonTitle: nextActivity.lessonTitle,
+            lessonId: nextActivity.lessonId,
+            userToken: nextActivity.userToken,
+            unitTitle: nextActivity.unitTitle,
+            unitId: nextActivity.unitId,
+            activities: activities
+        });
+    }
+
+    const backToLessons = () =>{        
+        navigation.push('Lessons', { 
+            userGroupId: nextActivity.userGroupId,
+            lessonTitle: nextActivity.lessonTitle,
+            lessonId: nextActivity.lessonId,
+            userToken: nextActivity.userToken,
+            unitTitle: nextActivity.unitTitle,
+            unitId: nextActivity.unitId,
+            activities: activities
+        });
+    }
+
     return (
         <View style={{flex: 1, justifyContent:'flex-start', width: '100%', backgroundColor: '#FCFDFF'}}>
             <View style={{flex: 1, justifyContent:'flex-start', width: '100%', backgroundColor: 'white'}}>
@@ -38,7 +62,9 @@ export default function DragAndDropActivity({ route, navigation }) {
                     </Text>
                     <TouchableOpacity 
                         style={styles.backButton}
-                        onPress={() => navigation.goBack()}>
+                        //onPress={() => navigation.goBack()}
+                        onPress={() => backToLessons()}
+                    >
                         <Image 
                             style={styles.image}
                             source={require('../../assets/arrow_back-24px.png')} 
@@ -46,7 +72,7 @@ export default function DragAndDropActivity({ route, navigation }) {
                     </TouchableOpacity>
                 </View>
                 <ActivityGroupsProgress chosenActivity='dragndrop' navigation={navigation} activities={activities}/>
-                <DragNDrop activityData={activityData} />
+                <DragNDrop activityData={activityData} onSuccess={onAllChoicesAnswered}/>
                 <ActivityFooter navigation={navigation} 
                     toNext={nextActivity.navigationScreen}
                     toNextPayload={{ 
