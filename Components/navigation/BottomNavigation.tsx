@@ -17,7 +17,8 @@ export default class BottomNavigation extends React.Component<State> {
                                     source={require('../../assets/keyboard_arrow_left-24px.png')} 
                                 />
                                 <Text style = {{ color: '#233665', alignContent: 'center', display: 'flex', 
-                                            padding: 10, fontWeight: 'bold'}}>Forward</Text>
+                                            padding: 10, fontWeight: 'bold', fontSize: 20}}>التــالي</Text> 
+                                            {/* Forward */}
                             </View>
                         </TouchableOpacity>
                     </View>

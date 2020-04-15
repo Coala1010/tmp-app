@@ -68,9 +68,18 @@ export default class VideoActivity extends React.Component<State> {
                         borderColor: '#F7F9F7', height: 100,
                         justifyContent: 'space-around',
                         flexDirection: 'row'}}>
-                        <Text style={{textAlign: 'center', marginTop: 50, fontWeight: 'bold', color: '#233665', width: '100%',}}>
+                        <Text style={{textAlign: 'center', marginTop: 50, fontWeight: 'bold', color: '#233665', width: '100%', fontSize: 20}}>
                             {lessonTitle}
                         </Text>
+                        <TouchableOpacity 
+                            style={styles.backButton}
+                            onPress={() => this.props.navigation.goBack()}
+                            >
+                            <Image 
+                                style={styles.image}
+                                source={require('../../assets/arrow_back-24px.png')} 
+                            />
+                        </TouchableOpacity>
                     </View>
                 {this.renderVideo(videoTitle)}
 
@@ -84,6 +93,7 @@ export default class VideoActivity extends React.Component<State> {
                             lessonId: nextActivity.lessonId,
                             userToken: nextActivity.userToken,
                             unitTitle: nextActivity.unitTitle,
+                            unitId: nextActivity.unitId,
                             activities: activities
                         }}
                     />
@@ -165,19 +175,19 @@ export default class VideoActivity extends React.Component<State> {
         alignItems: 'center',
     },
     backButton: {
-        width: 60, 
-        marginTop: 10, 
-        justifyContent: 'space-around',
-        backgroundColor: '#FCFDFF',
-        borderColor: 'black',
-        borderStyle: 'solid',
-        borderWidth: 0,
-        shadowColor: 'lightgray',
-        shadowOpacity: 0.6,
-        borderRadius: 15,
-        marginLeft: 10,
-        marginRight: 10,
-        alignItems: 'center',
+        marginTop: 50, 
+        color: '#233665', 
+        width: 30, 
+        height: 30, 
+        marginRight: 30,
+        backgroundColor: '#F7F9FC',
+        fontWeight: 'bold', 
+        borderStyle: 'solid', 
+        borderRadius: 5, 
+        borderWidth: 1,
+        borderColor: '#F7F9FC', 
+        overflow: 'hidden',
+        alignItems: 'center'
     },
     forwardButton: {
         marginTop: 10,

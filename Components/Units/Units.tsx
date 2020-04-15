@@ -62,6 +62,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Arial',
     color: '#233665',
     fontWeight: 'bold',
+    fontSize: 16
   },
   container: {
     margin: 5,
@@ -84,7 +85,13 @@ const styles = StyleSheet.create({
     borderWidth: 0,
     shadowColor: 'lightgray',
     shadowOpacity: 0.6,
-    borderRadius: 15,
+    borderRadius: 16,
+    shadowOffset: {
+          width: 0,
+          height: 2,
+      },
+    shadowRadius: 2.22,
+    elevation: 3,
   },
   image: {
     height: 100,

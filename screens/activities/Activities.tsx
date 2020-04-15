@@ -8,7 +8,8 @@ interface State {
   selectedIndex: Number,
   userActivities: UserActivities,
   userToken: string,
-  activities: Map<string, NavigationActivity>
+  activities: Map<string, NavigationActivity>,
+  firstActivity: NavigationActivity
 }
 
 export default class Activities extends React.Component<State> {
@@ -16,7 +17,8 @@ export default class Activities extends React.Component<State> {
         selectedIndex: -1,
         userActivities: null,
         userToken: null,
-        activities: null
+        activities: null,
+        firstActivity: null
     }
 
     constructor (props) {
@@ -117,6 +119,8 @@ export default class Activities extends React.Component<State> {
             nextActivity = phrasesNavigation;
         }
 
+        this.setState({firstActivity : nextActivity});
+
         this.setState({activities: activities});
     }
 
@@ -141,13 +145,15 @@ export default class Activities extends React.Component<State> {
                                 lessonTitle: lessonTitle,
                                 lessonId: lessonId,
                                 userToken: this.state.userToken,
-                                activities: this.state.activities
+                                activities: this.state.activities,
+                                unitId: this.props.route.params.unitId 
                                 })}>
                             <View style = {{alignItems: 'center', backgroundColor: '#FCFDFF', 
                                 justifyContent: 'space-around', height: 60,
                                 flexDirection: 'row'
                                 }}>
-                            <Text style = {styles.activityText}>Video Activity</Text>
+                            <Text style = {styles.activityText}>النشاط الأول : فيديو</Text>
+                            {/* Video Activity */}
                             <Image 
                                             style={styles.image}
                                             source={require('../../assets/video-24px.png')} 
@@ -180,7 +186,8 @@ export default class Activities extends React.Component<State> {
                                 justifyContent: 'space-around', height: 60,
                                 flexDirection: 'row'
                                 }}>
-                            <Text style = {styles.activityText}>Phrases Activity</Text>
+                            <Text style = {styles.activityText}>النشاط الثاني  : إستماع</Text>
+                            {/* Phrases Activity */}
                             <Image 
                                             style={styles.image}
                                             source={require('../../assets/headset-24px.png')} 
@@ -236,7 +243,8 @@ export default class Activities extends React.Component<State> {
                                 justifyContent: 'space-around', height: 60,
                                 flexDirection: 'row'
                                 }}>
-                            <Text style = {styles.activityText}>Multichoice Activity</Text>
+                            <Text style = {styles.activityText}>النشاط الثالث : إختيار ما بين متعدد</Text>
+                            {/* Multichoice Activity */}
                             <Image 
                                             style={styles.image}
                                             source={require('../../assets/format_list_bulleted-24px.png')} 
@@ -261,7 +269,8 @@ export default class Activities extends React.Component<State> {
                                 justifyContent: 'space-around', height: 60,
                                 flexDirection: 'row'
                             }}>
-                                <Text style={styles.activityText}>Drag And Drop Activity</Text>
+                                <Text style={styles.activityText}>النشاط الرابع : مطابقة الصور</Text>
+                                {/* Drag And Drop Activity */}
                                 <Image 
                                     style={styles.image}
                                     source={require('../../assets/extension-24px.png')} 
@@ -301,22 +310,31 @@ export default class Activities extends React.Component<State> {
                     </View>
                     {this.renderActivitiesList()}
                 </View>
-                <View style={{flexDirection: 'row', marginBottom: 50}}>
+                <View style={{flexDirection: 'row', marginBottom: 50, justifyContent: 'center'}}>
                     <View style={styles.forwardButton}>
                         <TouchableOpacity style={{padding: 5}} 
-                            onPress={() => this.props.navigation.navigate('VideoActivity', { videoUrl: userActivities.videoActivity.videoUrl,
-                            lessonTitle: lessonTitle})}>
+                            onPress={() => this.props.navigation.navigate(this.state.firstActivity.navigationScreen, 
+                                { 
+                                    userGroupId: this.state.firstActivity.userGroupId,
+                                    lessonTitle: this.state.firstActivity.lessonTitle,
+                                    lessonId: this.state.firstActivity.lessonId,
+                                    userToken: this.state.userToken,
+                                    activities: this.state.activities,
+                                    unitId: this.props.route.params.unitId 
+                                }
+                                )}>
                             <View style = {styles.forwardButtonInner}>
                                 <Image 
                                     style={styles.forwardImage}
                                     source={require('../../assets/keyboard_arrow_left-24px.png')} 
                                 />
                                 <Text style = {{ color: '#233665', alignContent: 'center', display: 'flex', 
-                                            padding: 10, fontWeight: 'bold'}}>Forward</Text>
+                                            padding: 10, fontWeight: 'bold', fontSize: 20}}>التــالي</Text>
+                                            {/* Forward */}
                             </View>
                         </TouchableOpacity>
                     </View>
-                    <View style={styles.backButton}>
+                    {/* <View style={styles.backButton}>
                         <TouchableOpacity 
                             style={styles.backButtonTO}
                             onPress={() => this.props.navigation.goBack()}>
@@ -327,7 +345,7 @@ export default class Activities extends React.Component<State> {
                                 />
                             </View>
                         </TouchableOpacity>
-                    </View>
+                    </View> */}
                 </View>
           </View>
       );
@@ -343,7 +361,8 @@ export default class Activities extends React.Component<State> {
         display: 'flex', 
         padding: 10, 
         fontWeight: 'bold', 
-        marginRight: 10
+        marginRight: 10,
+        fontSize: 16
     },
     image: {
         height: 24,
@@ -353,6 +372,8 @@ export default class Activities extends React.Component<State> {
     forwardImage: {
         height: 24,
         width: 14,
+        position: 'absolute',
+        left: 10
     },
     backImage: {
         height: 24,
@@ -395,17 +416,24 @@ export default class Activities extends React.Component<State> {
     },
     forwardButton: {
         marginTop: 10,
-        marginLeft: 20,
-        marginRight: 10, 
+        // marginLeft: 10,
+        // marginRight: 10, 
         justifyContent: 'space-around',
         backgroundColor: '#FCFDFF',
-        borderColor: 'black',
-        borderStyle: 'solid',
+        // borderColor: 'black',
+        // borderStyle: 'solid',
         borderWidth: 0,
-        shadowColor: 'lightgray',
         shadowOpacity: 0.6,
-        borderRadius: 15,
-        width: '70%'
+        borderRadius: 16,
+        // shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        // shadowOpacity: 0.22,
+        shadowRadius: 2.22,
+        elevation: 3,
+        width: '90%'
     },
     forwardButtonInner: {
         alignItems: 'center', 
@@ -418,14 +446,22 @@ export default class Activities extends React.Component<State> {
         marginTop: 10, 
         justifyContent: 'space-around',
         backgroundColor: '#FCFDFF',
-        borderColor: 'black',
-        borderStyle: 'solid',
+        // borderColor: 'black',
+        // borderStyle: 'solid',
         borderWidth: 0,
-        shadowColor: 'lightgray',
-        shadowOpacity: 0.6,
-        borderRadius: 15,
         alignContent: 'center',
         // alignContent: 'flex-end', 
-        alignItems: 'flex-end'
+        alignItems: 'flex-end',
+        shadowColor: 'lightgray',
+        shadowOpacity: 0.6,
+        borderRadius: 16,
+        // shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        // shadowOpacity: 0.22,
+        shadowRadius: 2.22,
+        elevation: 3,
     }
   });

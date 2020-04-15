@@ -17,9 +17,10 @@ export default function ActivityFooter({ userActivities, lessonTitle, navigation
                         />
                     </View>
                 </TouchableOpacity>
-                <Text style={styles.footerTitle}>
-                    Forward
-                </Text>
+                        <Text style={styles.footerTitle}>
+                            التــالي
+                        </Text>
+                {/* Forward */}
                 <View style={{ width: 24 }} />
             </View>
 
@@ -93,13 +94,13 @@ const styles = StyleSheet.create({
         width: 24,
         //resizeMode: 'contain',  
     },
-    backgroundVideo: {
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        bottom: 0,
-        right: 0,
-    },
+    // backgroundVideo: {
+    //     position: 'absolute',
+    //     top: 0,
+    //     left: 0,
+    //     bottom: 0,
+    //     right: 0,
+    // },
     forwardImage: {
         height: 24,
         width: 14,

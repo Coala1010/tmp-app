@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Text, View, TouchableOpacity } from 'react-native';
+import { Text, View, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 
 import Units from '../../Components/Units/Units';
 import UserLevels from '../../types/UserLevels';
@@ -57,28 +57,15 @@ export default class Levels extends React.Component<State> {
       return userLevels.userLevelsArray.map((userLevel, i, levelArray) =>
         <View 
           key={i} 
-          style={{
-          marginTop: 10, 
-          justifyContent: 'space-around',
-          backgroundColor: '#FCFDFF',
-          borderColor: 'black',
-          borderStyle: 'solid',
-          borderWidth: 0,
-          shadowColor: 'lightgray',
-          shadowOpacity: 0.6,
-          borderRadius: 15}}>
+          style={styles.level}>
 
           <TouchableOpacity style={{padding: 5}} onPress = {() => {this.handleOnPress(i)}}>
             <View style = {{alignItems: 'center', backgroundColor: '#FCFDFF', 
                   justifyContent: 'space-around', height: 60,
                   flexDirection: 'row'
                   }}>
-              <Text style = {{marginLeft: 70, color: '#233665', alignContent: 'center', display: 'flex', 
-              padding: 10, fontWeight: 'bold'}}>{userLevel.title}</Text>
-              <Text style = {{marginLeft: 20, color: '#233665', alignContent: 'flex-end', display: 'flex', padding: 7, marginEnd: 0,
-                            backgroundColor: '#F7F9FC',
-                            fontWeight: 'bold', borderStyle: 'solid', borderRadius: 5, borderWidth: 1,
-                            borderColor: '#F7F9FC', overflow: 'hidden'}}>{i+1}</Text>              
+              <Text style = {styles.levelTitle}>{userLevel.title}</Text>
+              <Text style = {styles.levelNumber}>{i+1}</Text>              
             </View>
           </TouchableOpacity>
           
@@ -95,9 +82,70 @@ export default class Levels extends React.Component<State> {
           list = this.renderLevelsList();
       }
       return (
-        <View style={{flex: 1, justifyContent:'flex-start', padding: 10, width: '100%'}}>
-          {list}
+        <View style={{flex: 1, justifyContent:'center', padding: 10, width: '100%', margin: 5}}>
+          <ScrollView 
+            // onScroll={() => setScrollId(scrollId + 1)} 
+            scrollEventThrottle={50} 
+            // scrollEnabled={!dragging}
+          >
+            {list}
+          </ScrollView>
         </View>
       );
     } 
   }
+
+  const styles = StyleSheet.create({
+    level: {
+      width: '95%',
+      margin: 10,
+      justifyContent: 'space-around',
+      backgroundColor: '#FCFDFF',
+      // borderColor: 'black',
+      // borderStyle: 'solid',
+      // borderWidth: 0,
+      shadowColor: 'lightgray',
+      shadowOpacity: 0.6,
+      borderRadius: 16,
+      // shadowColor: "#000",
+      shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+      // shadowOpacity: 0.22,
+      shadowRadius: 2.22,
+      elevation: 3,
+      fontSize: 20
+      // backgroundColor: 'white',
+      // borderRadius: 20,
+    },
+    levelNumber: {
+      marginLeft: 20, 
+      color: '#233665', 
+      alignContent: 'flex-end', 
+      display: 'flex', 
+      padding: 7, 
+      marginEnd: 0,
+      backgroundColor: '#F7F9FC',
+      fontWeight: 'bold', 
+      borderStyle: 'solid', 
+      borderRadius: 5, 
+      borderWidth: 1,
+      borderColor: '#F7F9FC', 
+      overflow: 'hidden', 
+      position: 'absolute',
+      // top: 20,
+      right: '5%',
+      fontSize: 20,
+      // fontFamily: 'NeoSansArabic-Bold'
+    },
+    levelTitle: {
+      color: '#233665', 
+      alignContent: 'center', 
+      display: 'flex', 
+      padding: 10, 
+      fontWeight: 'bold',
+      fontSize: 20
+    }
+  });
+

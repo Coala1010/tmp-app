@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, TouchableOpacity, Image, StyleSheet } from 'react-native';
+import { Text, View, TouchableOpacity, Image, StyleSheet, ScrollView } from 'react-native';
 import UserLessons from '../../types/UserLessons';
 import UserLessonsProvider from '../../providers/UserLessonsProvider';
 
@@ -42,16 +42,7 @@ export default class Lessons extends React.Component<Props, State> {
     return userLessons.userLessonsArray.map((userLesson, i, levelArray) =>
       <View 
         key={i} 
-        style={{
-        marginTop: 10, 
-        justifyContent: 'space-around',
-        backgroundColor: '#FCFDFF',
-        borderColor: 'black',
-        borderStyle: 'solid',
-        borderWidth: 0,
-        shadowColor: 'lightgray',
-        shadowOpacity: 0.6,
-        borderRadius: 15}}>
+        style={styles.lesson}>
 
         <TouchableOpacity style={{padding: 5}} 
         onPress={() => this.props.navigation.navigate('Activities', {
@@ -66,11 +57,11 @@ export default class Lessons extends React.Component<Props, State> {
                 flexDirection: 'row'
                 }}>
             <Text style = {{marginLeft: 70, color: '#233665', alignContent: 'center', display: 'flex', 
-            padding: 10, fontWeight: 'bold'}}>{userLesson.title}</Text>
+            padding: 10, fontWeight: 'bold', fontSize: 20}}>{userLesson.title}</Text>
             <Text style = {{marginLeft: 20, color: '#233665', alignContent: 'flex-end', display: 'flex', padding: 7, marginEnd: 0,
                           backgroundColor: '#F7F9FC',
                           fontWeight: 'bold', borderStyle: 'solid', borderRadius: 5, borderWidth: 1,
-                          borderColor: '#F7F9FC', overflow: 'hidden'}}>{i+1}</Text>              
+                          borderColor: '#F7F9FC', overflow: 'hidden', fontSize: 20}}>{i+1}</Text>              
           </View>
         </TouchableOpacity>
         
@@ -93,7 +84,7 @@ export default class Lessons extends React.Component<Props, State> {
                         borderColor: '#F7F9F7', height: 100,
                         justifyContent: 'space-around',
                         flexDirection: 'row'}}>
-                <Text style={{textAlign: 'center', marginTop: 50, fontWeight: 'bold', color: '#233665', width: '100%',}}>
+                <Text style={{textAlign: 'center', marginTop: 50, fontWeight: 'bold', color: '#233665', width: '100%', fontSize: 20}}>
                   {unitTitle}
                 </Text>
                 <TouchableOpacity 
@@ -106,7 +97,11 @@ export default class Lessons extends React.Component<Props, State> {
                 </TouchableOpacity>
             </View>
             <View style={{flex: 1, justifyContent:'flex-start', padding: 10, width: '100%'}}>
-            {list}
+              <ScrollView 
+                scrollEventThrottle={50} 
+              >
+                {list}
+              </ScrollView>
           </View>
        </View>
       );
@@ -134,5 +129,26 @@ export default class Lessons extends React.Component<Props, State> {
       borderColor: '#F7F9FC', 
       overflow: 'hidden',
       alignItems: 'center'
+    },
+    lesson: {
+      width: '95%',
+      margin: 10,
+      justifyContent: 'space-around',
+      backgroundColor: '#FCFDFF',
+      borderColor: 'black',
+      borderStyle: 'solid',
+      borderWidth: 0,
+      shadowColor: 'lightgray',
+      shadowOpacity: 0.6,
+      borderRadius: 16,
+      // shadowColor: "#000",
+      shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+      // shadowOpacity: 0.22,
+      shadowRadius: 2.22,
+      elevation: 3,
     }
-  });
+  }
+);
