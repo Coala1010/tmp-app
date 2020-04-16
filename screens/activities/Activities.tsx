@@ -129,7 +129,7 @@ export default class Activities extends React.Component<State> {
       // const userActivities = 
 
       return this.state.userActivities ? (
-        <View style={{flex: 1, justifyContent:'flex-start', padding: 10, width: '100%'}}>
+        <View style={{flex: 1, justifyContent:'flex-start', padding: 20, width: '100%', marginTop: 50}}>
             {
                 this.state.userActivities.videoActivityGroup && this.state.userActivities.videoActivityGroup.userGroupId ? 
                 (
@@ -288,26 +288,38 @@ export default class Activities extends React.Component<State> {
         const { lessonTitle } = this.props.route.params; 
         return (
             <View style={{flex: 1, justifyContent:'flex-start', width: '100%', backgroundColor: '#FCFDFF'}}>
-                <View style={{flex: 1, justifyContent:'flex-start', width: '100%', backgroundColor: '#FCFDFF'}}>
+                <View style={{flex: 1, justifyContent:'center', width: '100%', backgroundColor: '#FCFDFF'}}>
                     <View style={{backgroundColor: '#233665',
                                 borderStyle: 'solid', borderWidth: 3,
-                                borderColor: '#F7F9F7', height: 100,
+                                borderColor: '#F7F9F7', height: 80,
                                 justifyContent: 'space-around',
                                 flexDirection: 'row', overflow: 'hidden'}}>
-                    <View style={{marginTop: 60, backgroundColor: '#FCFDFF',
-                                borderStyle: 'solid', borderWidth: 3,
-                                borderColor: '#F7F9F7', height: 60,                          
-                                position: 'absolute',
-                                paddingTop:10,
-                                paddingLeft:10,
-                                top: 40,
-                                left: 10
-                            }}>
-                        <Text style={{textAlign: 'center', marginTop: 50, fontWeight: 'bold', color: '#233665', width: '100%',}}>
-                          {lessonTitle}
-                        </Text>
-                      </View>
+                        
                     </View>
+                    <View style={{marginTop: 60, 
+                                    backgroundColor: '#FCFDFF',
+                                    borderWidth: 0,
+                                    shadowOpacity: 0.6,
+                                    borderRadius: 16,
+                                    shadowOffset: {
+                                        width: 0,
+                                        height: 2,
+                                    },
+                                    shadowRadius: 2.22,
+                                    elevation: 3,
+                                    height: 88,                         
+                                    position: 'absolute', 
+                                    justifyContent: 'center',
+                                    top: -20,
+                                    left: '5%',
+                                    zIndex: 1,
+                                    width: '90%'
+                                }}>
+                            <Text style={{textAlign: 'center', 
+                            fontWeight: 'bold', color: '#233665', width: '100%',}}>
+                            {lessonTitle}
+                            </Text>
+                        </View>
                     {this.renderActivitiesList()}
                 </View>
                 <View style={{flexDirection: 'row', marginBottom: 50, justifyContent: 'center'}}>
@@ -443,7 +455,8 @@ export default class Activities extends React.Component<State> {
         flexDirection: 'row'
     },
     activity: {
-        marginTop: 10, 
+        marginTop: 10,
+        marginBottom: 10, 
         justifyContent: 'space-around',
         backgroundColor: '#FCFDFF',
         // borderColor: 'black',

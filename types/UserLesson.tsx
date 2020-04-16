@@ -5,7 +5,7 @@ export default class UserLesson {
 	lessonNumber: number;
 	levelLastModificationDate: Date;
 	levelCreationDate: Date;
-	userLevelProgress: number;
+	userLessonProgress: number;
 	userLastModificationDate: Date;
 	userCreationDate: Date;
 }   

@@ -1,12 +1,13 @@
 import React from 'react';
 
-import { Text, View, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
+import { Text, View, TouchableOpacity, StyleSheet, ScrollView, Image } from 'react-native';
 
 import Units from '../../Components/Units/Units';
 import UserLevels from '../../types/UserLevels';
 
 import UserLevelsProvider from '../../providers/UserLevelsProvider';
 import UserProvider from '../../providers/UserProvider';
+import CircularProgress from '../../Components/CircularProgress/CircularProgress';
 
 import {
     NavigationParams,
@@ -64,6 +65,16 @@ export default class Levels extends React.Component<State> {
                   justifyContent: 'space-around', height: 60,
                   flexDirection: 'row'
                   }}>
+              <View style={styles.progressContainer}>
+                {
+                  userLevel.userLevelProgress > 0 ?
+                  (
+                  userLevel.userLevelProgress < 1 ? 
+                  <CircularProgress percent={userLevel.userLevelProgress * 100} />
+                  : <Image style={styles.congratsImage} source={require('../../assets/achieved.png')} />
+                  ) : <View/>
+                }          
+              </View>      
               <Text style = {styles.levelTitle}>{userLevel.title}</Text>
               <Text style = {styles.levelNumber}>{i+1}</Text>              
             </View>
@@ -81,12 +92,12 @@ export default class Levels extends React.Component<State> {
       if (this.state.userLevels) {
           list = this.renderLevelsList();
       }
+
       return (
+        // <CircularProgressWrapper/>  
         <View style={{flex: 1, justifyContent:'center', padding: 10, width: '100%', margin: 5}}>
           <ScrollView 
-            // onScroll={() => setScrollId(scrollId + 1)} 
             scrollEventThrottle={50} 
-            // scrollEnabled={!dragging}
           >
             {list}
           </ScrollView>
@@ -146,6 +157,17 @@ export default class Levels extends React.Component<State> {
       padding: 10, 
       fontWeight: 'bold',
       fontSize: 20
-    }
+    },
+    progressContainer: {
+      position: 'absolute',
+      left: '5%',
+      justifyContent: 'center',
+      flexDirection: 'row',
+    },
+    congratsImage: {
+      height: 36,
+      width: 32,
+      resizeMode: 'contain', 
+    },
   });
 

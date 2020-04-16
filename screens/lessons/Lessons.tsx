@@ -2,6 +2,7 @@ import React from 'react';
 import { Text, View, TouchableOpacity, Image, StyleSheet, ScrollView } from 'react-native';
 import UserLessons from '../../types/UserLessons';
 import UserLessonsProvider from '../../providers/UserLessonsProvider';
+import CircularProgress from '../../Components/CircularProgress/CircularProgress';
 
 interface Props {
 }
@@ -56,6 +57,16 @@ export default class Lessons extends React.Component<Props, State> {
                 justifyContent: 'space-around', height: 60,
                 flexDirection: 'row'
                 }}>
+            <View style={styles.progressContainer}>
+                {
+                  userLesson.userLessonProgress > 0 ?
+                  (
+                    userLesson.userLessonProgress < 1 ? 
+                  <CircularProgress percent={userLesson.userLessonProgress * 100} />
+                  : <Image style={styles.congratsImage} source={require('../../assets/achieved.png')} />
+                  ) : <View/>
+                }          
+              </View>       
             <Text style = {{marginLeft: 70, color: '#233665', alignContent: 'center', display: 'flex', 
             padding: 10, fontWeight: 'bold', fontSize: 20}}>{userLesson.title}</Text>
             <Text style = {{marginLeft: 20, color: '#233665', alignContent: 'flex-end', display: 'flex', padding: 7, marginEnd: 0,
@@ -149,6 +160,17 @@ export default class Lessons extends React.Component<Props, State> {
       // shadowOpacity: 0.22,
       shadowRadius: 2.22,
       elevation: 3,
-    }
+    },
+    progressContainer: {
+      position: 'absolute',
+      left: '5%',
+      justifyContent: 'center',
+      flexDirection: 'row',
+    },
+    congratsImage: {
+      height: 36,
+      width: 32,
+      resizeMode: 'contain', 
+    },
   }
 );

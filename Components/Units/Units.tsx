@@ -7,6 +7,7 @@ import {
 } from 'react-navigation';
 
 import environment from '../../development.json';
+import UnitProgress from './UnitProgress';
 
 interface Props {
   visible: boolean,
@@ -21,6 +22,8 @@ export default class Units extends React.Component<Props> {
 
   _unitTitle = (item, index) => (index+1) + '. ' + item.title;
 
+  radius : number = 10; 
+
   _renderItem = ({item, index}) => {
     return (
     <View style={styles.unitContainer} >
@@ -33,6 +36,16 @@ export default class Units extends React.Component<Props> {
           <Image style={styles.image}
               source={{ uri: environment.API_URL + '/api/v1/admin/unit/image/' + item.pictureUrl}}
               key={item.title} />
+          <View style={styles.progressContainer}>
+            {
+              item.userUnitProgress > 0 ?
+              (
+                item.userUnitProgress < 1 ? 
+                <UnitProgress percent={item.userUnitProgress * 100} />
+                : <Image style={styles.congratsImage} source={require('../../assets/achieved.png')}/>
+              ) : <View/>
+            }          
+          </View>
         </View>
         <Text style={styles.text}>{this._unitTitle(item, index)}</Text>     
       </TouchableOpacity>
@@ -56,6 +69,10 @@ export default class Units extends React.Component<Props> {
 }
 
 const styles = StyleSheet.create({
+  outerCircle: {
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
   text: {
     marginTop: 10,
     textAlign: 'center',
@@ -97,5 +114,27 @@ const styles = StyleSheet.create({
     height: 100,
     width: '100%',
     resizeMode: 'contain',  
-  }
+  },
+  congratsImage: {
+    height: 36,
+    // width: '100%',
+    resizeMode: 'contain',  
+  },
+  progressContainer: {
+    position: 'absolute',
+    top: 5,
+    left: 5,
+    justifyContent: 'center',
+    flexDirection: 'row',
+  },
+  title: {
+    backgroundColor: 'rgba(255, 255, 255, 0.5)',
+    paddingHorizontal: 25,
+    paddingVertical: 5,
+    borderRadius: 10,
+    overflow: 'hidden',
+    color: '#24395F',
+    fontWeight: 'bold',
+    fontSize: 16,
+},
 });
