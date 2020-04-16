@@ -28,9 +28,9 @@ export default class Lessons extends React.Component<Props, State> {
   } 
 
   componentDidMount() {
-    const { unitId, token } = this.props.route.params; 
-    this.setState({unitId : unitId, token: token});
-    UserLessonsProvider(token, unitId, (json) => {
+    const { unitId, userToken } = this.props.route.params; 
+    this.setState({unitId : unitId, token: userToken});
+    UserLessonsProvider(userToken, unitId, (json) => {
       let userLessons : UserLessons = new UserLessons();
       userLessons.userLessonsArray = json;
       this.setState({userLessons : userLessons});
