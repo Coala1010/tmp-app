@@ -30,7 +30,7 @@ export default class Units extends React.Component<Props> {
       <TouchableOpacity onPress={() => this.props.navigation.navigate('Lessons', { 
           unitTitle: this._unitTitle(item, index), 
           unitId: item.unitId,
-          token: this.props.token
+          userToken: this.props.token
         })}>
         <View style={styles.imageContainer}>
           <Image style={styles.image}

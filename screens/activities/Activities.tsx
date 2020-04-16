@@ -313,12 +313,20 @@ export default class Activities extends React.Component<State> {
                                     top: -20,
                                     left: '5%',
                                     zIndex: 1,
-                                    width: '90%'
+                                    width: '90%',
+                                    flexDirection: 'row'
                                 }}>
-                            <Text style={{textAlign: 'center', 
-                            fontWeight: 'bold', color: '#233665', width: '100%',}}>
+                            <Text style={{textAlign: 'center', marginTop: 30, fontWeight: 'bold', color: '#233665', width: '100%', fontSize: 20}}>
                             {lessonTitle}
                             </Text>
+                            <TouchableOpacity 
+                                style={styles.backButton}
+                                onPress={() => this.props.navigation.goBack()}>
+                                <Image 
+                                    style={styles.image}
+                                    source={require('../../assets/arrow_back-24px.png')} 
+                                />
+                            </TouchableOpacity>
                         </View>
                     {this.renderActivitiesList()}
                 </View>
@@ -411,33 +419,42 @@ export default class Activities extends React.Component<State> {
         overflow: 'hidden',
         alignItems: 'center',
     },
+    // backButton: {
+    //     width: 60, 
+    //     marginTop: 10, 
+    //     justifyContent: 'space-around',
+    //     backgroundColor: '#FCFDFF',
+    //     borderColor: 'black',
+    //     borderStyle: 'solid',
+    //     borderWidth: 0,
+    //     shadowColor: 'lightgray',
+    //     shadowOpacity: 0.6,
+    //     borderRadius: 15,
+    //     marginLeft: 10,
+    //     marginRight: 10,
+    //     alignItems: 'center',
+    // },
     backButton: {
-        width: 60, 
-        marginTop: 10, 
-        justifyContent: 'space-around',
-        backgroundColor: '#FCFDFF',
-        borderColor: 'black',
-        borderStyle: 'solid',
-        borderWidth: 0,
-        shadowColor: 'lightgray',
-        shadowOpacity: 0.6,
-        borderRadius: 15,
-        marginLeft: 10,
-        marginRight: 10,
-        alignItems: 'center',
-    },
+        marginTop: 30, 
+        color: '#233665', 
+        width: 30, 
+        height: 30, 
+        backgroundColor: '#F7F9FC',
+        fontWeight: 'bold', 
+        borderStyle: 'solid', 
+        borderRadius: 5, 
+        borderWidth: 1,
+        borderColor: '#F7F9FC', 
+        position: 'absolute',
+        right: '5%'
+      },
     forwardButton: {
         marginTop: 10,
-        // marginLeft: 10,
-        // marginRight: 10, 
         justifyContent: 'space-around',
         backgroundColor: '#FCFDFF',
-        // borderColor: 'black',
-        // borderStyle: 'solid',
         borderWidth: 0,
         shadowOpacity: 0.6,
         borderRadius: 16,
-        // shadowColor: "#000",
         shadowOffset: {
             width: 0,
             height: 2,
