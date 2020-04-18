@@ -13,7 +13,7 @@
     "orientation": "portrait",
     "icon": "./assets/Alimni_logo.png",
     "splash": {
-      "image": "./assets/splash2.jpg",
+      "image": "./assets/splash2.png",
       "resizeMode": "contain",
       "backgroundColor": "#003b59"
     },
