@@ -69,6 +69,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         paddingHorizontal: 5,
         paddingVertical: 10,
+        fontFamily: 'NeoSansArabicBold'
     },
     numberContainer: {
         backgroundColor: 'rgba(35, 54, 101, 0.08)',

@@ -156,7 +156,8 @@ export default class Levels extends React.Component<State> {
       display: 'flex', 
       padding: 10, 
       fontWeight: 'bold',
-      fontSize: 20
+      fontSize: 20,
+      fontFamily: 'NeoSansArabicBold'
     },
     progressContainer: {
       position: 'absolute',

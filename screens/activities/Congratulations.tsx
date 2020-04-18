@@ -1,15 +1,7 @@
 import React from 'react';
 import { Text, View, TouchableOpacity, Button, Image, StyleSheet } from 'react-native';
 
-interface State {
-  
-}
-
-export default class Congratulations extends React.Component<State> {
-    state: Readonly<State> = {
-        
-    }  
-  
+export default class Congratulations extends React.Component<State> {  
     render() {
         const { unitTitle, unitId, userToken } = this.props.route.params; 
         // const nextActivity = activities.get('video').nextActivity;
@@ -23,14 +15,14 @@ export default class Congratulations extends React.Component<State> {
                 </View>
                 <View style={{ alignItems: 'center'
                         }}>
-                    <Text style={{color: '#ffc700', fontSize: 40, 
+                    <Text style={{color: '#ffc700', fontSize: 40, fontFamily: 'NeoSansArabicBold'
                         }}>
                         جيد جداً     
                     </Text>
                 </View>
                 <View style={{ alignItems: 'center'
                         }}>
-                    <Text style={{color: '#233665', fontSize: '20'}}>
+                    <Text style={{color: '#233665', fontSize: '20', fontFamily: 'NeoSansArabicBold'}}>
                         لقد أتممت الدرس بنجاح
                     </Text>
                 </View>    
@@ -49,7 +41,7 @@ export default class Congratulations extends React.Component<State> {
                             <View style={{padding: 5, flex: 1, flexDirection: "row",
                             alignItems: 'center', 
                             backgroundColor: '#FCFDFF', 
-                            justifyContent: 'space-around'}}>
+                            justifyContent: 'space-around', fontFamily: 'NeoSansArabicBold'}}>
                                 <Text style={styles.footerTitle}>
                                     العودة إلى الدروس   
                                 </Text>

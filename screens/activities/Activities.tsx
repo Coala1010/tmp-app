@@ -133,12 +133,8 @@ export default class Activities extends React.Component<State> {
             {
                 this.state.userActivities.videoActivityGroup && this.state.userActivities.videoActivityGroup.userGroupId ? 
                 (
-                    <View 
-                        //style={{alignContent: 'flex-end', alignItems: 'flex-start', }}
-                        //key={i} 
-                        style={styles.activity}>
+                    <View style={styles.activity}>
 
-               
                         <TouchableOpacity style={{padding: 5}} 
                             onPress={() => this.props.navigation.navigate('VideoActivity', { 
                                 userGroupId: this.state.userActivities.videoActivityGroup.userGroupId,
@@ -317,7 +313,7 @@ export default class Activities extends React.Component<State> {
                                     width: '90%',
                                     flexDirection: 'row'
                                 }}>
-                            <Text style={{textAlign: 'center', marginTop: 30, fontWeight: 'bold', color: '#233665', width: '100%', fontSize: 20}}>
+                            <Text style={styles.screenTitle}>
                             {lessonTitle}
                             </Text>
                             <TouchableOpacity 
@@ -349,8 +345,7 @@ export default class Activities extends React.Component<State> {
                                     style={styles.forwardImage}
                                     source={require('../../assets/keyboard_arrow_left-24px.png')} 
                                 />
-                                <Text style = {{ color: '#233665', alignContent: 'center', display: 'flex', 
-                                            padding: 10, fontWeight: 'bold', fontSize: 20}}>التــالي</Text>
+                                <Text style = {styles.forwardButtonText}>التــالي</Text>
                                             {/* Forward */}
                             </View>
                         </TouchableOpacity>
@@ -375,15 +370,34 @@ export default class Activities extends React.Component<State> {
 
 
   const styles = StyleSheet.create({
+    forwardButtonText: { 
+        color: '#233665', 
+        alignContent: 'center', 
+        display: 'flex', 
+        padding: 10, 
+        fontWeight: 'bold', 
+        fontSize: 20, 
+        fontFamily: 'NeoSansArabicBold'
+    },
+    screenTitle: {
+        textAlign: 'center', 
+        marginTop: 35, 
+        fontWeight: 'bold', 
+        color: '#233665', 
+        width: '100%', 
+        fontSize: 20,
+        fontFamily: 'NeoSansArabicBold'
+    },
     activityText: {
         marginLeft: 50, 
         color: '#233665', 
         alignContent: 'center', 
         display: 'flex', 
         padding: 10, 
-        fontWeight: 'bold', 
+        // fontWeight: 'bold', 
         marginRight: 10,
-        fontSize: 16
+        fontSize: 16,
+        fontFamily: 'NeoSansArabic'
     },
     image: {
         height: 24,
@@ -477,21 +491,16 @@ export default class Activities extends React.Component<State> {
         marginBottom: 10, 
         justifyContent: 'space-around',
         backgroundColor: '#FCFDFF',
-        // borderColor: 'black',
-        // borderStyle: 'solid',
         borderWidth: 0,
         alignContent: 'center',
-        // alignContent: 'flex-end', 
         alignItems: 'flex-end',
         shadowColor: 'lightgray',
         shadowOpacity: 0.6,
         borderRadius: 16,
-        // shadowColor: "#000",
         shadowOffset: {
             width: 0,
             height: 2,
         },
-        // shadowOpacity: 0.22,
         shadowRadius: 2.22,
         elevation: 3,
     }

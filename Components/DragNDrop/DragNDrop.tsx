@@ -116,7 +116,6 @@ export default function DragNDrop({ activityData, onSuccess }) {
             console.log(err);
         }
 
-        alert(activityData.length + " : " + currentQuest);
         if (activityData[currentQuest].answers.find(({ id }) => id === val).isCorrect) {
             setTimeout(() => {
                 if (currentQuest + 1 < activityData.length) {
@@ -225,9 +224,11 @@ const styles = StyleSheet.create({
         color: '#24395F',
         fontWeight: 'bold',
         fontSize: Dimensions.get('window').width < 390 ? 14 : 16,
+        fontFamily: 'NeoSansArabicBold'
     },
     optionTextDragging: {
         color: 'white',
+        fontFamily: 'NeoSansArabicBold'
     },
     optionDragging: {
         backgroundColor: '#24395F',

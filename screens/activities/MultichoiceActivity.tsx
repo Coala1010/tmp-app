@@ -49,7 +49,7 @@ export default function MultichoiceActivityScreen({ navigation, route }) {
                     justifyContent: 'space-around',
                     flexDirection: 'row'}}
                 >
-                    <Text style={{textAlign: 'center', marginTop: 50, fontWeight: 'bold', color: '#233665', width: '100%',}}>
+                    <Text style={styles.lessonTitle}>
                         {lessonTitle}
                     </Text>
                     <TouchableOpacity 
@@ -64,7 +64,7 @@ export default function MultichoiceActivityScreen({ navigation, route }) {
                     </TouchableOpacity>
                 </View>
                 <ActivityGroupsProgress navigation={navigation} chosenActivity='multichoice' activities={activities}/>
-                <View style={{ flex: 1 }}>
+                <View style={{ flex: 1, marginTop: 20 }}>
                     {activityData ? (
                         <Multichoice
                             activityData={activityData}
@@ -93,6 +93,15 @@ export default function MultichoiceActivityScreen({ navigation, route }) {
 }
 
 const styles = StyleSheet.create({
+    lessonTitle: {
+        textAlign: 'center', 
+        marginTop: 50, 
+        fontWeight: 'bold', 
+        color: '#233665', 
+        width: '100%',
+        fontFamily: 'NeoSansArabicBold', 
+        fontSize: 20
+    },
     image: {
       height: 24,
       width: 24, 
@@ -110,6 +119,7 @@ const styles = StyleSheet.create({
       borderWidth: 1,
       borderColor: '#F7F9FC', 
       overflow: 'hidden',
-      alignItems: 'center'
+      alignItems: 'center',
+      fontFamily: 'NeoSansArabicBold'
     }
   });
