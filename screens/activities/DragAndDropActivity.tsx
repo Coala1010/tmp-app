@@ -6,6 +6,7 @@ import DragNDrop from '../../Components/DragNDrop/DragNDrop';
 import { getDnDActivity } from '../../providers/activities/DragNDropActivity';
 import ActivityFooter from '../../Components/ActivityFooter/ActivityFooter';
 import environment from '../../development.json';
+import OnSuccessNavigation from '../../Components/navigation/OnSuccessNavigation';
 
 export default function DragAndDropActivity({ route, navigation }) {
     const [activityData, setActivityData] = React.useState(null);
@@ -26,15 +27,17 @@ export default function DragAndDropActivity({ route, navigation }) {
     }, []);
 
     const onAllChoicesAnswered = () =>{        
-        navigation.push(nextActivity.navigationScreen, { 
-            userGroupId: nextActivity.userGroupId,
-            lessonTitle: nextActivity.lessonTitle,
-            lessonId: nextActivity.lessonId,
-            userToken: nextActivity.userToken,
-            unitTitle: nextActivity.unitTitle,
-            unitId: nextActivity.unitId,
-            activities: activities
-        });
+        OnSuccessNavigation(nextActivity, activities, navigation);
+
+        // navigation.push(nextActivity.navigationScreen, { 
+        //     userGroupId: nextActivity.userGroupId,
+        //     lessonTitle: nextActivity.lessonTitle,
+        //     lessonId: nextActivity.lessonId,
+        //     userToken: nextActivity.userToken,
+        //     unitTitle: nextActivity.unitTitle,
+        //     unitId: nextActivity.unitId,
+        //     activities: activities
+        // });
     }
 
     const backToLessons = () =>{        
