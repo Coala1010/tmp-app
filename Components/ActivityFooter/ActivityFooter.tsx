@@ -1,14 +1,33 @@
 import React from 'react';
 import { Text, View, TouchableOpacity, Image, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import UserLessonProvider from '../../providers/UserLessonProvider';
+import UserLesson from '../../types/UserLesson';
 
-export default function ActivityFooter({ userActivities, lessonTitle, navigation, leftBtn, toNext, toNextPayload }) {
+export default function ActivityFooter({ userLessonId, navigation, leftBtn, toNext, toNextPayload }) {
+
+    const nextNavigation = () => {
+
+        if (toNext == 'Lessons') {
+            UserLessonProvider(userLessonId, (json) => {
+                let userLesson : UserLesson = json;
+                if (userLesson.userLessonProgress == 1.0) {
+                    navigation.push('Congratulations', toNextPayload);
+                } else {
+                    navigation.push(toNext, toNextPayload);
+                }
+            })
+        } else {  
+            navigation.push(toNext, toNextPayload);
+        }    
+    }
+
     return (
         <View style={styles.footerContainer}>
             <View style={styles.footer}>
                 <TouchableOpacity
                     style={{padding: 5}} 
-                    onPress={() => navigation.push(toNext, toNextPayload)}
+                    onPress={() => nextNavigation()}
                 >
                     <View style = {styles.forwardButtonInner}>
                         <Image 

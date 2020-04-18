@@ -215,7 +215,8 @@ export default class Activities extends React.Component<State> {
                                 justifyContent: 'space-around', height: 60,
                                 flexDirection: 'row'
                                 }}>
-                            <Text style = {styles.activityText}>Words Activity</Text>
+                            <Text style = {styles.activityText}>النشاط الثالث : التعرف على الصور</Text>
+                            {/* Words Activity */}
                             <Image 
                                             style={styles.image}
                                             source={require('../../assets/photo-24px.png')} 

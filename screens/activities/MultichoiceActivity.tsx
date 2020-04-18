@@ -5,6 +5,7 @@ import ActivityFooter from '../../Components/ActivityFooter/ActivityFooter';
 import Multichoice from '../../Components/Multichoice/Multichoice';
 import HintBtn from '../../Components/Multichoice/HintBtn';
 import { getMultichoice } from '../../providers/activities/Multichoice';
+import OnSuccessNavigation from '../../Components/navigation/OnSuccessNavigation';
 
 export default function MultichoiceActivityScreen({ navigation, route }) {
     const [activityData, setActivityData] = React.useState(null);
@@ -23,16 +24,8 @@ export default function MultichoiceActivityScreen({ navigation, route }) {
         }
     }, []);
 
-    const onAllChoicesAnswered = () =>{        
-        navigation.push(nextActivity.navigationScreen, { 
-            userGroupId: nextActivity.userGroupId,
-            lessonTitle: nextActivity.lessonTitle,
-            lessonId: nextActivity.lessonId,
-            userToken: nextActivity.userToken,
-            unitTitle: nextActivity.unitTitle,
-            unitId: nextActivity.unitId,
-            activities: activities
-        });
+    const onAllChoicesAnswered = () =>{  
+        OnSuccessNavigation(nextActivity, activities, navigation);
     }
 
     const backToLessons = () =>{        
@@ -102,8 +95,7 @@ export default function MultichoiceActivityScreen({ navigation, route }) {
 const styles = StyleSheet.create({
     image: {
       height: 24,
-      width: 24,
-      //resizeMode: 'contain',  
+      width: 24, 
     },
     backButton: {
       marginTop: 50, 

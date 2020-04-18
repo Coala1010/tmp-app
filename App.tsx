@@ -12,6 +12,7 @@ import PhrasesActivity from './screens/activities/PhrasesActivity';
 import WordsActivity from './screens/activities/WordsActivity';
 import MultichoiceActivity from './screens/activities/MultichoiceActivity';
 import DragAndDropActivity from './screens/activities/DragAndDropActivity';
+import Congratulations from './screens/activities/Congratulations';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -43,6 +44,7 @@ export default class App extends React.Component {
           <this.Stack.Screen name="WordsActivity" component={WordsActivity}/>
           <this.Stack.Screen name="MultichoiceActivity" component={MultichoiceActivity}/>
           <this.Stack.Screen name="DragAndDropActivity" component={DragAndDropActivity}/>
+          <this.Stack.Screen name="Congratulations" component={Congratulations}/>
         </this.Stack.Navigator>
       </NavigationContainer>
     );
