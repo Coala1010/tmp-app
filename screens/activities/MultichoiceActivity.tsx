@@ -95,8 +95,7 @@ export default function MultichoiceActivityScreen({ navigation, route }) {
 const styles = StyleSheet.create({
     image: {
       height: 24,
-      width: 24,
-      //resizeMode: 'contain',  
+      width: 24, 
     },
     backButton: {
       marginTop: 50, 
