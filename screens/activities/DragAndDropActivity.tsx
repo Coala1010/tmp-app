@@ -60,7 +60,7 @@ export default function DragAndDropActivity({ route, navigation }) {
                     borderColor: '#F7F9F7', height: 100,
                     justifyContent: 'space-around',
                     flexDirection: 'row'}}>
-                    <Text style={{textAlign: 'center', marginTop: 50, fontWeight: 'bold', color: '#233665', width: '100%',}}>
+                    <Text style={{textAlign: 'center', marginTop: 50, fontWeight: 'bold', color: '#233665', width: '100%', fontFamily: 'NeoSansArabicBold'}}>
                         {lessonTitle}
                     </Text>
                     <TouchableOpacity 
@@ -112,6 +112,7 @@ const styles = StyleSheet.create({
       borderWidth: 1,
       borderColor: '#F7F9FC', 
       overflow: 'hidden',
-      alignItems: 'center'
+      alignItems: 'center',
+      fontFamily: 'NeoSansArabicBold'
     }
   });

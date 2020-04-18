@@ -68,11 +68,11 @@ export default class Lessons extends React.Component<Props, State> {
                 }          
               </View>       
             <Text style = {{marginLeft: 70, color: '#233665', alignContent: 'center', display: 'flex', 
-            padding: 10, fontWeight: 'bold', fontSize: 20}}>{userLesson.title}</Text>
+            padding: 10, fontWeight: 'bold', fontSize: 20, fontFamily: 'NeoSansArabicBold'}}>{userLesson.title}</Text>
             <Text style = {{marginLeft: 20, color: '#233665', alignContent: 'flex-end', display: 'flex', padding: 7, marginEnd: 0,
                           backgroundColor: '#F7F9FC',
                           fontWeight: 'bold', borderStyle: 'solid', borderRadius: 5, borderWidth: 1,
-                          borderColor: '#F7F9FC', overflow: 'hidden', fontSize: 20}}>{i+1}</Text>              
+                          borderColor: '#F7F9FC', overflow: 'hidden', fontSize: 20, fontFamily: 'NeoSansArabicBold'}}>{i+1}</Text>              
           </View>
         </TouchableOpacity>
         
@@ -95,7 +95,7 @@ export default class Lessons extends React.Component<Props, State> {
                         borderColor: '#F7F9F7', height: 100,
                         justifyContent: 'space-around',
                         flexDirection: 'row'}}>
-                <Text style={{textAlign: 'center', marginTop: 50, fontWeight: 'bold', color: '#233665', width: '100%', fontSize: 20}}>
+                <Text style={styles.unitTitle}>
                   {unitTitle}
                 </Text>
                 <TouchableOpacity 
@@ -121,6 +121,15 @@ export default class Lessons extends React.Component<Props, State> {
 
 
   const styles = StyleSheet.create({
+    unitTitle: {
+      textAlign: 'center', 
+      marginTop: 50, 
+      fontWeight: 'bold', 
+      color: '#233665', 
+      width: '100%', 
+      fontSize: 20,
+      fontFamily: 'NeoSansArabicBold'
+    },
     image: {
       height: 24,
       width: 24,

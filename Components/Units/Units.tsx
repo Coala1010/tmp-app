@@ -76,10 +76,10 @@ const styles = StyleSheet.create({
   text: {
     marginTop: 10,
     textAlign: 'center',
-    fontFamily: 'Arial',
     color: '#233665',
     fontWeight: 'bold',
-    fontSize: 16
+    fontSize: 16,
+    fontFamily: 'NeoSansArabicBold'
   },
   container: {
     margin: 5,
@@ -136,5 +136,6 @@ const styles = StyleSheet.create({
     color: '#24395F',
     fontWeight: 'bold',
     fontSize: 16,
+    fontFamily: 'NeoSansArabicBold'
 },
 });

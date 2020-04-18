@@ -37,7 +37,9 @@ export default class ActivityGroupsProgress extends React.Component<Props> {
                     {
                         this.props.activities.get('multichoice') ? (
                             <View style={styles.activityWrapper}>
-                                <View style={styles.grayLine}/>
+                                {
+                                    this.props.activities.size > 2 ? <View style={styles.grayLine}/> : <View/>
+                                }
                                 <View style={styles.activityGroup}>
                                     <TouchableOpacity onPress={() => this.props.navigation.push('MultichoiceActivity', { 
                                         userGroupId: this.props.activities.get('multichoice').userGroupId,
@@ -58,7 +60,9 @@ export default class ActivityGroupsProgress extends React.Component<Props> {
                     {
                         this.props.activities.get('words') ? (
                             <View style={styles.activityWrapper}>
-                                <View style={styles.grayLine}/>
+                                {
+                                    this.props.activities.size > 2 ? <View style={styles.grayLine}/> : <View/>
+                                }
                                     <TouchableOpacity onPress={() => this.props.navigation.push('WordsActivity', { 
                                         userGroupId: this.props.activities.get('words').userGroupId,
                                         lessonTitle: this.props.activities.get('words').lessonTitle,
@@ -79,7 +83,9 @@ export default class ActivityGroupsProgress extends React.Component<Props> {
                     {
                         this.props.activities.get('phrases') ? (
                             <View style={styles.activityWrapper}>
-                                <View style={styles.grayLine}/>
+                                {
+                                    this.props.activities.size > 2 ? <View style={styles.grayLine}/> : <View/>
+                                }    
                                 <TouchableOpacity onPress={() => this.props.navigation.push('PhrasesActivity', { 
                                     userGroupId: this.props.activities.get('phrases').userGroupId,
                                     lessonTitle: this.props.activities.get('phrases').lessonTitle,
