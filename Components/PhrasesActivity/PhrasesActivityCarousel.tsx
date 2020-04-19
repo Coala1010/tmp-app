@@ -26,7 +26,7 @@ export default function PhrasesActivityCarousel({ onChange, activityData }) {
                 itemIndex === activityData.length - 1 && { marginLeft: 20 },
                 activityData.length === 1 && { marginRight: 50, marginLeft: 50 },
             ]}>
-                <Text style={styles.questionText}>{item.title}</Text>
+                <Text style={styles.questionText}>{item.phrase}</Text>
                 <View style={styles.numberContainer}>
                     <Text style={styles.number}>{activityData.length}/{itemIndex + 1}</Text>
                 </View>
