@@ -60,7 +60,8 @@ export default function DragAndDropActivity({ route, navigation }) {
                     borderColor: '#F7F9F7', height: 100,
                     justifyContent: 'space-around',
                     flexDirection: 'row'}}>
-                    <Text style={{textAlign: 'center', marginTop: 50, fontWeight: 'bold', color: '#233665', width: '100%', fontFamily: 'NeoSansArabicBold'}}>
+                    <Text style={{textAlign: 'center', marginTop: 50, fontWeight: 'bold', color: '#233665', width: '100%', 
+                    fontFamily: 'NeoSansArabicBold', fontSize: 20}}>
                         {lessonTitle}
                     </Text>
                     <TouchableOpacity 

@@ -109,7 +109,7 @@ export default class Activities extends React.Component<State> {
             const phrasesNavigation = new NavigationActivity();
             phrasesNavigation.lessonId = lessonId;
             phrasesNavigation.lessonTitle = lessonTitle;
-            phrasesNavigation.userGroupId = userActivities.dragAndDropActivityGroup.userGroupId;
+            phrasesNavigation.userGroupId = userActivities.videoActivityGroup.userGroupId;
             phrasesNavigation.userToken = userToken;
             phrasesNavigation.navigationScreen = 'VideoActivity';
             phrasesNavigation.nextActivity = nextActivity;
@@ -327,7 +327,7 @@ export default class Activities extends React.Component<State> {
                         </View>
                     {this.renderActivitiesList()}
                 </View>
-                <View style={{flexDirection: 'row', marginBottom: 50, justifyContent: 'center'}}>
+                <View style={{flexDirection: 'row', marginBottom: 16, justifyContent: 'center'}}>
                     <View style={styles.forwardButton}>
                         <TouchableOpacity style={{padding: 5}} 
                             onPress={() => this.props.navigation.navigate(this.state.firstActivity.navigationScreen, 

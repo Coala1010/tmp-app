@@ -5,6 +5,7 @@ import VideoPlayer from 'expo-video-player';
 // import BottomNavigation from '../../Components/navigation/BottomNavigation';
 import VideoProvider from '../../providers/activities/VideoProvider';
 import ActivityFooter from '../../Components/ActivityFooter/ActivityFooter';
+import { Audio } from 'expo-av';
 
 interface State {
   videoUrl: string,
@@ -18,6 +19,7 @@ export default class VideoActivity extends React.Component<State> {
     }  
 
     componentDidMount() {
+        Audio.setIsEnabledAsync(true);
         const { userGroupId } = this.props.route.params;
         VideoProvider(userGroupId, (json) => {
           const videoProgress = json;

@@ -12,7 +12,7 @@ export default function ActivityFooter({ userLessonId, navigation, leftBtn, toNe
             UserLessonProvider(userLessonId, (json) => {
                 let userLesson : UserLesson = json;
                 if (userLesson.userLessonProgress == 1.0) {
-                    navigation.push('Congratulations', toNextPayload);
+                    navigation.navigate('Congratulations', toNextPayload);
                 } else {
                     navigation.push(toNext, toNextPayload);
                 }
@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        marginBottom: 20,
+        marginBottom: 16,
         marginHorizontal: 20,
         borderRadius: 20,
         backgroundColor: 'white',
