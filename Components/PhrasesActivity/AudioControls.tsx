@@ -85,9 +85,9 @@ export default class PhrasesAudioControls extends React.Component<State> {
         this.loadAudio();
     }
 
-    componentWillUnmount() {
-        this.stopAudioSample('userRecord');
-        this.stopAudioSample('audio');
+    componentWillUnmount = async () => {
+        await this.stopAudioSample('userRecord');
+        await this.stopAudioSample('audio');
         Audio.setIsEnabledAsync(false);
     }
 
@@ -186,7 +186,7 @@ export default class PhrasesAudioControls extends React.Component<State> {
 
     stopAudioSample = async (name) => {
         try {
-            this.setState({ [`${name}Progress`]: '00:00' });
+            // this.setState({ [`${name}Progress`]: '00:00' });
             if (this.state[name] && this.state[name].stopAsync) {
                 await this.state[name].stopAsync();
             }

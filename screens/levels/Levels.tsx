@@ -76,7 +76,9 @@ export default class Levels extends React.Component<State> {
                 }          
               </View>      
               <Text style = {styles.levelTitle}>{userLevel.title}</Text>
-              <Text style = {styles.levelNumber}>{i+1}</Text>              
+              <View style = {styles.levelNumberWrapper}>
+                <Text style = {styles.levelNumber}>{i+1}</Text>              
+              </View>
             </View>
           </TouchableOpacity>
           
@@ -95,7 +97,7 @@ export default class Levels extends React.Component<State> {
 
       return (
         // <CircularProgressWrapper/>  
-        <View style={{flex: 1, justifyContent:'center', padding: 10, width: '100%', margin: 5}}>
+        <View style={{flex: 1, justifyContent:'center', width: '100%'}}>
           <ScrollView 
             scrollEventThrottle={50} 
           >
@@ -110,7 +112,8 @@ export default class Levels extends React.Component<State> {
     level: {
       width: '95%',
       margin: 10,
-      justifyContent: 'space-around',
+      justifyContent: 'center', 
+      alignContent: 'center',
       backgroundColor: '#FCFDFF',
       // borderColor: 'black',
       // borderStyle: 'solid',
@@ -130,25 +133,32 @@ export default class Levels extends React.Component<State> {
       // backgroundColor: 'white',
       // borderRadius: 20,
     },
-    levelNumber: {
-      marginLeft: 20, 
-      color: '#233665', 
-      alignContent: 'flex-end', 
+    levelNumberWrapper: {
+      height: 36,
+      width: 36,
+      justifyContent: 'center',
+      alignItems: 'center',
+      alignContent: 'center',
       display: 'flex', 
-      padding: 7, 
-      marginEnd: 0,
       backgroundColor: '#F7F9FC',
-      fontWeight: 'bold', 
       borderStyle: 'solid', 
       borderRadius: 5, 
       borderWidth: 1,
       borderColor: '#F7F9FC', 
       overflow: 'hidden', 
       position: 'absolute',
-      // top: 20,
-      right: '5%',
-      fontSize: 20,
-      // fontFamily: 'NeoSansArabic-Bold'
+      right: 10,
+    },
+    levelNumber: {
+      display: 'flex', 
+      justifyContent: 'center',
+      alignItems: 'center',
+      alignContent: 'center',
+      fontSize: 20, 
+      color: '#233665', 
+      fontWeight: 'bold',
+      fontFamily: 'NeoSansArabicBold',
+      margin: 8
     },
     levelTitle: {
       color: '#233665', 

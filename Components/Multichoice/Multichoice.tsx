@@ -51,7 +51,7 @@ export default function Multichoice({ activityData, setHintText, onSuccess }) {
     const contentOffset = 0;
 
     React.useEffect(() => {
-        setHintText(activityData[currentQuestion].hint);
+        activityData[currentQuestion] ? setHintText(activityData[currentQuestion].hint) : "";
     }, [currentQuestion]);
 
     return (
@@ -85,7 +85,7 @@ export default function Multichoice({ activityData, setHintText, onSuccess }) {
                 )}
             />
             <ScrollView style={styles.answers}>
-                {activityData[currentQuestion].answers.map((answer, id) => (
+                {activityData[currentQuestion] ? activityData[currentQuestion].answers.map((answer, id) => (
                     <TouchableOpacity
                         onPress={() => setCurrentSelected(answer)}
                         key={answer.id}
@@ -117,7 +117,7 @@ export default function Multichoice({ activityData, setHintText, onSuccess }) {
                             )}
                         </View>
                     </TouchableOpacity>
-                ))}
+                )) : <View/>}
             </ScrollView>
         </View>
     );

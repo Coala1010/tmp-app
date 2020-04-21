@@ -7,12 +7,13 @@ import PhrasesAudioControls from '../../Components/PhrasesActivity/AudioControls
 import WordsActivityCarousel from '../../Components/WordsActivity/WordsActivityCarousel';
 import environment from '../../development.json';
 
-export default function WordsActivity({ navigation, lessonTitle, route }) {
+export default function WordsActivity({ navigation, route }) {
     const [answers, setAnswers] = React.useState({});
     const [activityData, setActivityData] = React.useState(null);
     const [activeQuestion, setActiveQuestion] = React.useState(0);
 
-    const { activities } = route.params;
+    // const { activities } = route.params;
+    const { lessonTitle, activities } = route.params;
     const nextActivity = activities.get('words').nextActivity;
 
     React.useEffect(() => {
@@ -31,6 +32,10 @@ export default function WordsActivity({ navigation, lessonTitle, route }) {
                 title: 'الأسرة',
             })));
         });
+        // alert(lessonTitle);
+        return function cleanup() {
+            
+        }
     }, []);
 
     const uploadData = async (data) => {
@@ -80,7 +85,7 @@ export default function WordsActivity({ navigation, lessonTitle, route }) {
                     justifyContent: 'space-around',
                     flexDirection: 'row'
                 }}>
-                    <Text style={{textAlign: 'center', marginTop: 50, fontWeight: 'bold', color: '#233665', width: '100%',}}>
+                    <Text style={{textAlign: 'center', marginTop: 50, fontWeight: 'bold', color: '#233665', width: '100%', fontFamily: 'NeoSansArabicBold'}}>
                         {lessonTitle}
                     </Text>
                     <TouchableOpacity 

@@ -109,6 +109,9 @@ const styles = StyleSheet.create({
       },
     shadowRadius: 2.22,
     elevation: 3,
+    height: 149,
+    width: 149,
+    justifyContent: 'center'
   },
   image: {
     height: 100,

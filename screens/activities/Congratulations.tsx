@@ -22,7 +22,7 @@ export default class Congratulations extends React.Component<State> {
                 </View>
                 <View style={{ alignItems: 'center'
                         }}>
-                    <Text style={{color: '#233665', fontSize: '20', fontFamily: 'NeoSansArabicBold'}}>
+                    <Text style={{color: '#233665', fontSize: 20, fontFamily: 'NeoSansArabicBold'}}>
                         لقد أتممت الدرس بنجاح
                     </Text>
                 </View>    
@@ -73,7 +73,7 @@ export default class Congratulations extends React.Component<State> {
         resizeMode: 'contain',  
     },
     imageWrapper: {        
-        marginTop: '40%',
+        marginTop: '30%',
         alignContent: 'center',
         // flex: 1,
         justifyContent: 'center',
