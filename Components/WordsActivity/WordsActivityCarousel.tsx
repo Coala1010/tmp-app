@@ -54,8 +54,9 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'flex-start',
         width: Dimensions.get('window').width - 100,
-        height: 350,
+        height: Dimensions.get('window').width - 100,
         margin: 10,
+        marginBottom: 5,
         shadowColor: "#000",
         shadowOffset: {
             width: 0,
