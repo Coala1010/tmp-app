@@ -98,9 +98,18 @@ export default class Levels extends React.Component<State> {
       return (
         // <CircularProgressWrapper/>  
         <View style={{flex: 1, justifyContent:'center', width: '100%'}}>
+          <View style={{backgroundColor: '#FCFDFF',
+                        borderStyle: 'solid', borderWidth: 3,
+                        borderColor: '#F7F9F7', height: 80,
+                        justifyContent: 'center',
+                        flexDirection: 'row',
+                        alignItems: 'center'}}>
+                <Text style={styles.screenTitle}>
+                  المسـتويــات  
+                </Text>
+            </View>
           <ScrollView 
-            scrollEventThrottle={50} 
-          >
+            scrollEventThrottle={50}>
             {list}
           </ScrollView>
         </View>
@@ -109,6 +118,17 @@ export default class Levels extends React.Component<State> {
   }
 
   const styles = StyleSheet.create({
+    screenTitle: {
+      position: 'absolute',
+      bottom: 16,
+      textAlign: 'center', 
+      // marginBottom: 16, 
+      fontWeight: 'bold', 
+      color: '#233665', 
+      width: '100%', 
+      fontSize: 20,
+      fontFamily: 'NeoSansArabicBold',
+    },
     level: {
       width: '95%',
       margin: 10,

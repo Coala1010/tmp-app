@@ -287,7 +287,7 @@ export default class Activities extends React.Component<State> {
             <View style={{flex: 1, justifyContent:'flex-start', width: '100%', backgroundColor: '#FCFDFF'}}>
                 <View style={{flex: 1, justifyContent:'center', width: '100%', backgroundColor: '#FCFDFF'}}>
                     <View style={{backgroundColor: '#233665',
-                                borderStyle: 'solid', borderWidth: 3,
+                                borderStyle: 'solid', 
                                 borderColor: '#F7F9F7', height: 80,
                                 justifyContent: 'space-around',
                                 flexDirection: 'row', overflow: 'hidden'}}>
@@ -303,7 +303,7 @@ export default class Activities extends React.Component<State> {
                                         height: 2,
                                     },
                                     shadowRadius: 2.22,
-                                    elevation: 3,
+                                    shadowColor: 'lightgray',
                                     height: 88,                         
                                     position: 'absolute', 
                                     justifyContent: 'center',
@@ -311,11 +311,14 @@ export default class Activities extends React.Component<State> {
                                     left: '5%',
                                     zIndex: 1,
                                     width: '90%',
-                                    flexDirection: 'row'
+                                    flexDirection: 'row',
+                                    elevation: 3,
                                 }}>
-                            <Text style={styles.screenTitle}>
-                            {lessonTitle}
-                            </Text>
+                            <View style={{alignContent: 'center', alignItems: 'center'}}>
+                                <Text style={styles.screenTitle}>
+                                    {lessonTitle}
+                                </Text>
+                            </View>                                  
                             <TouchableOpacity 
                                 style={styles.backButton}
                                 onPress={() => this.props.navigation.goBack()}>
@@ -476,8 +479,9 @@ export default class Activities extends React.Component<State> {
         },
         // shadowOpacity: 0.22,
         shadowRadius: 2.22,
-        elevation: 3,
-        width: '90%'
+        elevation: 1,
+        width: '90%',
+        shadowColor: 'lightgray',
     },
     forwardButtonInner: {
         alignItems: 'center', 
@@ -502,6 +506,6 @@ export default class Activities extends React.Component<State> {
             height: 2,
         },
         shadowRadius: 2.22,
-        elevation: 3,
+        elevation: 1,
     }
   });

@@ -92,8 +92,9 @@ export default class Lessons extends React.Component<Props, State> {
             <View style={{backgroundColor: '#FCFDFF',
                         borderStyle: 'solid', borderWidth: 3,
                         borderColor: '#F7F9F7', height: 100,
-                        justifyContent: 'space-around',
-                        flexDirection: 'row'}}>
+                        justifyContent: 'center',
+                        flexDirection: 'row',
+                        alignItems: 'center'}}>
                 <Text style={styles.unitTitle}>
                   {unitTitle}
                 </Text>
@@ -149,7 +150,7 @@ export default class Lessons extends React.Component<Props, State> {
       color: '#233665', 
       width: '100%', 
       fontSize: 20,
-      fontFamily: 'NeoSansArabicBold'
+      fontFamily: 'NeoSansArabicBold',
     },
     image: {
       height: 24,
@@ -157,11 +158,12 @@ export default class Lessons extends React.Component<Props, State> {
       //resizeMode: 'contain',  
     },
     backButton: {
-      marginTop: 50, 
+      position: 'absolute', 
+      top: 50, 
+      right: 23,
       color: '#233665', 
       width: 30, 
       height: 30, 
-      marginRight: 30,
       backgroundColor: '#F7F9FC',
       fontWeight: 'bold', 
       borderStyle: 'solid', 
