@@ -188,7 +188,8 @@ export default class PhrasesAudioControls extends React.Component<State> {
         try {
             // this.setState({ [`${name}Progress`]: '00:00' });
             if (this.state[name] && this.state[name].stopAsync) {
-                await this.state[name].stopAsync();
+                // await this.state[name].stopAsync();
+                await this.state[name].stopAndUnloadAsync();
             }
         } catch (err) { }
     };
