@@ -76,7 +76,9 @@ export default function DragAndDropActivity({ route, navigation }) {
                     </TouchableOpacity>
                 </View>
                 <ActivityGroupsProgress chosenActivity='dragndrop' navigation={navigation} activities={activities}/>
-                <DragNDrop activityData={activityData} onSuccess={onAllChoicesAnswered}/>
+                {
+                    activityData ? <DragNDrop activityData={activityData} onSuccess={onAllChoicesAnswered}/> : <View/>
+                }
                 <ActivityFooter navigation={navigation} 
                     toNext={nextActivity.navigationScreen}
                     toNextPayload={{ 
