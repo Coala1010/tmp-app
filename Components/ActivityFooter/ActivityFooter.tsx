@@ -14,7 +14,7 @@ export default function ActivityFooter({ userLessonId, navigation, leftBtn, toNe
                 if (userLesson.userLessonProgress == 1.0) {
                     navigation.navigate('Congratulations', toNextPayload);
                 } else {
-                    navigation.push(toNext, toNextPayload);
+                    navigation.navigate(toNext, toNextPayload);
                 }
             })
         } else {  
