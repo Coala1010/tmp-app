@@ -4,7 +4,7 @@ import { Ionicons } from '@expo/vector-icons';
 import UserLessonProvider from '../../providers/UserLessonProvider';
 import UserLesson from '../../types/UserLesson';
 
-export default function ActivityFooter({ userLessonId, navigation, leftBtn, toNext, toNextPayload }) {
+export default function ActivityFooter({ userLessonId, navigation, leftBtn, toNext, toNextPayload, toNextDisabled }) {
 
     const nextNavigation = () => {
 
@@ -28,15 +28,16 @@ export default function ActivityFooter({ userLessonId, navigation, leftBtn, toNe
                 <TouchableOpacity
                     style={{padding: 5}} 
                     onPress={() => nextNavigation()}
+                    disabled={toNextDisabled}
                 >
                     <View style = {styles.forwardButtonInner}>
                         <Image 
-                            style={styles.forwardImage}
+                            style={[toNextDisabled ? styles.disabledForwardImage: styles.forwardImage]}
                             source={require('../../assets/keyboard_arrow_left-24px.png')} 
                         />
                     </View>
                 </TouchableOpacity>
-                        <Text style={styles.footerTitle}>
+                        <Text style={[toNextDisabled ? styles.disabledFooterTitle: styles.footerTitle]}>
                             التــالي
                         </Text>
                 {/* Forward */}
@@ -101,6 +102,13 @@ const styles = StyleSheet.create({
         shadowRadius: 1.41,
         elevation: 2,
     },
+    disabledFooterTitle: {
+        color: 'lightgray',
+        alignContent: 'center',
+        padding: 10,
+        fontWeight: 'bold',
+        fontSize: 22,
+    },
     footerTitle: {
         color: '#233665',
         alignContent: 'center',
@@ -123,6 +131,11 @@ const styles = StyleSheet.create({
     forwardImage: {
         height: 24,
         width: 14,
+    },
+    disabledForwardImage: {
+        height: 24,
+        width: 14,
+        tintColor: '#E3E3E3'
     },
     forwardButton: {
         marginTop: 10,

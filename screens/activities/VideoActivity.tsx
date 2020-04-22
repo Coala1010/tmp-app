@@ -9,13 +9,15 @@ import { Audio } from 'expo-av';
 
 interface State {
   videoUrl: string,
-  videoTimer: number
+  videoTimer: number,
+  toNextDisabled
 }
 
 export default class VideoActivity extends React.Component<State> {
     state: Readonly<State> = {
         videoUrl: '',
         videoTimer: 0,
+        toNextDisabled: false
     }  
 
     componentDidMount() {
@@ -25,7 +27,15 @@ export default class VideoActivity extends React.Component<State> {
           const videoProgress = json;
           this.setState({videoUrl : videoProgress.videoUrl, videoTimer: videoProgress.videoTimer});
         })
-      }
+    }
+
+    videoPlayback = (event) => {
+        if (event.isPlaying) {
+            this.setState({toNextDisabled: true})
+        } else {
+            this.setState({toNextDisabled: false})
+        }
+    }
     
     renderVideo(videoTitle: String){
     //   const { videoUrl, lessonTitle } = this.props.route.params; 
@@ -48,6 +58,9 @@ export default class VideoActivity extends React.Component<State> {
                         showControlsOnLoad={true}
                         videoBackground='transparent'
                         sliderColor='#233665'
+                        hideControlsTimerDuration={4000}
+                        quickFadeOutDuration={500}
+                        playbackCallback={this.videoPlayback}
                     />)
                     : <View/>
                 }
@@ -89,6 +102,7 @@ export default class VideoActivity extends React.Component<State> {
                 <ActivityFooter
                         navigation={this.props.navigation}
                         toNext={nextActivity.navigationScreen}
+                        toNextDisabled={this.state.toNextDisabled}
                         toNextPayload={{ 
                             userGroupId: nextActivity.userGroupId,
                             lessonTitle: nextActivity.lessonTitle,
