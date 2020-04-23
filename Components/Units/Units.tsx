@@ -77,7 +77,6 @@ const styles = StyleSheet.create({
     marginTop: 10,
     textAlign: 'center',
     color: '#233665',
-    fontWeight: 'bold',
     fontSize: 16,
     fontFamily: 'NeoSansArabicBold'
   },
@@ -137,7 +136,6 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     overflow: 'hidden',
     color: '#24395F',
-    fontWeight: 'bold',
     fontSize: 16,
     fontFamily: 'NeoSansArabicBold'
 },

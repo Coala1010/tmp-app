@@ -81,7 +81,7 @@ export default function PhrasesActivity({ lessonTitle, navigation, route }) {
                             justifyContent: 'space-around',
                             flexDirection: 'row'
                         }}>
-                            <Text style={{textAlign: 'center', marginTop: 50, fontWeight: 'bold', color: '#233665', width: '100%', fontFamily: 'NeoSansArabicBold'}}>
+                            <Text style={{textAlign: 'center', marginTop: 50, color: '#233665', width: '100%', fontFamily: 'NeoSansArabicBold'}}>
                                 {lessonTitle}
                             </Text>
                             <TouchableOpacity 

@@ -255,7 +255,6 @@ const styles = StyleSheet.create({
     },
     optionText: {
         color: '#24395F',
-        fontWeight: 'bold',
         fontSize: Dimensions.get('window').width < 390 ? 14 : 16,
         fontFamily: 'NeoSansArabicBold'
     },

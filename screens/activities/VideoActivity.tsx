@@ -3,21 +3,25 @@ import { Text, View, TouchableOpacity, Button, Image, StyleSheet } from 'react-n
 import { Video } from 'expo-av';
 import VideoPlayer from 'expo-video-player';
 // import BottomNavigation from '../../Components/navigation/BottomNavigation';
-import VideoProvider from '../../providers/activities/VideoProvider';
+import {VideoProvider, updateVideoActivity} from '../../providers/activities/VideoProvider';
 import ActivityFooter from '../../Components/ActivityFooter/ActivityFooter';
 import { Audio } from 'expo-av';
 
 interface State {
   videoUrl: string,
   videoTimer: number,
-  toNextDisabled
+  toNextDisabled,
+  updateSent: boolean,
+  videoProgressId: number
 }
 
 export default class VideoActivity extends React.Component<State> {
     state: Readonly<State> = {
         videoUrl: '',
         videoTimer: 0,
-        toNextDisabled: false
+        toNextDisabled: false,
+        updateSent: false,
+        videoProgressId: 0
     }  
 
     componentDidMount() {
@@ -25,13 +29,25 @@ export default class VideoActivity extends React.Component<State> {
         const { userGroupId } = this.props.route.params;
         VideoProvider(userGroupId, (json) => {
           const videoProgress = json;
-          this.setState({videoUrl : videoProgress.videoUrl, videoTimer: videoProgress.videoTimer});
+          this.setState({videoUrl : videoProgress.videoUrl, videoTimer: videoProgress.videoTimer, videoProgressId: videoProgress.id});
         })
     }
 
-    videoPlayback = (event) => {
+    videoPlayback = async (event) => {
         if (event.isPlaying) {
             this.setState({toNextDisabled: true})
+            if (!this.state.updateSent) {
+                console.log('Vid: ' + this.state.videoProgressId)
+                try {
+                    await updateVideoActivity({
+                        id: this.state.videoProgressId,
+                        activityStatus: true
+                    });
+                    this.setState({updateSent: true})
+                } catch (err) {
+                    console.log(err);
+                }
+            }
         } else {
             this.setState({toNextDisabled: false})
         }

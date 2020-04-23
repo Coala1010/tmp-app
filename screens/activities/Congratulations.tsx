@@ -160,12 +160,12 @@ export default class Congratulations extends React.Component<State> {
     footer: {
         flex: 1,
         flexDirection: 'row',
-        // justifyContent: 'space-between',
+        justifyContent: 'space-between',
         alignItems: 'center',
-        marginBottom: 20,
+        marginBottom: 16,
         marginHorizontal: 20,
         borderRadius: 20,
-        backgroundColor: 'white',
+        backgroundColor: '#fcfdff',
         height: 70,
         paddingHorizontal: 15,
         shadowColor: '#000',
@@ -181,7 +181,7 @@ export default class Congratulations extends React.Component<State> {
         color: '#233665',
         alignContent: 'center',
         padding: 10,
-        fontWeight: 'bold',
         fontSize: 22,
+        fontFamily: 'NeoSansArabicBold'
     },
   });
