@@ -115,7 +115,6 @@ export default class PhrasesAudioControls extends React.Component<State> {
     }
 
     componentWillUnmount = async () => {
-        console.log("Unmount: " + this.props.sampleUrl);
         await this.stopAudioSample('audio');
     }
 
