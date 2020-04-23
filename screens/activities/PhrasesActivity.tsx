@@ -100,6 +100,7 @@ export default function PhrasesActivity({ navigation, route }) {
                             <>
                                 <PhrasesActivityCarousel activityData={activityData} onChange={setActiveQuestion} />
                                 <PhrasesAudioControls
+                                    navigation={navigation}
                                     onUserAnswer={uploadData}
                                     sampleUrl={activityData[activeQuestion].audioUrl}
                                     userAudioRecordUrl={activityData[activeQuestion].userAudioRecordUrl}

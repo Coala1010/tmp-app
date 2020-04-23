@@ -46,7 +46,7 @@ export default class Lessons extends React.Component<Props, State> {
         style={styles.lesson}>
 
         <TouchableOpacity style={{padding: 5}} 
-        onPress={() => this.props.navigation.navigate('Activities', {
+        onPress={() => this.props.navigation.push('Activities', {
             lessonTitle: userLesson.title, 
             lessonId: userLesson.lessonId,
             userToken: this.state.token,

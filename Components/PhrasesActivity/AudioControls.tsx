@@ -37,6 +37,7 @@ interface State {
     audioRecordingButtonExpanded: boolean,
     audioPlayButtonAnim: Animated.Value,
     audioPlayButtonExpanded: boolean,
+    audioUrl: string,
     record: Recording,
     recordProgress: string,
     recordedFileUrl: string,
@@ -51,6 +52,7 @@ interface State {
 type Props = {
     onUserAnswer: Function,
     sampleUrl: string,
+    navigation: any
 }
 
 export default class PhrasesAudioControls extends React.Component<State> {
@@ -62,6 +64,7 @@ export default class PhrasesAudioControls extends React.Component<State> {
         audioRecordingButtonExpanded: false,
         audioProgress: '00:00',
         audio: null,
+        audioUrl: null,
         sampleLoaded: false,
         audioPlayButtonAnim: new Animated.Value(70),
         audioPlayButtonExpanded: false,
@@ -80,15 +83,40 @@ export default class PhrasesAudioControls extends React.Component<State> {
         super(props);
     }
 
+    shrinkAudioButton = async () => {
+        Animated.spring(
+            this.state.audioButtonAnim,
+            {
+                toValue: 70,
+            }
+        ).start();
+    }
+
+    componentDidUpdate = async () => {
+        // await this.stopAudioAndUnload('userRecord');
+        if (this.state.audioUrl != this.props.sampleUrl) {
+            this.setState({audioRecordingButtonExpanded: false, audioButtonExpanded: false, audioPlayButtonExpanded: false, recordedFileUrl: null});
+            this.shrinkAudioButton();
+            this.shrinkAudioRecordingButton();
+            this.shrinkPlayback();
+
+            console.log("Dida update: " + this.props.sampleUrl);
+            this.setState({audioUrl: this.props.sampleUrl});
+            await this.stopAudioSample('audio');
+            Audio.setIsEnabledAsync(true);
+        }
+        Audio.setIsEnabledAsync(true);    }
     componentDidMount() {
+          const sub = this.props.navigation.addListener('blur', () => {
+            this.stopAudioSample('audio'); 
+          });
         Audio.setIsEnabledAsync(true);
         this.loadAudio();
     }
 
     componentWillUnmount = async () => {
-        await this.stopAudioSample('userRecord');
+        console.log("Unmount: " + this.props.sampleUrl);
         await this.stopAudioSample('audio');
-        Audio.setIsEnabledAsync(false);
     }
 
     onAutoPlaybackStatusUpdate = (name: string, status: any) => {
@@ -116,6 +144,7 @@ export default class PhrasesAudioControls extends React.Component<State> {
     loadAudio = async (name = 'audio', uri?, onFinished?, onProgress?) => {
         if (name === 'audio') {
             uri = this.props.sampleUrl;
+            this.setState({audioUrl: uri});
         }
 
         try {
@@ -148,12 +177,7 @@ export default class PhrasesAudioControls extends React.Component<State> {
     expandAudioButton = async () => {
         if (this.state.audioButtonExpanded) {
             this.setState({ audioButtonExpanded: false });
-            Animated.spring(
-                this.state.audioButtonAnim,
-                {
-                    toValue: 70,
-                }
-            ).start();
+            this.shrinkAudioButton();
             await this.stopAudioSample('userRecord');
             await this.stopAudioSample('audio');
         } else {
@@ -188,10 +212,23 @@ export default class PhrasesAudioControls extends React.Component<State> {
         try {
             // this.setState({ [`${name}Progress`]: '00:00' });
             if (this.state[name] && this.state[name].stopAsync) {
-                // await this.state[name].stopAsync();
+                await this.state[name].stopAsync();
+                // await this.state[name].stopAndUnloadAsync();
+            }
+        } catch (err) {
+            console.log('Error: ' + err);
+         }
+    };
+
+    stopAudioAndUnload = async (name) => {
+        try {
+            // this.setState({ [`${name}Progress`]: '00:00' });
+            if (this.state[name] && this.state[name].stopAndUnloadAsync) {
                 await this.state[name].stopAndUnloadAsync();
             }
-        } catch (err) { }
+        } catch (err) {
+            console.log(err);
+         }
     };
 
     playAudioSample = (name = 'audio', url?, onProgress?) => new Promise(async (res, rej) => {
@@ -208,15 +245,19 @@ export default class PhrasesAudioControls extends React.Component<State> {
         }
     });
 
+    shrinkAudioRecordingButton = async () => {
+        Animated.spring(
+            this.state.audioRecordingButtonAnim,
+            {
+                toValue: 70,
+            }
+        ).start();
+    }
+
     expandAudioRecordingButton = async () => {
         if (this.state.audioRecordingButtonExpanded) {
             this.setState({audioRecordingButtonExpanded: false});
-            Animated.spring(
-                this.state.audioRecordingButtonAnim,
-                {
-                    toValue: 70,
-                }
-            ).start();
+            this.shrinkAudioRecordingButton();
             this.setState({ recordProgress: '00:00' });
             if (this.state.record) {
                 try {
@@ -275,6 +316,15 @@ export default class PhrasesAudioControls extends React.Component<State> {
         }
     }
 
+    shrinkPlayback = async () => {
+        Animated.spring(
+            this.state.audioPlayButtonAnim,
+            {
+                toValue: 70,
+            }
+        ).start();
+    }
+
     expandPlaybackButton = async () => {
         if (this.state.audioPlayButtonExpanded) {
             this.setState({ replayProgress: '00:00' });
@@ -285,12 +335,7 @@ export default class PhrasesAudioControls extends React.Component<State> {
             await this.stopAudioSample('userRecord');
             await this.stopAudioSample('audio');
             this.setState({ audioPlayButtonExpanded: false });
-            Animated.spring(
-                this.state.audioPlayButtonAnim,
-                {
-                    toValue: 70,
-                }
-            ).start();
+            this.shrinkPlayback();
         } else {
             this.setState({ replayProgress: '00:00' });
             if (this.state.replayProgressInterval) {

@@ -32,10 +32,6 @@ export default function WordsActivity({ navigation, route }) {
                 title: 'الأسرة',
             })));
         });
-        // alert(lessonTitle);
-        return function cleanup() {
-            
-        }
     }, []);
 
     const uploadData = async (data) => {
@@ -104,6 +100,7 @@ export default function WordsActivity({ navigation, route }) {
                     <>
                         <WordsActivityCarousel activityData={activityData} onChange={setActiveQuestion} />
                         <PhrasesAudioControls
+                            navigation={navigation}
                             onUserAnswer={uploadData}
                             sampleUrl={activityData[activeQuestion].audioUrl}
                             userAudioRecordUrl={activityData[activeQuestion].userAudioRecordUrl}
@@ -113,8 +110,6 @@ export default function WordsActivity({ navigation, route }) {
                 )}
             </View>
             <ActivityFooter
-                // toNext="WordsActivity"
-                // toNextPayload={{}}
                 navigation={navigation}
                 toNext={nextActivity.navigationScreen}
                 toNextPayload={{ 
