@@ -82,10 +82,10 @@ export default function WordsActivity({ navigation, route }) {
                     backgroundColor: '#FCFDFF',
                     borderStyle: 'solid', borderWidth: 3,
                     borderColor: '#F7F9F7', height: 100,
-                    justifyContent: 'space-around',
+                    justifyContent: 'center',
                     flexDirection: 'row'
                 }}>
-                    <Text style={{textAlign: 'center', marginTop: 50, color: '#233665', width: '100%', fontFamily: 'NeoSansArabicBold'}}>
+                    <Text style={{textAlign: 'center', marginTop: 50, color: '#233665', width: '100%', fontSize: 20, fontFamily: 'NeoSansArabicBold'}}>
                         {lessonTitle}
                     </Text>
                     <TouchableOpacity 
@@ -138,18 +138,18 @@ const styles = StyleSheet.create({
       //resizeMode: 'contain',  
     },
     backButton: {
-      marginTop: 50, 
-      color: '#233665', 
-      width: 30, 
-      height: 30, 
-      marginRight: 30,
-      backgroundColor: '#F7F9FC',
-      fontWeight: 'bold', 
-      borderStyle: 'solid', 
-      borderRadius: 5, 
-      borderWidth: 1,
-      borderColor: '#F7F9FC', 
-      overflow: 'hidden',
-      alignItems: 'center'
+        position: 'absolute',
+        top: 50,
+        right: 23, 
+        color: '#233665', 
+        width: 30, 
+        height: 30, 
+        backgroundColor: '#F7F9FC',
+        borderStyle: 'solid', 
+        borderRadius: 5, 
+        borderWidth: 1,
+        borderColor: '#F7F9FC', 
+        overflow: 'hidden',
+        alignItems: 'center'
     }
   });
