@@ -91,7 +91,7 @@ export default class Lessons extends React.Component<Props, State> {
           <View style={{flex: 1, justifyContent:'flex-start', width: '100%', backgroundColor: '#FCFDFF'}}>
             <View style={{backgroundColor: '#FCFDFF',
                         borderStyle: 'solid', borderWidth: 3,
-                        borderColor: '#F7F9F7', height: 100,
+                        borderColor: '#F7F9F7', height: 80,
                         justifyContent: 'center',
                         flexDirection: 'row',
                         alignItems: 'center'}}>
@@ -144,7 +144,7 @@ export default class Lessons extends React.Component<Props, State> {
   },
     unitTitle: {
       textAlign: 'center', 
-      marginTop: 50, 
+      marginTop: 34, 
       color: '#233665', 
       width: '100%', 
       fontSize: 20,
@@ -157,7 +157,7 @@ export default class Lessons extends React.Component<Props, State> {
     },
     backButton: {
       position: 'absolute', 
-      top: 50, 
+      top: 34, 
       right: 23,
       color: '#233665', 
       width: 30, 

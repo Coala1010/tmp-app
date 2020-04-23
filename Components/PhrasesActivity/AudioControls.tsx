@@ -433,7 +433,7 @@ const styles = StyleSheet.create({
     audioPlayButton: {
         width: 70,
         height: 85,
-        marginTop: 30,
+        marginTop: 20,
         justifyContent: 'flex-start',
         flexDirection: 'row',
         color: '#233665', 
@@ -466,7 +466,7 @@ const styles = StyleSheet.create({
     audioRecordingButton: {
         width: 70,
         height: 80,
-        marginTop: 30,
+        marginTop: 20,
         color: '#233665', 
         backgroundColor: '#F7F9FC',
         borderColor: 'black',
@@ -503,7 +503,7 @@ const styles = StyleSheet.create({
     audioButton: {
         width: 70,
         height: 70, 
-        marginTop: 30,
+        marginTop: 20,
         justifyContent: 'flex-start',
         backgroundColor: '#233665',
         borderColor: 'black',
