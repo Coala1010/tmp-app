@@ -129,7 +129,7 @@ export default class Activities extends React.Component<State> {
       // const userActivities = 
 
       return this.state.userActivities ? (
-        <View style={{flex: 1, justifyContent:'flex-start', padding: 20, width: '100%', marginTop: 50}}>
+        <View style={{flex: 1, justifyContent:'flex-start', padding: 20, width: '100%', marginTop: 40}}>
             {
                 this.state.userActivities.videoActivityGroup && this.state.userActivities.videoActivityGroup.userGroupId ? 
                 (
@@ -489,8 +489,8 @@ export default class Activities extends React.Component<State> {
         flexDirection: 'row'
     },
     activity: {
-        marginTop: 10,
-        marginBottom: 10, 
+        marginTop: 8,
+        marginBottom: 8, 
         justifyContent: 'space-around',
         backgroundColor: '#FCFDFF',
         borderWidth: 0,
