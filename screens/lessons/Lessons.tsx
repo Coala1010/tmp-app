@@ -68,7 +68,7 @@ export default class Lessons extends React.Component<Props, State> {
                 }          
               </View>       
             <Text style = {{color: '#233665', alignContent: 'center', display: 'flex', 
-            padding: 10, fontWeight: 'bold', fontSize: 20, fontFamily: 'NeoSansArabicBold'}}>{userLesson.title}</Text>
+            padding: 10, fontSize: 20, fontFamily: 'NeoSansArabicBold'}}>{userLesson.title}</Text>
             <View style = {styles.lessonNumberWrapper}>
               <Text style = {styles.lessonNumber}>{i+1}</Text>              
             </View>
@@ -124,7 +124,6 @@ export default class Lessons extends React.Component<Props, State> {
     lessonNumber: {
       fontSize: 20, 
       color: '#233665', 
-      fontWeight: 'bold',
       fontFamily: 'NeoSansArabicBold'
     },
     lessonNumberWrapper: {
@@ -146,7 +145,6 @@ export default class Lessons extends React.Component<Props, State> {
     unitTitle: {
       textAlign: 'center', 
       marginTop: 50, 
-      fontWeight: 'bold', 
       color: '#233665', 
       width: '100%', 
       fontSize: 20,

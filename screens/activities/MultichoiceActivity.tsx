@@ -96,7 +96,6 @@ const styles = StyleSheet.create({
     lessonTitle: {
         textAlign: 'center', 
         marginTop: 50, 
-        fontWeight: 'bold', 
         color: '#233665', 
         width: '100%',
         fontFamily: 'NeoSansArabicBold', 
@@ -113,7 +112,6 @@ const styles = StyleSheet.create({
       height: 30, 
       marginRight: 30,
       backgroundColor: '#F7F9FC',
-      fontWeight: 'bold', 
       borderStyle: 'solid', 
       borderRadius: 5, 
       borderWidth: 1,

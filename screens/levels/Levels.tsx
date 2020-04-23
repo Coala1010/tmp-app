@@ -123,7 +123,6 @@ export default class Levels extends React.Component<State> {
       bottom: 16,
       textAlign: 'center', 
       // marginBottom: 16, 
-      fontWeight: 'bold', 
       color: '#233665', 
       width: '100%', 
       fontSize: 20,
@@ -176,7 +175,6 @@ export default class Levels extends React.Component<State> {
       alignContent: 'center',
       fontSize: 20, 
       color: '#233665', 
-      fontWeight: 'bold',
       fontFamily: 'NeoSansArabicBold',
       margin: 8
     },
@@ -185,7 +183,6 @@ export default class Levels extends React.Component<State> {
       alignContent: 'center', 
       display: 'flex', 
       padding: 10, 
-      fontWeight: 'bold',
       fontSize: 20,
       fontFamily: 'NeoSansArabicBold'
     },

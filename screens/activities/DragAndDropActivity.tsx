@@ -60,7 +60,7 @@ export default function DragAndDropActivity({ route, navigation }) {
                     borderColor: '#F7F9F7', height: 100,
                     justifyContent: 'space-around',
                     flexDirection: 'row'}}>
-                    <Text style={{textAlign: 'center', marginTop: 50, fontWeight: 'bold', color: '#233665', width: '100%', 
+                    <Text style={{textAlign: 'center', marginTop: 50, color: '#233665', width: '100%', 
                     fontFamily: 'NeoSansArabicBold', fontSize: 20}}>
                         {lessonTitle}
                     </Text>
@@ -109,7 +109,6 @@ const styles = StyleSheet.create({
       height: 30, 
       marginRight: 30,
       backgroundColor: '#F7F9FC',
-      fontWeight: 'bold', 
       borderStyle: 'solid', 
       borderRadius: 5, 
       borderWidth: 1,

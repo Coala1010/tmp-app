@@ -378,14 +378,12 @@ export default class Activities extends React.Component<State> {
         alignContent: 'center', 
         display: 'flex', 
         padding: 10, 
-        fontWeight: 'bold', 
         fontSize: 20, 
         fontFamily: 'NeoSansArabicBold'
     },
     screenTitle: {
         textAlign: 'center', 
         marginTop: 35, 
-        fontWeight: 'bold', 
         color: '#233665', 
         width: '100%', 
         fontSize: 20,

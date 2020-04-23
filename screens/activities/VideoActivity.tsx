@@ -3,21 +3,25 @@ import { Text, View, TouchableOpacity, Button, Image, StyleSheet } from 'react-n
 import { Video } from 'expo-av';
 import VideoPlayer from 'expo-video-player';
 // import BottomNavigation from '../../Components/navigation/BottomNavigation';
-import VideoProvider from '../../providers/activities/VideoProvider';
+import {VideoProvider, updateVideoActivity} from '../../providers/activities/VideoProvider';
 import ActivityFooter from '../../Components/ActivityFooter/ActivityFooter';
 import { Audio } from 'expo-av';
 
 interface State {
   videoUrl: string,
   videoTimer: number,
-  toNextDisabled
+  toNextDisabled,
+  updateSent: boolean,
+  videoProgressId: number
 }
 
 export default class VideoActivity extends React.Component<State> {
     state: Readonly<State> = {
         videoUrl: '',
         videoTimer: 0,
-        toNextDisabled: false
+        toNextDisabled: false,
+        updateSent: false,
+        videoProgressId: 0
     }  
 
     componentDidMount() {
@@ -25,13 +29,24 @@ export default class VideoActivity extends React.Component<State> {
         const { userGroupId } = this.props.route.params;
         VideoProvider(userGroupId, (json) => {
           const videoProgress = json;
-          this.setState({videoUrl : videoProgress.videoUrl, videoTimer: videoProgress.videoTimer});
+          this.setState({videoUrl : videoProgress.videoUrl, videoTimer: videoProgress.videoTimer, videoProgressId: videoProgress.id});
         })
     }
 
-    videoPlayback = (event) => {
+    videoPlayback = async (event) => {
         if (event.isPlaying) {
             this.setState({toNextDisabled: true})
+            if (!this.state.updateSent) {
+                try {
+                    await updateVideoActivity({
+                        id: this.state.videoProgressId,
+                        activityStatus: true
+                    });
+                    this.setState({updateSent: true})
+                } catch (err) {
+                    console.log(err);
+                }
+            }
         } else {
             this.setState({toNextDisabled: false})
         }
@@ -65,7 +80,7 @@ export default class VideoActivity extends React.Component<State> {
                     : <View/>
                 }
             </View>
-            <Text style={{textAlign: 'right', marginTop: 20, marginRight:50, fontWeight: 'bold', color: '#233665', width: '90%',}}>
+            <Text style={{textAlign: 'right', marginTop: 20, marginRight:50, fontFamily: 'NeoSansArabicBold', color: '#233665', width: '90%',}}>
                 {videoTitle}
             </Text>
         </View>
@@ -83,7 +98,7 @@ export default class VideoActivity extends React.Component<State> {
                         borderColor: '#F7F9F7', height: 100,
                         justifyContent: 'space-around',
                         flexDirection: 'row'}}>
-                        <Text style={{textAlign: 'center', marginTop: 50, fontWeight: 'bold', color: '#233665', width: '100%', fontSize: 20}}>
+                        <Text style={{textAlign: 'center', marginTop: 50, fontFamily: 'NeoSansArabicBold', color: '#233665', width: '100%', fontSize: 20}}>
                             {lessonTitle}
                         </Text>
                         <TouchableOpacity 
