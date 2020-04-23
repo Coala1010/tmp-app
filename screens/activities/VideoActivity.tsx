@@ -37,7 +37,6 @@ export default class VideoActivity extends React.Component<State> {
         if (event.isPlaying) {
             this.setState({toNextDisabled: true})
             if (!this.state.updateSent) {
-                console.log('Vid: ' + this.state.videoProgressId)
                 try {
                     await updateVideoActivity({
                         id: this.state.videoProgressId,
@@ -81,7 +80,7 @@ export default class VideoActivity extends React.Component<State> {
                     : <View/>
                 }
             </View>
-            <Text style={{textAlign: 'right', marginTop: 20, marginRight:50, fontWeight: 'bold', color: '#233665', width: '90%',}}>
+            <Text style={{textAlign: 'right', marginTop: 20, marginRight:50, fontFamily: 'NeoSansArabicBold', color: '#233665', width: '90%',}}>
                 {videoTitle}
             </Text>
         </View>
@@ -99,7 +98,7 @@ export default class VideoActivity extends React.Component<State> {
                         borderColor: '#F7F9F7', height: 100,
                         justifyContent: 'space-around',
                         flexDirection: 'row'}}>
-                        <Text style={{textAlign: 'center', marginTop: 50, fontWeight: 'bold', color: '#233665', width: '100%', fontSize: 20}}>
+                        <Text style={{textAlign: 'center', marginTop: 50, fontFamily: 'NeoSansArabicBold', color: '#233665', width: '100%', fontSize: 20}}>
                             {lessonTitle}
                         </Text>
                         <TouchableOpacity 
