@@ -152,6 +152,7 @@ export default class PhrasesAudioControls extends React.Component<State> {
                 this.state.audioButtonAnim,
                 {
                     toValue: 70,
+                    bounciness:0,
                 }
             ).start();
             await this.stopAudioSample('userRecord');
@@ -171,6 +172,7 @@ export default class PhrasesAudioControls extends React.Component<State> {
                 this.state.audioButtonAnim,
                 {
                     toValue: 120,
+                    bounciness:0,
                 }
             ).start();
             this.playAudioSample();
@@ -214,6 +216,7 @@ export default class PhrasesAudioControls extends React.Component<State> {
                 this.state.audioRecordingButtonAnim,
                 {
                     toValue: 70,
+                    bounciness:0,
                 }
             ).start();
             this.setState({ recordProgress: '00:00' });
@@ -244,8 +247,10 @@ export default class PhrasesAudioControls extends React.Component<State> {
             }
 
             Animated.spring(
-                this.state.audioRecordingButtonAnim,
-                { toValue: 120 },
+                this.state.audioRecordingButtonAnim,{ 
+                    toValue: 120,
+                    bounciness:0,
+                },
             ).start();
         }
     }
@@ -288,6 +293,7 @@ export default class PhrasesAudioControls extends React.Component<State> {
                 this.state.audioPlayButtonAnim,
                 {
                     toValue: 70,
+                    bounciness:0,
                 }
             ).start();
         } else {
@@ -311,6 +317,7 @@ export default class PhrasesAudioControls extends React.Component<State> {
                 this.state.audioPlayButtonAnim,
                 {
                     toValue: 120,
+                    bounciness:0,
                 }
             ).start();
             this.playbackAudios();
@@ -436,7 +443,7 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-start',
         flexDirection: 'row',
         color: '#233665', 
-        backgroundColor: '#F7F9FC',
+        backgroundColor: '#F6F6F6',
         borderColor: 'black',
         borderStyle: 'solid',
         borderWidth: 0,
@@ -467,7 +474,7 @@ const styles = StyleSheet.create({
         height: 80,
         marginTop: 30,
         color: '#233665', 
-        backgroundColor: '#F7F9FC',
+        backgroundColor: '#F6F6F6',
         borderColor: 'black',
         borderStyle: 'solid',
         borderWidth: 0,
