@@ -7,10 +7,10 @@ import PhrasesAudioControls from '../../Components/PhrasesActivity/AudioControls
 import { getPhrases, uploadUserPhraseAudio } from '../../providers/activities/PhrasesActivity';
 import environment from '../../development.json';
 
-export default function PhrasesActivity({ lessonTitle, navigation, route }) {
+export default function PhrasesActivity({ navigation, route }) {
     const [answers, setAnswers] = React.useState({});
     const [activityData, setActivityData] = React.useState(null);
-    const { activities } = route.params;
+    const { activities, lessonTitle } = route.params;
     const nextActivity = activities.get('phrases').nextActivity;
 
     React.useEffect(() => {
@@ -78,10 +78,10 @@ export default function PhrasesActivity({ lessonTitle, navigation, route }) {
                             backgroundColor: '#FCFDFF',
                             borderStyle: 'solid', borderWidth: 3,
                             borderColor: '#F7F9F7', height: 100,
-                            justifyContent: 'space-around',
+                            justifyContent: 'center',
                             flexDirection: 'row'
                         }}>
-                            <Text style={{textAlign: 'center', marginTop: 50, color: '#233665', width: '100%', fontFamily: 'NeoSansArabicBold'}}>
+                            <Text style={{textAlign: 'center', marginTop: 50, color: '#233665', width: '100%', fontSize: 20, fontFamily: 'NeoSansArabicBold'}}>
                                 {lessonTitle}
                             </Text>
                             <TouchableOpacity 
@@ -131,14 +131,15 @@ const styles = StyleSheet.create({
     image: {
       height: 24,
       width: 24,
-      //resizeMode: 'contain',  
+      //resizeMode: 'contain', 
     },
     backButton: {
-      marginTop: 50, 
+      position: 'absolute',
+      top: 50,
+      right: 23, 
       color: '#233665', 
       width: 30, 
       height: 30, 
-      marginRight: 30,
       backgroundColor: '#F7F9FC',
       fontWeight: 'bold', 
       borderStyle: 'solid', 
