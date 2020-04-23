@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     backBtnContainer: {
-        marginBottom: 20,
+        marginBottom: 16,
         marginRight: 20,
         borderRadius: 20,
         backgroundColor: 'white',
@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
         elevation: 2,
     },
     footerContainer: {
-        flexDirection: 'row',
+        flexDirection: 'row'
     },
     footer: {
         marginTop: 10,
@@ -142,7 +142,8 @@ const styles = StyleSheet.create({
     forwardButton: {
         marginTop: 10,
         marginLeft: 20,
-        marginRight: 10, 
+        marginRight: 10,
+        marginBottom: 16, 
         justifyContent: 'space-around',
         backgroundColor: '#FCFDFF',
         borderColor: 'black',
@@ -157,7 +158,7 @@ const styles = StyleSheet.create({
         alignItems: 'center', 
         backgroundColor: '#FCFDFF', 
         justifyContent: 'space-around', 
-        height: 60,
+        height: 56,
         flexDirection: 'row'
     },
 });

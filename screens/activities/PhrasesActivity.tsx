@@ -77,11 +77,11 @@ export default function PhrasesActivity({ navigation, route }) {
                         <View style={{
                             backgroundColor: '#FCFDFF',
                             borderStyle: 'solid', borderWidth: 3,
-                            borderColor: '#F7F9F7', height: 100,
+                            borderColor: '#F7F9F7', height: 80,
                             justifyContent: 'center',
                             flexDirection: 'row'
                         }}>
-                            <Text style={{textAlign: 'center', marginTop: 50, color: '#233665', width: '100%', fontSize: 20, fontFamily: 'NeoSansArabicBold'}}>
+                            <Text style={{textAlign: 'center', marginTop: 34, color: '#233665', width: '100%', fontSize: 20, fontFamily: 'NeoSansArabicBold'}}>
                                 {lessonTitle}
                             </Text>
                             <TouchableOpacity 
@@ -100,6 +100,7 @@ export default function PhrasesActivity({ navigation, route }) {
                             <>
                                 <PhrasesActivityCarousel activityData={activityData} onChange={setActiveQuestion} />
                                 <PhrasesAudioControls
+                                    navigation={navigation}
                                     onUserAnswer={uploadData}
                                     sampleUrl={activityData[activeQuestion].audioUrl}
                                     userAudioRecordUrl={activityData[activeQuestion].userAudioRecordUrl}
@@ -135,7 +136,7 @@ const styles = StyleSheet.create({
     },
     backButton: {
       position: 'absolute',
-      top: 50,
+      top: 34,
       right: 23, 
       color: '#233665', 
       width: 30, 

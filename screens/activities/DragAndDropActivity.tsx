@@ -57,10 +57,10 @@ export default function DragAndDropActivity({ route, navigation }) {
             <View style={{flex: 1, justifyContent:'flex-start', width: '100%', backgroundColor: 'white'}}>
                 <View style={{backgroundColor: '#FCFDFF',
                     borderStyle: 'solid', borderWidth: 3,
-                    borderColor: '#F7F9F7', height: 100,
-                    justifyContent: 'space-around',
+                    borderColor: '#F7F9F7', height: 80,
+                    justifyContent: 'center',
                     flexDirection: 'row'}}>
-                    <Text style={{textAlign: 'center', marginTop: 50, color: '#233665', width: '100%', 
+                    <Text style={{textAlign: 'center', marginTop: 34, color: '#233665', width: '100%', 
                     fontFamily: 'NeoSansArabicBold', fontSize: 20}}>
                         {lessonTitle}
                     </Text>
@@ -103,18 +103,19 @@ const styles = StyleSheet.create({
       //resizeMode: 'contain',  
     },
     backButton: {
-      marginTop: 50, 
-      color: '#233665', 
-      width: 30, 
-      height: 30, 
-      marginRight: 30,
-      backgroundColor: '#F7F9FC',
-      borderStyle: 'solid', 
-      borderRadius: 5, 
-      borderWidth: 1,
-      borderColor: '#F7F9FC', 
-      overflow: 'hidden',
-      alignItems: 'center',
-      fontFamily: 'NeoSansArabicBold'
+        position: 'absolute',
+        top: 34,
+        right: 23,  
+        color: '#233665', 
+        width: 30, 
+        height: 30, 
+        backgroundColor: '#F7F9FC',
+        borderStyle: 'solid', 
+        borderRadius: 5, 
+        borderWidth: 1,
+        borderColor: '#F7F9FC', 
+        overflow: 'hidden',
+        alignItems: 'center',
+        fontFamily: 'NeoSansArabicBold'
     }
   });
