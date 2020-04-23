@@ -107,9 +107,9 @@ export default class PhrasesAudioControls extends React.Component<State> {
         }
         Audio.setIsEnabledAsync(true);    }
     componentDidMount() {
-          const sub = this.props.navigation.addListener('blur', () => {
+        const sub = this.props.navigation.addListener('blur', () => {
             this.stopAudioSample('audio'); 
-          });
+        });
         Audio.setIsEnabledAsync(true);
         this.loadAudio();
     }

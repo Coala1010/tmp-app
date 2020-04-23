@@ -34,7 +34,7 @@ export default class Levels extends React.Component<State> {
             let userLevels : UserLevels = new UserLevels();
             userLevels.userLevelsArray = json;
             this.setState({userLevels : userLevels});
-        })
+          })
         });
     }
 
@@ -42,7 +42,21 @@ export default class Levels extends React.Component<State> {
         selectedIndex: -1,
         userLevels: null,
         userToken: null
-    }  
+    } 
+    
+    componentDidMount() {
+        const sub = this.props.navigation.addListener('focus', () => {
+          UserProvider((json) => {
+            const token = json.token;
+            this.setState({userToken: token});
+            UserLevelsProvider(token, (json) => {
+              let userLevels : UserLevels = new UserLevels();
+              userLevels.userLevelsArray = json;
+              this.setState({userLevels : userLevels});
+            })
+          });
+        });
+    }
   
     updateIndex (selectedIndex) {
         this.setState({selectedIndex})
