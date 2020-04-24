@@ -148,7 +148,7 @@ export default class Lessons extends React.Component<Props, State> {
   },
     unitTitle: {
       textAlign: 'center', 
-      marginTop: 34, 
+      marginTop: 26, 
       color: '#233665', 
       width: '100%', 
       fontSize: 20,
@@ -161,7 +161,7 @@ export default class Lessons extends React.Component<Props, State> {
     },
     backButton: {
       position: 'absolute', 
-      top: 34, 
+      bottom: 10, 
       right: 23,
       color: '#233665', 
       width: 30, 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, TouchableOpacity, Button, Image, StyleSheet } from 'react-native';
+import { Text, View, TouchableOpacity, Button, Image, StyleSheet, StatusBar} from 'react-native';
 
 export default class Congratulations extends React.Component<State> {  
     render() {
@@ -7,6 +7,10 @@ export default class Congratulations extends React.Component<State> {
         // const nextActivity = activities.get('video').nextActivity;
         return (
             <View style={{flex: 1, justifyContent:'center', flexDirection: 'column', width: '100%', backgroundColor: '#FCFDFF'}}>
+                <StatusBar
+                    barStyle="dark-content"
+                    backgroundColor="white"
+                    translucent/>
                 <View style={styles.imageWrapper}>
                     <Image 
                         style={styles.image}
