@@ -62,7 +62,7 @@ export default class VideoActivity extends React.Component<State> {
                 barStyle="dark-content"
                 backgroundColor="white"
                 translucent/>
-            <View style={{flex: 1, justifyContent: 'flex-start', flexDirection: 'column', alignItems:'flex-start', width: '100%', backgroundColor: '#FCFDFF'}}>
+            <View style={{flex: 1, justifyContent: 'flex-start', flexDirection: 'column', width: '100%', backgroundColor: '#FCFDFF'}}>
                 {
                     this.state.videoUrl ? (<VideoPlayer
                         videoProps={{
@@ -100,9 +100,9 @@ export default class VideoActivity extends React.Component<State> {
                     <View style={{backgroundColor: '#FCFDFF',
                             borderStyle: 'solid', borderWidth: 3,
                         borderColor: '#F7F9F7', height: 80,
-                        justifyContent: 'space-around',
+                        justifyContent: 'center',
                         flexDirection: 'row'}}>
-                        <Text style={{textAlign: 'center', marginTop: 34, fontFamily: 'NeoSansArabicBold', color: '#233665', width: '100%', fontSize: 20}}>
+                        <Text style={styles.lessonTitle}>
                             {lessonTitle}
                         </Text>
                         <TouchableOpacity 
@@ -169,6 +169,14 @@ export default class VideoActivity extends React.Component<State> {
 
 
   const styles = StyleSheet.create({
+    lessonTitle: {
+        textAlign: 'center', 
+        marginTop: 34, 
+        color: '#233665', 
+        width: '100%',
+        fontFamily: 'NeoSansArabicBold', 
+        fontSize: 20
+    },
     image: {
         height: 24,
         width: 24,
@@ -210,19 +218,20 @@ export default class VideoActivity extends React.Component<State> {
         alignItems: 'center',
     },
     backButton: {
-        marginTop: 34, 
+        position: 'absolute',
+        top: 34,
+        right: 23, 
         color: '#233665', 
         width: 30, 
         height: 30, 
-        marginRight: 30,
         backgroundColor: '#F7F9FC',
-        fontWeight: 'bold', 
         borderStyle: 'solid', 
         borderRadius: 5, 
         borderWidth: 1,
         borderColor: '#F7F9FC', 
         overflow: 'hidden',
-        alignItems: 'center'
+        alignItems: 'center',
+        fontFamily: 'NeoSansArabicBold'
     },
     forwardButton: {
         marginTop: 10,

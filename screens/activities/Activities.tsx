@@ -334,42 +334,44 @@ export default class Activities extends React.Component<State> {
                         </View>
                     {this.renderActivitiesList()}
                 </View>
-                <View style={{flexDirection: 'row', marginBottom: 16, justifyContent: 'center'}}>
-                    <View style={styles.forwardButton}>
-                        <TouchableOpacity style={{padding: 5}} 
-                            onPress={() => this.props.navigation.navigate(this.state.firstActivity.navigationScreen, 
-                                { 
-                                    userGroupId: this.state.firstActivity.userGroupId,
-                                    lessonTitle: this.state.firstActivity.lessonTitle,
-                                    lessonId: this.state.firstActivity.lessonId,
-                                    userToken: this.state.userToken,
-                                    activities: this.state.activities,
-                                    unitId: this.props.route.params.unitId 
-                                }
-                                )}>
-                            <View style = {styles.forwardButtonInner}>
-                                <Image 
-                                    style={styles.forwardImage}
-                                    source={require('../../assets/keyboard_arrow_left-24px.png')} 
-                                />
-                                <Text style = {styles.forwardButtonText}>التــالي</Text>
-                                            {/* Forward */}
-                            </View>
-                        </TouchableOpacity>
-                    </View>
-                    {/* <View style={styles.backButton}>
-                        <TouchableOpacity 
-                            style={styles.backButtonTO}
-                            onPress={() => this.props.navigation.goBack()}>
-                            <View style={styles.backImageWrapper}>
-                                <Image 
-                                    style={styles.backImage}
-                                    source={require('../../assets/exit_to_app-24px.png')} 
-                                />
-                            </View>
-                        </TouchableOpacity>
-                    </View> */}
-                </View>
+                {
+                    this.state.firstActivity ? <View style={{flexDirection: 'row', marginBottom: 16, justifyContent: 'center'}}>
+                        <View style={styles.forwardButton}>
+                            <TouchableOpacity style={{padding: 5}} 
+                                onPress={() => this.props.navigation.navigate(this.state.firstActivity.navigationScreen, 
+                                    { 
+                                        userGroupId: this.state.firstActivity.userGroupId,
+                                        lessonTitle: this.state.firstActivity.lessonTitle,
+                                        lessonId: this.state.firstActivity.lessonId,
+                                        userToken: this.state.userToken,
+                                        activities: this.state.activities,
+                                        unitId: this.props.route.params.unitId 
+                                    }
+                                    )}>
+                                <View style = {styles.forwardButtonInner}>
+                                    <Image 
+                                        style={styles.forwardImage}
+                                        source={require('../../assets/keyboard_arrow_left-24px.png')} 
+                                    />
+                                    <Text style = {styles.forwardButtonText}>التــالي</Text>
+                                                {/* Forward */}
+                                </View>
+                            </TouchableOpacity>
+                        </View>
+                        {/* <View style={styles.backButton}>
+                            <TouchableOpacity 
+                                style={styles.backButtonTO}
+                                onPress={() => this.props.navigation.goBack()}>
+                                <View style={styles.backImageWrapper}>
+                                    <Image 
+                                        style={styles.backImage}
+                                        source={require('../../assets/exit_to_app-24px.png')} 
+                                    />
+                                </View>
+                            </TouchableOpacity>
+                        </View> */}
+                    </View> : <View/>
+                }
           </View>
       );
     } 
