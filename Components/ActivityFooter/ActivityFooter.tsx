@@ -4,7 +4,7 @@ import { Ionicons } from '@expo/vector-icons';
 import UserLessonProvider from '../../providers/UserLessonProvider';
 import UserLesson from '../../types/UserLesson';
 
-export default function ActivityFooter({ userLessonId, navigation, leftBtn, toNext, toNextPayload }) {
+export default function ActivityFooter({ userLessonId, navigation, leftBtn, toNext, toNextPayload, toNextDisabled }) {
 
     const nextNavigation = () => {
 
@@ -14,7 +14,7 @@ export default function ActivityFooter({ userLessonId, navigation, leftBtn, toNe
                 if (userLesson.userLessonProgress == 1.0) {
                     navigation.navigate('Congratulations', toNextPayload);
                 } else {
-                    navigation.push(toNext, toNextPayload);
+                    navigation.navigate(toNext, toNextPayload);
                 }
             })
         } else {  
@@ -24,23 +24,23 @@ export default function ActivityFooter({ userLessonId, navigation, leftBtn, toNe
 
     return (
         <View style={styles.footerContainer}>
-            <View style={styles.footer}>
+            <View style={leftBtn ? styles.footerWithLeftBtn : styles.footer}>
                 <TouchableOpacity
                     style={{padding: 5}} 
                     onPress={() => nextNavigation()}
+                    disabled={toNextDisabled}
                 >
                     <View style = {styles.forwardButtonInner}>
                         <Image 
-                            style={styles.forwardImage}
+                            style={[toNextDisabled ? styles.disabledForwardImage: styles.forwardImage]}
                             source={require('../../assets/keyboard_arrow_left-24px.png')} 
                         />
-                    </View>
-                </TouchableOpacity>
-                        <Text style={styles.footerTitle}>
+                        <Text style={[toNextDisabled ? styles.disabledFooterTitle: styles.footerTitle]}>
                             التــالي
                         </Text>
+                    </View>
+                </TouchableOpacity>
                 {/* Forward */}
-                <View style={{ width: 24 }} />
             </View>
 
             {leftBtn ? leftBtn : <View/>
@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     backBtnContainer: {
-        marginBottom: 20,
+        marginBottom: 16,
         marginRight: 20,
         borderRadius: 20,
         backgroundColor: 'white',
@@ -79,33 +79,57 @@ const styles = StyleSheet.create({
         elevation: 2,
     },
     footerContainer: {
-        flexDirection: 'row',
+        flexDirection: 'row'
     },
     footer: {
-        flex: 1,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        marginBottom: 16,
-        marginHorizontal: 20,
-        borderRadius: 20,
-        backgroundColor: 'white',
-        height: 70,
-        paddingHorizontal: 15,
-        shadowColor: '#000',
+        justifyContent: 'space-around',
+        backgroundColor: '#FCFDFF',
+        borderWidth: 0,
+        shadowOpacity: 0.6,
+        borderRadius: 16,
         shadowOffset: {
             width: 0,
             height: 2,
         },
-        shadowOpacity: 0.20,
-        shadowRadius: 1.41,
-        elevation: 2,
+        // shadowOpacity: 0.22,
+        shadowRadius: 2.22,
+        elevation: 1,
+        width: '90%',
+        shadowColor: 'lightgray',
+        marginBottom: 16,
+        marginHorizontal: '5%'
+    },
+    footerWithLeftBtn: {
+        // marginTop: 10,
+        justifyContent: 'space-around',
+        backgroundColor: '#FCFDFF',
+        borderWidth: 0,
+        shadowOpacity: 0.6,
+        borderRadius: 16,
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        // shadowOpacity: 0.22,
+        shadowRadius: 2.22,
+        elevation: 1,
+        width: '69%',
+        shadowColor: 'lightgray',
+        marginBottom: 16,
+        marginHorizontal: '5%'
+    },
+    disabledFooterTitle: {
+        color: 'lightgray',
+        alignContent: 'center',
+        padding: 10,
+        fontFamily: 'NeoSansArabicBold',
+        fontSize: 22,
     },
     footerTitle: {
         color: '#233665',
         alignContent: 'center',
         padding: 10,
-        fontWeight: 'bold',
+        fontFamily: 'NeoSansArabicBold',
         fontSize: 22,
     },
     image: {
@@ -123,11 +147,21 @@ const styles = StyleSheet.create({
     forwardImage: {
         height: 24,
         width: 14,
+        position: 'absolute',
+        left: 10
+    },
+    disabledForwardImage: {
+        height: 24,
+        width: 14,
+        tintColor: '#E3E3E3',
+        position: 'absolute',
+        left: 10
     },
     forwardButton: {
         marginTop: 10,
         marginLeft: 20,
-        marginRight: 10, 
+        marginRight: 10,
+        marginBottom: 16, 
         justifyContent: 'space-around',
         backgroundColor: '#FCFDFF',
         borderColor: 'black',
@@ -142,7 +176,7 @@ const styles = StyleSheet.create({
         alignItems: 'center', 
         backgroundColor: '#FCFDFF', 
         justifyContent: 'space-around', 
-        height: 60,
+        height: 56,
         flexDirection: 'row'
     },
 });

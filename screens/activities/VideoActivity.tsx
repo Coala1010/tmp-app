@@ -1,21 +1,27 @@
 import React from 'react';
-import { Text, View, TouchableOpacity, Button, Image, StyleSheet } from 'react-native';
+import { Text, View, TouchableOpacity, StatusBar, Image, StyleSheet } from 'react-native';
 import { Video } from 'expo-av';
 import VideoPlayer from 'expo-video-player';
 // import BottomNavigation from '../../Components/navigation/BottomNavigation';
-import VideoProvider from '../../providers/activities/VideoProvider';
+import {VideoProvider, updateVideoActivity} from '../../providers/activities/VideoProvider';
 import ActivityFooter from '../../Components/ActivityFooter/ActivityFooter';
 import { Audio } from 'expo-av';
 
 interface State {
   videoUrl: string,
-  videoTimer: number
+  videoTimer: number,
+  toNextDisabled,
+  updateSent: boolean,
+  videoProgressId: number
 }
 
 export default class VideoActivity extends React.Component<State> {
     state: Readonly<State> = {
         videoUrl: '',
         videoTimer: 0,
+        toNextDisabled: false,
+        updateSent: false,
+        videoProgressId: 0
     }  
 
     componentDidMount() {
@@ -23,9 +29,28 @@ export default class VideoActivity extends React.Component<State> {
         const { userGroupId } = this.props.route.params;
         VideoProvider(userGroupId, (json) => {
           const videoProgress = json;
-          this.setState({videoUrl : videoProgress.videoUrl, videoTimer: videoProgress.videoTimer});
+          this.setState({videoUrl : videoProgress.videoUrl, videoTimer: videoProgress.videoTimer, videoProgressId: videoProgress.id});
         })
-      }
+    }
+
+    videoPlayback = async (event) => {
+        if (event.isPlaying) {
+            this.setState({toNextDisabled: true})
+            if (!this.state.updateSent) {
+                try {
+                    await updateVideoActivity({
+                        id: this.state.videoProgressId,
+                        activityStatus: true
+                    });
+                    this.setState({updateSent: true})
+                } catch (err) {
+                    console.log(err);
+                }
+            }
+        } else {
+            this.setState({toNextDisabled: false})
+        }
+    }
     
     renderVideo(videoTitle: String){
     //   const { videoUrl, lessonTitle } = this.props.route.params; 
@@ -33,7 +58,11 @@ export default class VideoActivity extends React.Component<State> {
         // const nextActivity = activities.get('video').nextActivity;
       return (
         <View style={{flex: 1, justifyContent:'flex-start', width: '100%', backgroundColor: '#FCFDFF'}}>
-            <View style={{flex: 1, justifyContent: 'flex-start', flexDirection: 'column', alignItems:'flex-start', width: '100%', backgroundColor: '#FCFDFF'}}>
+            <StatusBar
+                barStyle="dark-content"
+                backgroundColor="white"
+                translucent/>
+            <View style={{flex: 1, justifyContent: 'flex-start', flexDirection: 'column', width: '100%', backgroundColor: '#FCFDFF'}}>
                 {
                     this.state.videoUrl ? (<VideoPlayer
                         videoProps={{
@@ -48,11 +77,14 @@ export default class VideoActivity extends React.Component<State> {
                         showControlsOnLoad={true}
                         videoBackground='transparent'
                         sliderColor='#233665'
+                        hideControlsTimerDuration={4000}
+                        quickFadeOutDuration={500}
+                        playbackCallback={this.videoPlayback}
                     />)
                     : <View/>
                 }
             </View>
-            <Text style={{textAlign: 'right', marginTop: 20, marginRight:50, fontWeight: 'bold', color: '#233665', width: '90%',}}>
+            <Text style={{textAlign: 'right', marginTop: 20, marginRight:50, fontFamily: 'NeoSansArabicBold', color: '#233665', width: '90%',}}>
                 {videoTitle}
             </Text>
         </View>
@@ -67,10 +99,10 @@ export default class VideoActivity extends React.Component<State> {
                 <View style={{flex: 1, justifyContent:'flex-start', width: '100%', backgroundColor: '#FCFDFF'}}>
                     <View style={{backgroundColor: '#FCFDFF',
                             borderStyle: 'solid', borderWidth: 3,
-                        borderColor: '#F7F9F7', height: 100,
-                        justifyContent: 'space-around',
+                        borderColor: '#F7F9F7', height: 80,
+                        justifyContent: 'center',
                         flexDirection: 'row'}}>
-                        <Text style={{textAlign: 'center', marginTop: 50, fontWeight: 'bold', color: '#233665', width: '100%', fontSize: 20}}>
+                        <Text style={styles.lessonTitle}>
                             {lessonTitle}
                         </Text>
                         <TouchableOpacity 
@@ -89,6 +121,7 @@ export default class VideoActivity extends React.Component<State> {
                 <ActivityFooter
                         navigation={this.props.navigation}
                         toNext={nextActivity.navigationScreen}
+                        toNextDisabled={this.state.toNextDisabled}
                         toNextPayload={{ 
                             userGroupId: nextActivity.userGroupId,
                             lessonTitle: nextActivity.lessonTitle,
@@ -136,6 +169,14 @@ export default class VideoActivity extends React.Component<State> {
 
 
   const styles = StyleSheet.create({
+    lessonTitle: {
+        textAlign: 'center', 
+        marginTop: 34, 
+        color: '#233665', 
+        width: '100%',
+        fontFamily: 'NeoSansArabicBold', 
+        fontSize: 20
+    },
     image: {
         height: 24,
         width: 24,
@@ -177,19 +218,20 @@ export default class VideoActivity extends React.Component<State> {
         alignItems: 'center',
     },
     backButton: {
-        marginTop: 50, 
+        position: 'absolute',
+        top: 34,
+        right: 23, 
         color: '#233665', 
         width: 30, 
         height: 30, 
-        marginRight: 30,
         backgroundColor: '#F7F9FC',
-        fontWeight: 'bold', 
         borderStyle: 'solid', 
         borderRadius: 5, 
         borderWidth: 1,
         borderColor: '#F7F9FC', 
         overflow: 'hidden',
-        alignItems: 'center'
+        alignItems: 'center',
+        fontFamily: 'NeoSansArabicBold'
     },
     forwardButton: {
         marginTop: 10,

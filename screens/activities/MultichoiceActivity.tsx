@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import { Text, View, StyleSheet, TouchableOpacity, Image, StatusBar } from 'react-native';
 import ActivityGroupsProgress from '../../Components/navigation/ActivityGroupsProgress';
 import ActivityFooter from '../../Components/ActivityFooter/ActivityFooter';
 import Multichoice from '../../Components/Multichoice/Multichoice';
@@ -42,11 +42,15 @@ export default function MultichoiceActivityScreen({ navigation, route }) {
 
     return (
         <View style={{flex: 1, justifyContent:'flex-start', width: '100%', backgroundColor: '#FCFDFF'}}>
+            <StatusBar
+                barStyle="dark-content"
+                backgroundColor="white"
+                translucent/>
             <View style={{flex: 1, justifyContent:'flex-start', width: '100%', backgroundColor: '#FCFDFF'}}>
                 <View style={{backgroundColor: '#FCFDFF',
                     borderStyle: 'solid', borderWidth: 3,
-                    borderColor: '#F7F9F7', height: 100,
-                    justifyContent: 'space-around',
+                    borderColor: '#F7F9F7', height: 80,
+                    justifyContent: 'center',
                     flexDirection: 'row'}}
                 >
                     <Text style={styles.lessonTitle}>
@@ -64,28 +68,30 @@ export default function MultichoiceActivityScreen({ navigation, route }) {
                     </TouchableOpacity>
                 </View>
                 <ActivityGroupsProgress navigation={navigation} chosenActivity='multichoice' activities={activities}/>
-                <View style={{ flex: 1, marginTop: 20 }}>
-                    {activityData ? (
+                <View style={{ flex: 1, marginTop: 20, height: '100%' }}>
+                    {activityData && activityData.length > 0 ? (
                         <Multichoice
                             activityData={activityData}
                             setHintText={setHintText}
                             onSuccess={onAllChoicesAnswered}
                         />
                     ): <View style={{ flex: 1 }} />}
-                    <ActivityFooter
-                        navigation={navigation}
-                        leftBtn={<HintBtn hintText={hintText} />}
-                        toNext={nextActivity.navigationScreen}
-                        toNextPayload={{ 
-                            userGroupId: nextActivity.userGroupId,
-                            lessonTitle: nextActivity.lessonTitle,
-                            lessonId: nextActivity.lessonId,
-                            userToken: nextActivity.userToken,
-                            unitTitle: nextActivity.unitTitle,
-                            unitId: nextActivity.unitI,
-                            activities: activities
-                        }}
-                    />
+                    <View style={{position: 'absolute', bottom: 0}}>
+                        <ActivityFooter
+                            navigation={navigation}
+                            leftBtn={<HintBtn hintText={hintText} />}
+                            toNext={nextActivity.navigationScreen}
+                            toNextPayload={{ 
+                                userGroupId: nextActivity.userGroupId,
+                                lessonTitle: nextActivity.lessonTitle,
+                                lessonId: nextActivity.lessonId,
+                                userToken: nextActivity.userToken,
+                                unitTitle: nextActivity.unitTitle,
+                                unitId: nextActivity.unitI,
+                                activities: activities
+                            }}
+                        />
+                    </View>
                 </View>
             </View>
         </View>
@@ -95,8 +101,7 @@ export default function MultichoiceActivityScreen({ navigation, route }) {
 const styles = StyleSheet.create({
     lessonTitle: {
         textAlign: 'center', 
-        marginTop: 50, 
-        fontWeight: 'bold', 
+        marginTop: 34, 
         color: '#233665', 
         width: '100%',
         fontFamily: 'NeoSansArabicBold', 
@@ -107,19 +112,19 @@ const styles = StyleSheet.create({
       width: 24, 
     },
     backButton: {
-      marginTop: 50, 
-      color: '#233665', 
-      width: 30, 
-      height: 30, 
-      marginRight: 30,
-      backgroundColor: '#F7F9FC',
-      fontWeight: 'bold', 
-      borderStyle: 'solid', 
-      borderRadius: 5, 
-      borderWidth: 1,
-      borderColor: '#F7F9FC', 
-      overflow: 'hidden',
-      alignItems: 'center',
-      fontFamily: 'NeoSansArabicBold'
+        position: 'absolute',
+        top: 34,
+        right: 23, 
+        color: '#233665', 
+        width: 30, 
+        height: 30, 
+        backgroundColor: '#F7F9FC',
+        borderStyle: 'solid', 
+        borderRadius: 5, 
+        borderWidth: 1,
+        borderColor: '#F7F9FC', 
+        overflow: 'hidden',
+        alignItems: 'center',
+        fontFamily: 'NeoSansArabicBold'
     }
   });

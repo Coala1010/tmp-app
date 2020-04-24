@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, TouchableOpacity, Image, StyleSheet, ScrollView } from 'react-native';
+import { Text, View, TouchableOpacity, Image, StyleSheet, ScrollView, StatusBar } from 'react-native';
 import UserLessons from '../../types/UserLessons';
 import UserLessonsProvider from '../../providers/UserLessonsProvider';
 import CircularProgress from '../../Components/CircularProgress/CircularProgress';
@@ -46,7 +46,7 @@ export default class Lessons extends React.Component<Props, State> {
         style={styles.lesson}>
 
         <TouchableOpacity style={{padding: 5}} 
-        onPress={() => this.props.navigation.navigate('Activities', {
+        onPress={() => this.props.navigation.push('Activities', {
             lessonTitle: userLesson.title, 
             lessonId: userLesson.lessonId,
             userToken: this.state.token,
@@ -68,7 +68,7 @@ export default class Lessons extends React.Component<Props, State> {
                 }          
               </View>       
             <Text style = {{color: '#233665', alignContent: 'center', display: 'flex', 
-            padding: 10, fontWeight: 'bold', fontSize: 20, fontFamily: 'NeoSansArabicBold'}}>{userLesson.title}</Text>
+            padding: 10, fontSize: 20, fontFamily: 'NeoSansArabicBold'}}>{userLesson.title}</Text>
             <View style = {styles.lessonNumberWrapper}>
               <Text style = {styles.lessonNumber}>{i+1}</Text>              
             </View>
@@ -89,9 +89,13 @@ export default class Lessons extends React.Component<Props, State> {
       return (
         // <View style={{flex: 1, justifyContent:'flex-start', width: '100%', backgroundColor: '#FCFDFF'}}>
           <View style={{flex: 1, justifyContent:'flex-start', width: '100%', backgroundColor: '#FCFDFF'}}>
+            <StatusBar
+          barStyle="dark-content"
+          backgroundColor="white"
+          translucent/>
             <View style={{backgroundColor: '#FCFDFF',
                         borderStyle: 'solid', borderWidth: 3,
-                        borderColor: '#F7F9F7', height: 100,
+                        borderColor: '#F7F9F7', height: 80,
                         justifyContent: 'center',
                         flexDirection: 'row',
                         alignItems: 'center'}}>
@@ -124,7 +128,6 @@ export default class Lessons extends React.Component<Props, State> {
     lessonNumber: {
       fontSize: 20, 
       color: '#233665', 
-      fontWeight: 'bold',
       fontFamily: 'NeoSansArabicBold'
     },
     lessonNumberWrapper: {
@@ -145,8 +148,7 @@ export default class Lessons extends React.Component<Props, State> {
   },
     unitTitle: {
       textAlign: 'center', 
-      marginTop: 50, 
-      fontWeight: 'bold', 
+      marginTop: 26, 
       color: '#233665', 
       width: '100%', 
       fontSize: 20,
@@ -159,7 +161,7 @@ export default class Lessons extends React.Component<Props, State> {
     },
     backButton: {
       position: 'absolute', 
-      top: 50, 
+      bottom: 10, 
       right: 23,
       color: '#233665', 
       width: 30, 

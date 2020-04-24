@@ -66,7 +66,6 @@ const styles = StyleSheet.create({
         flexWrap: 'wrap',
         color: '#233665',
         fontSize: 18,
-        fontWeight: 'bold',
         paddingHorizontal: 5,
         paddingVertical: 10,
         fontFamily: 'NeoSansArabicBold'

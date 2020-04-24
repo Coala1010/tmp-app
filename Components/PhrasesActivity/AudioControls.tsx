@@ -37,6 +37,7 @@ interface State {
     audioRecordingButtonExpanded: boolean,
     audioPlayButtonAnim: Animated.Value,
     audioPlayButtonExpanded: boolean,
+    audioUrl: string,
     record: Recording,
     recordProgress: string,
     recordedFileUrl: string,
@@ -51,6 +52,7 @@ interface State {
 type Props = {
     onUserAnswer: Function,
     sampleUrl: string,
+    navigation: any
 }
 
 export default class PhrasesAudioControls extends React.Component<State> {
@@ -62,6 +64,7 @@ export default class PhrasesAudioControls extends React.Component<State> {
         audioRecordingButtonExpanded: false,
         audioProgress: '00:00',
         audio: null,
+        audioUrl: null,
         sampleLoaded: false,
         audioPlayButtonAnim: new Animated.Value(70),
         audioPlayButtonExpanded: false,
@@ -80,15 +83,40 @@ export default class PhrasesAudioControls extends React.Component<State> {
         super(props);
     }
 
+    shrinkAudioButton = async () => {
+        Animated.spring(
+            this.state.audioButtonAnim,
+            {
+                toValue: 70,
+                bounciness:0,
+            }
+        ).start();
+    }
+
+    componentDidUpdate = async () => {
+        // await this.stopAudioAndUnload('userRecord');
+        if (this.state.audioUrl != this.props.sampleUrl) {
+            this.setState({audioRecordingButtonExpanded: false, audioButtonExpanded: false, audioPlayButtonExpanded: false, recordedFileUrl: null});
+            this.shrinkAudioButton();
+            this.shrinkAudioRecordingButton();
+            this.shrinkPlayback();
+
+            console.log("Dida update: " + this.props.sampleUrl);
+            this.setState({audioUrl: this.props.sampleUrl});
+            await this.stopAudioSample('audio');
+            Audio.setIsEnabledAsync(true);
+        }
+        Audio.setIsEnabledAsync(true);    }
     componentDidMount() {
+        const sub = this.props.navigation.addListener('blur', () => {
+            this.stopAudioSample('audio');
+        });
         Audio.setIsEnabledAsync(true);
         this.loadAudio();
     }
 
     componentWillUnmount = async () => {
-        await this.stopAudioSample('userRecord');
         await this.stopAudioSample('audio');
-        Audio.setIsEnabledAsync(false);
     }
 
     onAutoPlaybackStatusUpdate = (name: string, status: any) => {
@@ -116,6 +144,7 @@ export default class PhrasesAudioControls extends React.Component<State> {
     loadAudio = async (name = 'audio', uri?, onFinished?, onProgress?) => {
         if (name === 'audio') {
             uri = this.props.sampleUrl;
+            this.setState({audioUrl: uri});
         }
 
         try {
@@ -148,13 +177,7 @@ export default class PhrasesAudioControls extends React.Component<State> {
     expandAudioButton = async () => {
         if (this.state.audioButtonExpanded) {
             this.setState({ audioButtonExpanded: false });
-            Animated.spring(
-                this.state.audioButtonAnim,
-                {
-                    toValue: 70,
-                    bounciness:0,
-                }
-            ).start();
+            this.shrinkAudioButton();
             await this.stopAudioSample('userRecord');
             await this.stopAudioSample('audio');
         } else {
@@ -191,8 +214,22 @@ export default class PhrasesAudioControls extends React.Component<State> {
             // this.setState({ [`${name}Progress`]: '00:00' });
             if (this.state[name] && this.state[name].stopAsync) {
                 await this.state[name].stopAsync();
+                // await this.state[name].stopAndUnloadAsync();
             }
-        } catch (err) { }
+        } catch (err) {
+            console.log('Error: ' + err);
+         }
+    };
+
+    stopAudioAndUnload = async (name) => {
+        try {
+            // this.setState({ [`${name}Progress`]: '00:00' });
+            if (this.state[name] && this.state[name].stopAndUnloadAsync) {
+                await this.state[name].stopAndUnloadAsync();
+            }
+        } catch (err) {
+            console.log(err);
+         }
     };
 
     playAudioSample = (name = 'audio', url?, onProgress?) => new Promise(async (res, rej) => {
@@ -209,16 +246,20 @@ export default class PhrasesAudioControls extends React.Component<State> {
         }
     });
 
+    shrinkAudioRecordingButton = async () => {
+        Animated.spring(
+            this.state.audioRecordingButtonAnim,
+            {
+                toValue: 70,
+                bounciness:0,
+            }
+        ).start();
+    }
+
     expandAudioRecordingButton = async () => {
         if (this.state.audioRecordingButtonExpanded) {
             this.setState({audioRecordingButtonExpanded: false});
-            Animated.spring(
-                this.state.audioRecordingButtonAnim,
-                {
-                    toValue: 70,
-                    bounciness:0,
-                }
-            ).start();
+            this.shrinkAudioRecordingButton();
             this.setState({ recordProgress: '00:00' });
             if (this.state.record) {
                 try {
@@ -247,7 +288,7 @@ export default class PhrasesAudioControls extends React.Component<State> {
             }
 
             Animated.spring(
-                this.state.audioRecordingButtonAnim,{ 
+                this.state.audioRecordingButtonAnim,{
                     toValue: 120,
                     bounciness:0,
                 },
@@ -279,6 +320,16 @@ export default class PhrasesAudioControls extends React.Component<State> {
         }
     }
 
+    shrinkPlayback = async () => {
+        Animated.spring(
+            this.state.audioPlayButtonAnim,
+            {
+                toValue: 70,
+                bounciness:0,
+            }
+        ).start();
+    }
+
     expandPlaybackButton = async () => {
         if (this.state.audioPlayButtonExpanded) {
             this.setState({ replayProgress: '00:00' });
@@ -289,13 +340,7 @@ export default class PhrasesAudioControls extends React.Component<State> {
             await this.stopAudioSample('userRecord');
             await this.stopAudioSample('audio');
             this.setState({ audioPlayButtonExpanded: false });
-            Animated.spring(
-                this.state.audioPlayButtonAnim,
-                {
-                    toValue: 70,
-                    bounciness:0,
-                }
-            ).start();
+            this.shrinkPlayback();
         } else {
             this.setState({ replayProgress: '00:00' });
             if (this.state.replayProgressInterval) {
@@ -356,36 +401,40 @@ export default class PhrasesAudioControls extends React.Component<State> {
                         onPress={() => this.expandPlaybackButton()}
                         disabled={this.shouldDisableReplayBtn()}
                     >
-                        {this.state.audioPlayButtonExpanded ? 
+                        {this.state.audioPlayButtonExpanded ?
                         <Ionicons style={{ opacity: this.shouldDisableReplayBtn() ? 0.3 : 1 }} name="ios-repeat" size={35} color="white" />:
                         <Ionicons style={{ opacity: this.shouldDisableReplayBtn() ? 0.3 : 1 }} name="ios-repeat" size={35} color="#233665" />}
-                        {this.state.audioPlayButtonExpanded ? 
+                        {this.state.audioPlayButtonExpanded ?
                             <View style={styles.expandedBtnContent}>
                                 <Text style={{color: '#F7F9FC', textAlign:'center'}}>
                                     {this.state.replayProgress}
                                 </Text>
-                                <Ionicons name="ios-close" size={30} color="white" />
+                                <TouchableOpacity onPress={() => this.expandPlaybackButton()}>
+                                    <Ionicons name="ios-close" size={30} color="white" />
+                                </TouchableOpacity>
                             </View>:
                             <View></View>}
                         {/* {this.state.audioPlayButtonExpanded && (
                             <View style={styles.expandedBtnContent}>
-                                
+
                                 <Text style={{color: '#233665', textAlign:'center'}}>
                                     {this.state.replayProgress}
                                 </Text>
-                                <Ionicons name="ios-close" size={30} color="#233665" />
+                                <TouchableOpacity onPress={() => this.expandPlaybackButton()}>
+                                    <Ionicons name="ios-close" size={30} color="#233665" />
+                                </TouchableOpacity>
                             </View>
                         )} */}
                     </TouchableOpacity>
                 </Animated.View>
-                
+
                 <Animated.View style={[this.state.audioRecordingButtonExpanded ? styles.ExpandedaudioRecordingButton:styles.audioRecordingButton, {height: this.state.audioRecordingButtonAnim}]}>
                     <TouchableOpacity 
                         style={styles.audioRecordingButtonTO}
                         onPress={() => this.expandAudioRecordingButton()}
                         disabled={!this.state.playedAudios.includes(this.props.id)}
                     >
-                        {this.state.audioRecordingButtonExpanded ? 
+                        {this.state.audioRecordingButtonExpanded ?
                         <MaterialCommunityIcons
                             style={{ opacity: !this.state.playedAudios.includes(this.props.id) ? 0.3 : 1 }}
                             name="microphone"
@@ -398,12 +447,14 @@ export default class PhrasesAudioControls extends React.Component<State> {
                             size={32}
                             color="#233665"
                         />}
-                         {this.state.audioRecordingButtonExpanded ? 
+                         {this.state.audioRecordingButtonExpanded ?
                             <View style={styles.expandedBtnContent}>
                                 <Text style={{color: '#F7F9FC', textAlign:'center'}}>
                                    {this.state.userRecordProgress}
                                 </Text>
-                                <Ionicons name="ios-close" size={30} color="white" />
+                                <TouchableOpacity onPress={() => this.expandAudioRecordingButton()}>
+                                    <Ionicons name="ios-close" size={30} color="white" />
+                                </TouchableOpacity>
                             </View>:
                             <View></View>}
                         {/* {this.state.audioRecordingButtonExpanded && (
@@ -411,7 +462,9 @@ export default class PhrasesAudioControls extends React.Component<State> {
                                 <Text style={{color: '#233665', textAlign:'center'}}>
                                     {this.state.userRecordProgress}
                                 </Text>
-                                <Ionicons name="ios-close" size={30} color="#233665" />
+                                <TouchableOpacity onPress={() => this.expandAudioRecordingButton()}>
+                                    <Ionicons name="ios-close" size={30} color="#233665" />
+                                </TouchableOpacity>
                             </View>
                         )} */}
                     </TouchableOpacity>
@@ -427,7 +480,9 @@ export default class PhrasesAudioControls extends React.Component<State> {
                                 <Text style={{color: '#F7F9FC', textAlign:'center'}}>
                                     {this.state.audioProgress}
                                 </Text>
-                                <Ionicons name="ios-close" size={30} color="white" />
+                                <TouchableOpacity onPress={() => this.expandAudioButton()}>
+                                    <Ionicons name="ios-close" size={30} color="white" />
+                                </TouchableOpacity>
                             </View>
                         )}
                     </TouchableOpacity>
@@ -457,7 +512,7 @@ const styles = StyleSheet.create({
     audioPlayButtonTO: {
         width: 70,
         height: 85,
-        borderColor: 'black', 
+        borderColor: 'black',
         overflow: 'hidden',
         alignItems: 'center',
         justifyContent: 'center',
@@ -466,7 +521,7 @@ const styles = StyleSheet.create({
     audioPlayButton: {
         width: 70,
         height: 85,
-        marginTop: 30,
+        marginTop: 20,
         justifyContent: 'flex-start',
         flexDirection: 'row',
         color: '#233665', 
@@ -487,7 +542,7 @@ const styles = StyleSheet.create({
         marginTop: 30,
         justifyContent: 'flex-start',
         flexDirection: 'row',
-        color: '#233665', 
+        color: '#233665',
         backgroundColor: '#233665',
         borderColor: 'black',
         borderStyle: 'solid',
@@ -517,7 +572,7 @@ const styles = StyleSheet.create({
     audioRecordingButton: {
         width: 70,
         height: 80,
-        marginTop: 30,
+        marginTop: 20,
         color: '#233665', 
         backgroundColor: '#F6F6F6',
         borderColor: 'black',
@@ -536,7 +591,7 @@ const styles = StyleSheet.create({
         width: 70,
         height: 80,
         marginTop: 30,
-        color: '#233665', 
+        color: '#233665',
         backgroundColor: 'red',
         borderColor: 'black',
         borderStyle: 'solid',
@@ -572,7 +627,7 @@ const styles = StyleSheet.create({
     audioButton: {
         width: 70,
         height: 70, 
-        marginTop: 30,
+        marginTop: 20,
         justifyContent: 'flex-start',
         backgroundColor: '#233665',
         borderColor: 'black',

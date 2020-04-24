@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, TouchableOpacity, Button, Image, StyleSheet } from 'react-native';
+import { Text, View, TouchableOpacity, Button, Image, StyleSheet, StatusBar} from 'react-native';
 
 export default class Congratulations extends React.Component<State> {  
     render() {
@@ -7,6 +7,10 @@ export default class Congratulations extends React.Component<State> {
         // const nextActivity = activities.get('video').nextActivity;
         return (
             <View style={{flex: 1, justifyContent:'center', flexDirection: 'column', width: '100%', backgroundColor: '#FCFDFF'}}>
+                <StatusBar
+                    barStyle="dark-content"
+                    backgroundColor="white"
+                    translucent/>
                 <View style={styles.imageWrapper}>
                     <Image 
                         style={styles.image}
@@ -30,7 +34,6 @@ export default class Congratulations extends React.Component<State> {
                     <View style={styles.footer}>
                         <TouchableOpacity style={{padding: 5, flex: 1, flexDirection: "row",
                             alignItems: 'center', 
-                            backgroundColor: '#FCFDFF', 
                             justifyContent: 'space-around'}}
                             onPress={() => this.props.navigation.push('Lessons', { 
                                 unitTitle: unitTitle, 
@@ -73,7 +76,7 @@ export default class Congratulations extends React.Component<State> {
         resizeMode: 'contain',  
     },
     imageWrapper: {        
-        marginTop: '30%',
+        marginTop: '10%',
         alignContent: 'center',
         // flex: 1,
         justifyContent: 'center',
@@ -155,33 +158,32 @@ export default class Congratulations extends React.Component<State> {
     footerContainer: {
         flexDirection: 'row',
         position: 'absolute',
-        bottom: 20
+        bottom: 16
     },
     footer: {
-        flex: 1,
-        flexDirection: 'row',
-        // justifyContent: 'space-between',
-        alignItems: 'center',
-        marginBottom: 20,
-        marginHorizontal: 20,
-        borderRadius: 20,
-        backgroundColor: 'white',
-        height: 70,
-        paddingHorizontal: 15,
-        shadowColor: '#000',
+        marginTop: 10,
+        justifyContent: 'space-around',
+        backgroundColor: '#FCFDFF',
+        borderWidth: 0,
+        shadowOpacity: 0.6,
+        borderRadius: 16,
         shadowOffset: {
             width: 0,
             height: 2,
         },
-        shadowOpacity: 0.20,
-        shadowRadius: 1.41,
-        elevation: 2,
+        // shadowOpacity: 0.22,
+        shadowRadius: 2.22,
+        elevation: 3,
+        width: '90%',
+        shadowColor: 'lightgray',
+        marginBottom: 16,
+        marginHorizontal: '5%'
     },
     footerTitle: {
         color: '#233665',
         alignContent: 'center',
         padding: 10,
-        fontWeight: 'bold',
         fontSize: 22,
+        fontFamily: 'NeoSansArabicBold'
     },
   });

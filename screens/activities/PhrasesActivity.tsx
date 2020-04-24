@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, Platform, TouchableOpacity, Image, StyleSheet } from 'react-native';
+import { Text, View, Platform, TouchableOpacity, Image, StyleSheet, StatusBar } from 'react-native';
 import ActivityGroupsProgress from '../../Components/navigation/ActivityGroupsProgress';
 import ActivityFooter from '../../Components/ActivityFooter/ActivityFooter';
 import PhrasesActivityCarousel from '../../Components/PhrasesActivity/PhrasesActivityCarousel';
@@ -7,10 +7,10 @@ import PhrasesAudioControls from '../../Components/PhrasesActivity/AudioControls
 import { getPhrases, uploadUserPhraseAudio } from '../../providers/activities/PhrasesActivity';
 import environment from '../../development.json';
 
-export default function PhrasesActivity({ lessonTitle, navigation, route }) {
+export default function PhrasesActivity({ navigation, route }) {
     const [answers, setAnswers] = React.useState({});
     const [activityData, setActivityData] = React.useState(null);
-    const { activities } = route.params;
+    const { activities, lessonTitle } = route.params;
     const nextActivity = activities.get('phrases').nextActivity;
 
     React.useEffect(() => {
@@ -71,17 +71,21 @@ export default function PhrasesActivity({ lessonTitle, navigation, route }) {
 
     return (
         <View style={{flex: 1, width: '100%', backgroundColor: '#FCFDFF'}}>
+            <StatusBar
+                barStyle="dark-content"
+                backgroundColor="white"
+                translucent/>
             <View style={{ flex: 1 }}>
                 <View style={{flex: 1, width: '100%', backgroundColor: '#FCFDFF'}}>
                     <View style={{flex: 1, width: '100%', backgroundColor: '#FCFDFF'}}>
                         <View style={{
                             backgroundColor: '#FCFDFF',
                             borderStyle: 'solid', borderWidth: 3,
-                            borderColor: '#F7F9F7', height: 100,
-                            justifyContent: 'space-around',
+                            borderColor: '#F7F9F7', height: 80,
+                            justifyContent: 'center',
                             flexDirection: 'row'
                         }}>
-                            <Text style={{textAlign: 'center', marginTop: 50, fontWeight: 'bold', color: '#233665', width: '100%', fontFamily: 'NeoSansArabicBold'}}>
+                            <Text style={{textAlign: 'center', marginTop: 34, color: '#233665', width: '100%', fontSize: 20, fontFamily: 'NeoSansArabicBold'}}>
                                 {lessonTitle}
                             </Text>
                             <TouchableOpacity 
@@ -100,6 +104,7 @@ export default function PhrasesActivity({ lessonTitle, navigation, route }) {
                             <>
                                 <PhrasesActivityCarousel activityData={activityData} onChange={setActiveQuestion} />
                                 <PhrasesAudioControls
+                                    navigation={navigation}
                                     onUserAnswer={uploadData}
                                     sampleUrl={activityData[activeQuestion].audioUrl}
                                     userAudioRecordUrl={activityData[activeQuestion].userAudioRecordUrl}
@@ -131,14 +136,15 @@ const styles = StyleSheet.create({
     image: {
       height: 24,
       width: 24,
-      //resizeMode: 'contain',  
+      //resizeMode: 'contain', 
     },
     backButton: {
-      marginTop: 50, 
+      position: 'absolute',
+      top: 34,
+      right: 23, 
       color: '#233665', 
       width: 30, 
       height: 30, 
-      marginRight: 30,
       backgroundColor: '#F7F9FC',
       fontWeight: 'bold', 
       borderStyle: 'solid', 

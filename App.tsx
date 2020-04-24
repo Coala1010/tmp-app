@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, View, StatusBar } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -15,6 +15,7 @@ import DragAndDropActivity from './screens/activities/DragAndDropActivity';
 import Congratulations from './screens/activities/Congratulations';
 // import { useFonts } from '@use-expo/font';
 import * as Font from 'expo-font';
+import { AppLoading } from 'expo';
 
 let customFonts = {
   'NeoSansArabicBlack': require('./assets/fonts/NeoSansArabic-Black.ttf'),
@@ -40,8 +41,8 @@ export default class App extends React.Component {
     this.setState({ fontsLoaded: true });
   }
 
-  componentDidMount() {
-    this._loadFontsAsync();
+  componentDidMount = async () => {
+    await this._loadFontsAsync();
   }
 
   Stack = createStackNavigator();
@@ -50,8 +51,13 @@ export default class App extends React.Component {
     const navigation = useNavigation();
     return (
       <View style={styles.container}>
-          <Levels navigation={navigation}/>
+        <StatusBar
+          barStyle="dark-content"
+          backgroundColor="white"
+          translucent/>
+        <Levels navigation={navigation}/>
       </View>
+      // </SafeAreaView>
     );
   }
 
@@ -61,8 +67,9 @@ export default class App extends React.Component {
         <NavigationContainer>
           <this.Stack.Navigator screenOptions={{
             headerShown: false
-          }}>
-            <this.Stack.Screen name="Home" component={this.HomeScreen} />
+          }}
+          headerMode='none'>
+            <this.Stack.Screen name="Home" component={this.HomeScreen}/>
             <this.Stack.Screen name="Lessons" component={Lessons}/>
             <this.Stack.Screen name="Activities" component={Activities}/>
             <this.Stack.Screen name="VideoActivity" component={VideoActivity}/>
@@ -75,11 +82,8 @@ export default class App extends React.Component {
         </NavigationContainer>
       );
     } else {
-      return <View>
-          <Text>
-            Loading...
-            </Text>  
-        </View>;
+      return <AppLoading startAsync={() => Font.loadAsync(customFonts)}
+            onFinish={() => this.setState({ fontsLoaded: true })}/>;
     }  
   }
 }
@@ -90,7 +94,5 @@ const styles = StyleSheet.create({
     backgroundColor: '#FCFDFF',
     alignItems: 'center',
     justifyContent: 'center',
-    fontFamily: 'Arial',
-    marginTop: 30
   },
 });

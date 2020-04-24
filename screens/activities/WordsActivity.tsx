@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, Platform, TouchableOpacity, Image, StyleSheet } from 'react-native';
+import { Text, View, Platform, TouchableOpacity, Image, StyleSheet, StatusBar } from 'react-native';
 import ActivityGroupsProgress from '../../Components/navigation/ActivityGroupsProgress';
 import ActivityFooter from '../../Components/ActivityFooter/ActivityFooter';
 import { getWordsActivity, uploadWordsActivityRecord } from '../../providers/activities/WordsActivity';
@@ -12,7 +12,6 @@ export default function WordsActivity({ navigation, route }) {
     const [activityData, setActivityData] = React.useState(null);
     const [activeQuestion, setActiveQuestion] = React.useState(0);
 
-    // const { activities } = route.params;
     const { lessonTitle, activities } = route.params;
     const nextActivity = activities.get('words').nextActivity;
 
@@ -32,10 +31,6 @@ export default function WordsActivity({ navigation, route }) {
                 title: 'الأسرة',
             })));
         });
-        // alert(lessonTitle);
-        return function cleanup() {
-            
-        }
     }, []);
 
     const uploadData = async (data) => {
@@ -77,15 +72,19 @@ export default function WordsActivity({ navigation, route }) {
 
     return (
         <View style={{flex: 1, justifyContent:'flex-start', width: '100%', backgroundColor: '#FCFDFF'}}>
+            <StatusBar
+                barStyle="dark-content"
+                backgroundColor="white"
+                translucent/>
             <View style={{flex: 1, justifyContent:'flex-start', width: '100%', backgroundColor: '#FCFDFF'}}>
                 <View style={{
                     backgroundColor: '#FCFDFF',
                     borderStyle: 'solid', borderWidth: 3,
-                    borderColor: '#F7F9F7', height: 100,
-                    justifyContent: 'space-around',
+                    borderColor: '#F7F9F7', height: 80,
+                    justifyContent: 'center',
                     flexDirection: 'row'
                 }}>
-                    <Text style={{textAlign: 'center', marginTop: 50, fontWeight: 'bold', color: '#233665', width: '100%', fontFamily: 'NeoSansArabicBold'}}>
+                    <Text style={{textAlign: 'center', marginTop: 34, color: '#233665', width: '100%', fontSize: 20, fontFamily: 'NeoSansArabicBold'}}>
                         {lessonTitle}
                     </Text>
                     <TouchableOpacity 
@@ -104,6 +103,7 @@ export default function WordsActivity({ navigation, route }) {
                     <>
                         <WordsActivityCarousel activityData={activityData} onChange={setActiveQuestion} />
                         <PhrasesAudioControls
+                            navigation={navigation}
                             onUserAnswer={uploadData}
                             sampleUrl={activityData[activeQuestion].audioUrl}
                             userAudioRecordUrl={activityData[activeQuestion].userAudioRecordUrl}
@@ -113,8 +113,6 @@ export default function WordsActivity({ navigation, route }) {
                 )}
             </View>
             <ActivityFooter
-                // toNext="WordsActivity"
-                // toNextPayload={{}}
                 navigation={navigation}
                 toNext={nextActivity.navigationScreen}
                 toNextPayload={{ 
@@ -138,18 +136,18 @@ const styles = StyleSheet.create({
       //resizeMode: 'contain',  
     },
     backButton: {
-      marginTop: 50, 
-      color: '#233665', 
-      width: 30, 
-      height: 30, 
-      marginRight: 30,
-      backgroundColor: '#F7F9FC',
-      fontWeight: 'bold', 
-      borderStyle: 'solid', 
-      borderRadius: 5, 
-      borderWidth: 1,
-      borderColor: '#F7F9FC', 
-      overflow: 'hidden',
-      alignItems: 'center'
+        position: 'absolute',
+        top: 34,
+        right: 23, 
+        color: '#233665', 
+        width: 30, 
+        height: 30, 
+        backgroundColor: '#F7F9FC',
+        borderStyle: 'solid', 
+        borderRadius: 5, 
+        borderWidth: 1,
+        borderColor: '#F7F9FC', 
+        overflow: 'hidden',
+        alignItems: 'center'
     }
   });

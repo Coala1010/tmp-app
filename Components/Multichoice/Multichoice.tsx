@@ -90,6 +90,8 @@ export default function Multichoice({ activityData, setHintText, onSuccess }) {
                         onPress={() => setCurrentSelected(answer)}
                         key={answer.id}
                         style={[styles.answerContainer, selected[currentQuestion] === answer.id && styles.answerContainerSelected]}
+                        disabled={selected[currentQuestion] === answer.id 
+                            && activityData[currentQuestion].answers.find(({ id }) => selected[currentQuestion] === id).isCorrect}
                     >
                         <Text
                             style={[styles.answerText, selected[currentQuestion] === answer.id && styles.answerTextSelected]}

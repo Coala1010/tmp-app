@@ -4,6 +4,7 @@ import { createDndContext } from 'react-native-easy-dnd';
 import { Ionicons } from '@expo/vector-icons';
 import { Carousel } from './Carousel';
 import { updateDnDActivity } from '../../providers/activities/DragNDropActivity';
+import SideSwipe from 'react-native-sideswipe';
 
 const { Provider, Droppable, Draggable } = createDndContext();
 
@@ -94,6 +95,9 @@ export default function DragNDrop({ activityData, onSuccess }) {
     const [selected, setSelected] = React.useState({});
     const [dragging, setDragging] = React.useState(null);
     const [scrollId, setScrollId] = React.useState(1);
+    const [currentIndex, setCurrentIndex] = React.useState(activityData.length - 1);
+    const { width } = Dimensions.get('window');
+    const contentOffset = 0;
 
     const clearSelected = () => {
         setSelected({
@@ -120,7 +124,7 @@ export default function DragNDrop({ activityData, onSuccess }) {
             setTimeout(() => {
                 if (currentQuest + 1 < activityData.length) {
                     setQurrentQuest(currentQuest + 1);//activityData.length - 1 - index)
-                    // setCurrentIndex(currentIndex - 1);
+                    setCurrentIndex(currentIndex - 1);
                 } else {
                     onSuccess();
                 }
@@ -129,8 +133,38 @@ export default function DragNDrop({ activityData, onSuccess }) {
     };
 
     return !activityData || !activityData.length ? null : (
-        <ScrollView onScroll={() => setScrollId(scrollId + 1)} scrollEventThrottle={50} scrollEnabled={!dragging}>
-            <Carousel activityData={activityData} onChange={(index) => setQurrentQuest(index)} />
+        <ScrollView onScroll={() => setScrollId(scrollId + 1)} scrollEventThrottle={50} 
+            scrollEnabled={!dragging}>
+            {/* <Carousel activityData={activityData} onChange={(index) => setQurrentQuest(index)} /> */}
+            <SideSwipe
+                contentContainerStyle={{ flexDirection: 'row-reverse' }}
+                index={currentIndex}
+                itemWidth={width - 50}
+                style={{ width: width }}
+                data={activityData.map((item) => ({
+                    ...item,
+                }))}
+                contentOffset={contentOffset}
+                onIndexChange={index => {
+                    setCurrentIndex(index);
+                    //onChange(activityData.length - 1 - index);
+                    setQurrentQuest(activityData.length - 1 - index);
+                }}
+                renderItem={({ itemIndex, currentIndex, item, animatedValue }) => (
+                    <View style={[
+                        {width: width - 50},
+                        itemIndex === 0 && { paddingRight: 20 },
+                        itemIndex === activityData.length - 1 && { paddingLeft: 20 },
+                    ]}>
+                        <View style={styles.imgContainer}>
+                            <Image style={styles.img} source={{ uri: item.imgUrl }} />
+                            <View style={styles.numberContainer}>
+                                <Text style={styles.number}>{activityData.length}/{itemIndex + 1}</Text>
+                            </View>
+                        </View>
+                    </View>
+                )}
+            />
             <View style={{
                 height: 130 + Math.ceil(activityData[currentQuest].answers.length / 2) * 90,
             }}>
@@ -222,7 +256,6 @@ const styles = StyleSheet.create({
     },
     optionText: {
         color: '#24395F',
-        fontWeight: 'bold',
         fontSize: Dimensions.get('window').width < 390 ? 14 : 16,
         fontFamily: 'NeoSansArabicBold'
     },
@@ -246,5 +279,30 @@ const styles = StyleSheet.create({
     optionIcon: {
         position: 'absolute',
         right: Dimensions.get('window').width < 390 ? 13 : 16,
+    },
+    // imgContainer: {
+    //     height: (Dimensions.get('window').height / 2) - 170,
+    //     justifyContent: 'center',
+    //     alignItems: 'center',
+    //     padding: 7,
+    // },
+    // img: {
+    //     flex: 1,
+    //     borderRadius: 20,
+    //     width: '100%',
+    //     height: '100%',
+    // },
+    numberContainer: {
+        backgroundColor: 'rgba(255, 255, 255, 0.5)',
+        position: 'absolute',
+        top: 20,
+        right: 23,
+        padding: 10,
+        borderRadius: 10,
+    },
+    number: {
+        color: '#24395F',
+        fontWeight: 'bold',
+        fontSize: 22,
     },
 });

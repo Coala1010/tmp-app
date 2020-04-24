@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, TouchableOpacity, Button, Image, StyleSheet } from 'react-native';
+import { Text, View, TouchableOpacity, StatusBar, Image, StyleSheet } from 'react-native';
 import UserActivities from '../../types/activities/UserActivities';
 import UserActivitiesProvider from '../../providers/activities/UserActivitiesProvider';
 import NavigationActivity from '../../Components/navigation/NavigationActivity';
@@ -129,7 +129,7 @@ export default class Activities extends React.Component<State> {
       // const userActivities = 
 
       return this.state.userActivities ? (
-        <View style={{flex: 1, justifyContent:'flex-start', padding: 20, width: '100%', marginTop: 50}}>
+        <View style={{flex: 1, justifyContent:'flex-start', padding: 20, width: '100%', marginTop: 40}}>
             {
                 this.state.userActivities.videoActivityGroup && this.state.userActivities.videoActivityGroup.userGroupId ? 
                 (
@@ -283,8 +283,12 @@ export default class Activities extends React.Component<State> {
   
     render() {
         const { lessonTitle } = this.props.route.params; 
-        return (
+    return (
             <View style={{flex: 1, justifyContent:'flex-start', width: '100%', backgroundColor: '#FCFDFF'}}>
+                <StatusBar
+                    barStyle="light-content"
+                    backgroundColor="#233665"
+                    translucent/>
                 <View style={{flex: 1, justifyContent:'center', width: '100%', backgroundColor: '#FCFDFF'}}>
                     <View style={{backgroundColor: '#233665',
                                 borderStyle: 'solid', 
@@ -314,7 +318,7 @@ export default class Activities extends React.Component<State> {
                                     flexDirection: 'row',
                                     elevation: 3,
                                 }}>
-                            <View style={{alignContent: 'center', alignItems: 'center'}}>
+                            <View style={{alignContent: 'center', alignItems: 'center', justifyContent: 'center'}}>
                                 <Text style={styles.screenTitle}>
                                     {lessonTitle}
                                 </Text>
@@ -330,42 +334,44 @@ export default class Activities extends React.Component<State> {
                         </View>
                     {this.renderActivitiesList()}
                 </View>
-                <View style={{flexDirection: 'row', marginBottom: 16, justifyContent: 'center'}}>
-                    <View style={styles.forwardButton}>
-                        <TouchableOpacity style={{padding: 5}} 
-                            onPress={() => this.props.navigation.navigate(this.state.firstActivity.navigationScreen, 
-                                { 
-                                    userGroupId: this.state.firstActivity.userGroupId,
-                                    lessonTitle: this.state.firstActivity.lessonTitle,
-                                    lessonId: this.state.firstActivity.lessonId,
-                                    userToken: this.state.userToken,
-                                    activities: this.state.activities,
-                                    unitId: this.props.route.params.unitId 
-                                }
-                                )}>
-                            <View style = {styles.forwardButtonInner}>
-                                <Image 
-                                    style={styles.forwardImage}
-                                    source={require('../../assets/keyboard_arrow_left-24px.png')} 
-                                />
-                                <Text style = {styles.forwardButtonText}>التــالي</Text>
-                                            {/* Forward */}
-                            </View>
-                        </TouchableOpacity>
-                    </View>
-                    {/* <View style={styles.backButton}>
-                        <TouchableOpacity 
-                            style={styles.backButtonTO}
-                            onPress={() => this.props.navigation.goBack()}>
-                            <View style={styles.backImageWrapper}>
-                                <Image 
-                                    style={styles.backImage}
-                                    source={require('../../assets/exit_to_app-24px.png')} 
-                                />
-                            </View>
-                        </TouchableOpacity>
-                    </View> */}
-                </View>
+                {
+                    this.state.firstActivity ? <View style={{flexDirection: 'row', marginBottom: 16, justifyContent: 'center'}}>
+                        <View style={styles.forwardButton}>
+                            <TouchableOpacity style={{padding: 5}} 
+                                onPress={() => this.props.navigation.navigate(this.state.firstActivity.navigationScreen, 
+                                    { 
+                                        userGroupId: this.state.firstActivity.userGroupId,
+                                        lessonTitle: this.state.firstActivity.lessonTitle,
+                                        lessonId: this.state.firstActivity.lessonId,
+                                        userToken: this.state.userToken,
+                                        activities: this.state.activities,
+                                        unitId: this.props.route.params.unitId 
+                                    }
+                                    )}>
+                                <View style = {styles.forwardButtonInner}>
+                                    <Image 
+                                        style={styles.forwardImage}
+                                        source={require('../../assets/keyboard_arrow_left-24px.png')} 
+                                    />
+                                    <Text style = {styles.forwardButtonText}>التــالي</Text>
+                                                {/* Forward */}
+                                </View>
+                            </TouchableOpacity>
+                        </View>
+                        {/* <View style={styles.backButton}>
+                            <TouchableOpacity 
+                                style={styles.backButtonTO}
+                                onPress={() => this.props.navigation.goBack()}>
+                                <View style={styles.backImageWrapper}>
+                                    <Image 
+                                        style={styles.backImage}
+                                        source={require('../../assets/exit_to_app-24px.png')} 
+                                    />
+                                </View>
+                            </TouchableOpacity>
+                        </View> */}
+                    </View> : <View/>
+                }
           </View>
       );
     } 
@@ -378,14 +384,11 @@ export default class Activities extends React.Component<State> {
         alignContent: 'center', 
         display: 'flex', 
         padding: 10, 
-        fontWeight: 'bold', 
         fontSize: 20, 
         fontFamily: 'NeoSansArabicBold'
     },
     screenTitle: {
         textAlign: 'center', 
-        marginTop: 35, 
-        fontWeight: 'bold', 
         color: '#233665', 
         width: '100%', 
         fontSize: 20,
@@ -405,7 +408,6 @@ export default class Activities extends React.Component<State> {
     image: {
         height: 24,
         width: 24,
-        marginRight: 10
     },
     forwardImage: {
         height: 24,
@@ -428,7 +430,6 @@ export default class Activities extends React.Component<State> {
         borderWidth: 1,
         borderColor: '#F7F9FC', 
         overflow: 'hidden',
-        alignItems: 'center',
     },
     backButtonTO: {
         width: 60, 
@@ -453,7 +454,6 @@ export default class Activities extends React.Component<State> {
     //     alignItems: 'center',
     // },
     backButton: {
-        marginTop: 30, 
         color: '#233665', 
         width: 30, 
         height: 30, 
@@ -464,7 +464,8 @@ export default class Activities extends React.Component<State> {
         borderWidth: 1,
         borderColor: '#F7F9FC', 
         position: 'absolute',
-        right: '5%'
+        right: '5%',
+        top: 30, 
       },
     forwardButton: {
         marginTop: 10,
@@ -491,8 +492,8 @@ export default class Activities extends React.Component<State> {
         flexDirection: 'row'
     },
     activity: {
-        marginTop: 10,
-        marginBottom: 10, 
+        marginTop: 8,
+        marginBottom: 8, 
         justifyContent: 'space-around',
         backgroundColor: '#FCFDFF',
         borderWidth: 0,
