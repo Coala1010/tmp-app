@@ -406,7 +406,6 @@ export default class Activities extends React.Component<State> {
     image: {
         height: 24,
         width: 24,
-        marginRight: 10
     },
     forwardImage: {
         height: 24,
@@ -429,7 +428,6 @@ export default class Activities extends React.Component<State> {
         borderWidth: 1,
         borderColor: '#F7F9FC', 
         overflow: 'hidden',
-        alignItems: 'center',
     },
     backButtonTO: {
         width: 60, 
@@ -454,7 +452,6 @@ export default class Activities extends React.Component<State> {
     //     alignItems: 'center',
     // },
     backButton: {
-        marginTop: 30, 
         color: '#233665', 
         width: 30, 
         height: 30, 
@@ -465,7 +462,8 @@ export default class Activities extends React.Component<State> {
         borderWidth: 1,
         borderColor: '#F7F9FC', 
         position: 'absolute',
-        right: '5%'
+        right: '5%',
+        top: 30, 
       },
     forwardButton: {
         marginTop: 10,
