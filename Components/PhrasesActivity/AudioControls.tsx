@@ -298,6 +298,8 @@ export default class PhrasesAudioControls extends React.Component<State> {
 
     recordAudio = async () => {
         const recording = new Audio.Recording();
+        this.setState({ record: null });
+        this.setState({ recordedFileUrl: null });
         try {
             await Audio.setAudioModeAsync({
                 allowsRecordingIOS: true,
@@ -394,7 +396,7 @@ export default class PhrasesAudioControls extends React.Component<State> {
 
     render() {
         return (
-            <View style={{ justifyContent: 'center', flex: 1, flexDirection: 'row' }}>
+            <View style={{ justifyContent: 'center', flex: 1, flexDirection: 'row', marginTop: '2%' }}>
                 <Animated.View style={[this.state.audioPlayButtonExpanded ? styles.ExpandaudioPlayButton:styles.audioPlayButton, { height: this.state.audioPlayButtonAnim }]}>
                     <TouchableOpacity
                         style={styles.audioPlayButtonTO}
@@ -449,7 +451,7 @@ export default class PhrasesAudioControls extends React.Component<State> {
                         />}
                          {this.state.audioRecordingButtonExpanded ?
                             <View style={styles.expandedBtnContent}>
-                                <Text style={{color: '#F7F9FC', textAlign:'center'}}>
+                                <Text style={{color: '#F7F9FC', textAlign:'center', marginTop: 2}}>
                                    {this.state.userRecordProgress}
                                 </Text>
                                 <TouchableOpacity onPress={() => this.expandAudioRecordingButton()}>
@@ -494,7 +496,7 @@ export default class PhrasesAudioControls extends React.Component<State> {
 
 const styles = StyleSheet.create({
     expandedBtnContent: {
-        paddingTop: 18,
+        paddingTop: 2,
         flexDirection: 'column',
         flex: 1,
         justifyContent: 'center',
@@ -521,13 +523,14 @@ const styles = StyleSheet.create({
     audioPlayButton: {
         width: 70,
         height: 85,
-        marginTop: "2%",
+        // marginTop: "2%",
         justifyContent: 'flex-start',
         flexDirection: 'row',
         color: '#233665', 
-        backgroundColor: '#F6F6F6',
+        backgroundColor: '#fcfdff',
         borderColor: 'black',
         borderStyle: 'solid',
+        elevation: 3,
         borderWidth: 0,
         shadowColor: 'lightgray',
         shadowOpacity: 0.6,
@@ -539,7 +542,7 @@ const styles = StyleSheet.create({
     ExpandaudioPlayButton: {
         width: 70,
         height: 70,
-        marginTop: "2%",
+        // marginTop: "2%",
         justifyContent: 'flex-start',
         flexDirection: 'row',
         color: '#233665',
@@ -547,7 +550,7 @@ const styles = StyleSheet.create({
         borderColor: 'black',
         borderStyle: 'solid',
         borderWidth: 0,
-        shadowColor: 'lightgray',
+        shadowColor: '#F6F6F6',
         shadowOpacity: 0.6,
         borderRadius: 45,
         marginLeft: 20,
@@ -568,29 +571,31 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         flexDirection: 'column',
         flex: 1,
+        // marginTop: "2%",
     },
     audioRecordingButton: {
         width: 70,
         height: 80,
-        marginTop: "2%",
         color: '#233665', 
-        backgroundColor: '#F6F6F6',
-        borderColor: 'black',
+        backgroundColor: '#fcfdff',
+        borderColor: '#F6F6F6',
         borderStyle: 'solid',
         borderWidth: 0,
-        shadowColor: 'lightgray',
+        shadowColor: '#F6F6F6',
         shadowOpacity: 0.6,
+        elevation: 3,
         borderRadius: 45,
         marginLeft: 20,
         marginRight: 20,
         alignItems: 'center',
         justifyContent: 'flex-start',
         flexDirection: 'row',
+        // margin: '2%'
     },
     ExpandedaudioRecordingButton: {
         width: 70,
         height: 80,
-        marginTop: "2%",
+        // marginTop: "2%",
         color: '#233665',
         backgroundColor: 'red',
         borderColor: 'black',
@@ -627,7 +632,7 @@ const styles = StyleSheet.create({
     audioButton: {
         width: 70,
         height: 70, 
-        marginTop: "2%",
+        // marginTop: "2%",
         justifyContent: 'flex-start',
         backgroundColor: '#233665',
         borderColor: 'black',

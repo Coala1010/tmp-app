@@ -77,11 +77,13 @@ export default function PhrasesActivity({ navigation, route }) {
                 translucent/>
             <View style={{ flex: 1 }}>
                 <View style={{flex: 1, width: '100%', backgroundColor: '#FCFDFF'}}>
-                    <View style={{flex: 1, width: '100%', backgroundColor: '#FCFDFF'}}>
+                    <View style={{flex: 1, width: '100%', backgroundColor: '#FCFDFF', justifyContent: 'center'}}>
                         <View style={{
                             backgroundColor: '#FCFDFF',
-                            borderStyle: 'solid', borderWidth: 3,
-                            borderColor: '#F7F9F7', height: 80,
+                            shadowColor: 'lightgray',
+                            shadowOpacity: 0.6,
+                            elevation: 3,
+                            height: 80,
                             justifyContent: 'center',
                             flexDirection: 'row'
                         }}>

@@ -48,8 +48,10 @@ export default function MultichoiceActivityScreen({ navigation, route }) {
                 translucent/>
             <View style={{flex: 1, justifyContent:'flex-start', width: '100%', backgroundColor: '#FCFDFF'}}>
                 <View style={{backgroundColor: '#FCFDFF',
-                    borderStyle: 'solid', borderWidth: 3,
-                    borderColor: '#F7F9F7', height: 80,
+                    shadowColor: 'lightgray',
+                    shadowOpacity: 0.6,
+                    elevation: 3, 
+                    height: 80,
                     justifyContent: 'center',
                     flexDirection: 'row'}}
                 >

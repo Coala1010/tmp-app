@@ -316,7 +316,7 @@ export default class Activities extends React.Component<State> {
                                     zIndex: 1,
                                     width: '90%',
                                     flexDirection: 'row',
-                                    elevation: 3,
+                                    elevation: 6,
                                 }}>
                             <View style={{alignContent: 'center', alignItems: 'center', justifyContent: 'center'}}>
                                 <Text style={styles.screenTitle}>
@@ -408,6 +408,7 @@ export default class Activities extends React.Component<State> {
     image: {
         height: 24,
         width: 24,
+        marginRight: 11
     },
     forwardImage: {
         height: 24,
@@ -507,6 +508,6 @@ export default class Activities extends React.Component<State> {
             height: 2,
         },
         shadowRadius: 2.22,
-        elevation: 1,
+        elevation: 6,
     }
   });
