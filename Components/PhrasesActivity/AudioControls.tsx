@@ -88,6 +88,7 @@ export default class PhrasesAudioControls extends React.Component<State> {
             this.state.audioButtonAnim,
             {
                 toValue: 70,
+                bounciness:0,
             }
         ).start();
     }
@@ -108,7 +109,7 @@ export default class PhrasesAudioControls extends React.Component<State> {
         Audio.setIsEnabledAsync(true);    }
     componentDidMount() {
         const sub = this.props.navigation.addListener('blur', () => {
-            this.stopAudioSample('audio'); 
+            this.stopAudioSample('audio');
         });
         Audio.setIsEnabledAsync(true);
         this.loadAudio();
@@ -194,6 +195,7 @@ export default class PhrasesAudioControls extends React.Component<State> {
                 this.state.audioButtonAnim,
                 {
                     toValue: 120,
+                    bounciness:0,
                 }
             ).start();
             this.playAudioSample();
@@ -249,6 +251,7 @@ export default class PhrasesAudioControls extends React.Component<State> {
             this.state.audioRecordingButtonAnim,
             {
                 toValue: 70,
+                bounciness:0,
             }
         ).start();
     }
@@ -285,8 +288,10 @@ export default class PhrasesAudioControls extends React.Component<State> {
             }
 
             Animated.spring(
-                this.state.audioRecordingButtonAnim,
-                { toValue: 120 },
+                this.state.audioRecordingButtonAnim,{
+                    toValue: 120,
+                    bounciness:0,
+                },
             ).start();
         }
     }
@@ -320,6 +325,7 @@ export default class PhrasesAudioControls extends React.Component<State> {
             this.state.audioPlayButtonAnim,
             {
                 toValue: 70,
+                bounciness:0,
             }
         ).start();
     }
@@ -356,6 +362,7 @@ export default class PhrasesAudioControls extends React.Component<State> {
                 this.state.audioPlayButtonAnim,
                 {
                     toValue: 120,
+                    bounciness:0,
                 }
             ).start();
             this.playbackAudios();
@@ -388,15 +395,28 @@ export default class PhrasesAudioControls extends React.Component<State> {
     render() {
         return (
             <View style={{ justifyContent: 'center', flex: 1, flexDirection: 'row' }}>
-                <Animated.View style={[styles.audioPlayButton, { height: this.state.audioPlayButtonAnim }]}>
+                <Animated.View style={[this.state.audioPlayButtonExpanded ? styles.ExpandaudioPlayButton:styles.audioPlayButton, { height: this.state.audioPlayButtonAnim }]}>
                     <TouchableOpacity
                         style={styles.audioPlayButtonTO}
                         onPress={() => this.expandPlaybackButton()}
                         disabled={this.shouldDisableReplayBtn()}
                     >
-                        <Ionicons style={{ opacity: this.shouldDisableReplayBtn() ? 0.3 : 1 }} name="ios-repeat" size={35} color="#233665" />
-                        {this.state.audioPlayButtonExpanded && (
+                        {this.state.audioPlayButtonExpanded ?
+                        <Ionicons style={{ opacity: this.shouldDisableReplayBtn() ? 0.3 : 1 }} name="ios-repeat" size={35} color="white" />:
+                        <Ionicons style={{ opacity: this.shouldDisableReplayBtn() ? 0.3 : 1 }} name="ios-repeat" size={35} color="#233665" />}
+                        {this.state.audioPlayButtonExpanded ?
                             <View style={styles.expandedBtnContent}>
+                                <Text style={{color: '#F7F9FC', textAlign:'center'}}>
+                                    {this.state.replayProgress}
+                                </Text>
+                                <TouchableOpacity onPress={() => this.expandPlaybackButton()}>
+                                    <Ionicons name="ios-close" size={30} color="white" />
+                                </TouchableOpacity>
+                            </View>:
+                            <View></View>}
+                        {/* {this.state.audioPlayButtonExpanded && (
+                            <View style={styles.expandedBtnContent}>
+
                                 <Text style={{color: '#233665', textAlign:'center'}}>
                                     {this.state.replayProgress}
                                 </Text>
@@ -404,22 +424,40 @@ export default class PhrasesAudioControls extends React.Component<State> {
                                     <Ionicons name="ios-close" size={30} color="#233665" />
                                 </TouchableOpacity>
                             </View>
-                        )}
+                        )} */}
                     </TouchableOpacity>
                 </Animated.View>
-                <Animated.View style={[styles.audioRecordingButton, {height: this.state.audioRecordingButtonAnim}]}>
+
+                <Animated.View style={[this.state.audioRecordingButtonExpanded ? styles.ExpandedaudioRecordingButton:styles.audioRecordingButton, {height: this.state.audioRecordingButtonAnim}]}>
                     <TouchableOpacity 
                         style={styles.audioRecordingButtonTO}
                         onPress={() => this.expandAudioRecordingButton()}
                         disabled={!this.state.playedAudios.includes(this.props.id)}
                     >
+                        {this.state.audioRecordingButtonExpanded ?
+                        <MaterialCommunityIcons
+                            style={{ opacity: !this.state.playedAudios.includes(this.props.id) ? 0.3 : 1 }}
+                            name="microphone"
+                            size={32}
+                            color="white"
+                        />:
                         <MaterialCommunityIcons
                             style={{ opacity: !this.state.playedAudios.includes(this.props.id) ? 0.3 : 1 }}
                             name="microphone"
                             size={32}
                             color="#233665"
-                        />
-                        {this.state.audioRecordingButtonExpanded && (
+                        />}
+                         {this.state.audioRecordingButtonExpanded ?
+                            <View style={styles.expandedBtnContent}>
+                                <Text style={{color: '#F7F9FC', textAlign:'center'}}>
+                                   {this.state.userRecordProgress}
+                                </Text>
+                                <TouchableOpacity onPress={() => this.expandAudioRecordingButton()}>
+                                    <Ionicons name="ios-close" size={30} color="white" />
+                                </TouchableOpacity>
+                            </View>:
+                            <View></View>}
+                        {/* {this.state.audioRecordingButtonExpanded && (
                             <View style={styles.expandedBtnContent}>
                                 <Text style={{color: '#233665', textAlign:'center'}}>
                                     {this.state.userRecordProgress}
@@ -428,7 +466,7 @@ export default class PhrasesAudioControls extends React.Component<State> {
                                     <Ionicons name="ios-close" size={30} color="#233665" />
                                 </TouchableOpacity>
                             </View>
-                        )}
+                        )} */}
                     </TouchableOpacity>
                 </Animated.View>
                 <Animated.View style={[styles.audioButton, {height: this.state.audioButtonAnim}]}>
@@ -474,11 +512,11 @@ const styles = StyleSheet.create({
     audioPlayButtonTO: {
         width: 70,
         height: 85,
-        borderColor: '#F7F9FC', 
+        borderColor: 'black',
         overflow: 'hidden',
         alignItems: 'center',
         justifyContent: 'center',
-        flexDirection: 'column'
+        flexDirection: 'column',
     },
     audioPlayButton: {
         width: 70,
@@ -487,7 +525,25 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-start',
         flexDirection: 'row',
         color: '#233665', 
-        backgroundColor: '#F7F9FC',
+        backgroundColor: '#F6F6F6',
+        borderColor: 'black',
+        borderStyle: 'solid',
+        borderWidth: 0,
+        shadowColor: 'lightgray',
+        shadowOpacity: 0.6,
+        borderRadius: 45,
+        marginLeft: 20,
+        marginRight: 20,
+        alignItems: 'center'
+    },
+    ExpandaudioPlayButton: {
+        width: 70,
+        height: 85,
+        marginTop: 30,
+        justifyContent: 'flex-start',
+        flexDirection: 'row',
+        color: '#233665',
+        backgroundColor: '#233665',
         borderColor: 'black',
         borderStyle: 'solid',
         borderWidth: 0,
@@ -518,7 +574,25 @@ const styles = StyleSheet.create({
         height: 80,
         marginTop: 20,
         color: '#233665', 
-        backgroundColor: '#F7F9FC',
+        backgroundColor: '#F6F6F6',
+        borderColor: 'black',
+        borderStyle: 'solid',
+        borderWidth: 0,
+        shadowColor: 'lightgray',
+        shadowOpacity: 0.6,
+        borderRadius: 45,
+        marginLeft: 20,
+        marginRight: 20,
+        alignItems: 'center',
+        justifyContent: 'flex-start',
+        flexDirection: 'row',
+    },
+    ExpandedaudioRecordingButton: {
+        width: 70,
+        height: 80,
+        marginTop: 30,
+        color: '#233665',
+        backgroundColor: 'red',
         borderColor: 'black',
         borderStyle: 'solid',
         borderWidth: 0,
