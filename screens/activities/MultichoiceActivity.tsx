@@ -69,7 +69,7 @@ export default function MultichoiceActivityScreen({ navigation, route }) {
                 </View>
                 <ActivityGroupsProgress navigation={navigation} chosenActivity='multichoice' activities={activities}/>
                 <View style={{ flex: 1, marginTop: 20, height: '100%' }}>
-                    {activityData ? (
+                    {activityData && activityData.length > 0 ? (
                         <Multichoice
                             activityData={activityData}
                             setHintText={setHintText}
