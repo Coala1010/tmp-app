@@ -79,7 +79,7 @@ export default function MultichoiceActivityScreen({ navigation, route }) {
                     <View style={{position: 'absolute', bottom: 0}}>
                         <ActivityFooter
                             navigation={navigation}
-                            leftBtn={<HintBtn hintText={hintText} />}
+                            leftBtn={hintText ? <HintBtn hintText={hintText}/> : ""}
                             toNext={nextActivity.navigationScreen}
                             toNextPayload={{ 
                                 userGroupId: nextActivity.userGroupId,

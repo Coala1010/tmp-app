@@ -15,7 +15,6 @@ export default function HintBtn({ hintText }) {
 
     return (
         <View style={{ position: 'relative', top: -10 }}>
-            { hintText ?
             <Tooltip
                 backgroundColor="transparent"
                 overlayColor="rgba(0, 0, 0, 0.3)"
@@ -41,8 +40,7 @@ export default function HintBtn({ hintText }) {
                     <View style={styles.hintBtn}>
                         <Image style={styles.img} source={require('./light_bulb.png')} />
                     </View>
-            </Tooltip>:null
-            }
+            </Tooltip>
         </View>
     );
 }

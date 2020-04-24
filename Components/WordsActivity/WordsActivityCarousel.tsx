@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
         alignItems: 'flex-start',
         width: Dimensions.get('window').width - 100,
         height: Dimensions.get('window').width - 100,
-        margin: 10,
+        margin: 0,
         marginBottom: 0,
         shadowColor: "#000",
         shadowOffset: {

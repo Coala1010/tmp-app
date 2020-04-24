@@ -511,7 +511,7 @@ const styles = StyleSheet.create({
     },
     audioPlayButtonTO: {
         width: 70,
-        height: 85,
+        height: 70,
         borderColor: 'black',
         overflow: 'hidden',
         alignItems: 'center',
@@ -521,7 +521,7 @@ const styles = StyleSheet.create({
     audioPlayButton: {
         width: 70,
         height: 85,
-        marginTop: 20,
+        marginTop: "2%",
         justifyContent: 'flex-start',
         flexDirection: 'row',
         color: '#233665', 
@@ -538,8 +538,8 @@ const styles = StyleSheet.create({
     },
     ExpandaudioPlayButton: {
         width: 70,
-        height: 85,
-        marginTop: 30,
+        height: 70,
+        marginTop: "2%",
         justifyContent: 'flex-start',
         flexDirection: 'row',
         color: '#233665',
@@ -561,7 +561,7 @@ const styles = StyleSheet.create({
     },
     audioRecordingButtonTO: {
         width: 70, 
-        height: 85, 
+        height: 70, 
         borderColor: '#F7F9FC', 
         overflow: 'hidden',
         alignItems: 'center',
@@ -572,7 +572,7 @@ const styles = StyleSheet.create({
     audioRecordingButton: {
         width: 70,
         height: 80,
-        marginTop: 20,
+        marginTop: "2%",
         color: '#233665', 
         backgroundColor: '#F6F6F6',
         borderColor: 'black',
@@ -590,7 +590,7 @@ const styles = StyleSheet.create({
     ExpandedaudioRecordingButton: {
         width: 70,
         height: 80,
-        marginTop: 30,
+        marginTop: "2%",
         color: '#233665',
         backgroundColor: 'red',
         borderColor: 'black',
@@ -627,7 +627,7 @@ const styles = StyleSheet.create({
     audioButton: {
         width: 70,
         height: 70, 
-        marginTop: 20,
+        marginTop: "2%",
         justifyContent: 'flex-start',
         backgroundColor: '#233665',
         borderColor: 'black',
