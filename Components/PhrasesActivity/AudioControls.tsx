@@ -400,7 +400,9 @@ export default class PhrasesAudioControls extends React.Component<State> {
                                 <Text style={{color: '#233665', textAlign:'center'}}>
                                     {this.state.replayProgress}
                                 </Text>
-                                <Ionicons name="ios-close" size={30} color="#233665" />
+                                <TouchableOpacity onPress={() => this.expandPlaybackButton()}>
+                                    <Ionicons name="ios-close" size={30} color="#233665" />
+                                </TouchableOpacity>
                             </View>
                         )}
                     </TouchableOpacity>
@@ -422,7 +424,9 @@ export default class PhrasesAudioControls extends React.Component<State> {
                                 <Text style={{color: '#233665', textAlign:'center'}}>
                                     {this.state.userRecordProgress}
                                 </Text>
-                                <Ionicons name="ios-close" size={30} color="#233665" />
+                                <TouchableOpacity onPress={() => this.expandAudioRecordingButton()}>
+                                    <Ionicons name="ios-close" size={30} color="#233665" />
+                                </TouchableOpacity>
                             </View>
                         )}
                     </TouchableOpacity>
@@ -438,7 +442,9 @@ export default class PhrasesAudioControls extends React.Component<State> {
                                 <Text style={{color: '#F7F9FC', textAlign:'center'}}>
                                     {this.state.audioProgress}
                                 </Text>
-                                <Ionicons name="ios-close" size={30} color="white" />
+                                <TouchableOpacity onPress={() => this.expandAudioButton()}>
+                                    <Ionicons name="ios-close" size={30} color="white" />
+                                </TouchableOpacity>
                             </View>
                         )}
                     </TouchableOpacity>

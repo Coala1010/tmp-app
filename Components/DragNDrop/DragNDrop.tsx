@@ -133,13 +133,14 @@ export default function DragNDrop({ activityData, onSuccess }) {
     };
 
     return !activityData || !activityData.length ? null : (
-        <ScrollView onScroll={() => setScrollId(scrollId + 1)} scrollEventThrottle={50} scrollEnabled={!dragging}>
+        <ScrollView onScroll={() => setScrollId(scrollId + 1)} scrollEventThrottle={50} 
+            scrollEnabled={!dragging}>
             {/* <Carousel activityData={activityData} onChange={(index) => setQurrentQuest(index)} /> */}
             <SideSwipe
                 contentContainerStyle={{ flexDirection: 'row-reverse' }}
                 index={currentIndex}
                 itemWidth={width - 50}
-                style={{ width }}
+                style={{ width: width }}
                 data={activityData.map((item) => ({
                     ...item,
                 }))}

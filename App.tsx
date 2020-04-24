@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, View, StatusBar } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -51,8 +51,13 @@ export default class App extends React.Component {
     const navigation = useNavigation();
     return (
       <View style={styles.container}>
-          <Levels navigation={navigation}/>
+        <StatusBar
+          barStyle="dark-content"
+          backgroundColor="white"
+          translucent/>
+        <Levels navigation={navigation}/>
       </View>
+      // </SafeAreaView>
     );
   }
 
@@ -62,8 +67,9 @@ export default class App extends React.Component {
         <NavigationContainer>
           <this.Stack.Navigator screenOptions={{
             headerShown: false
-          }}>
-            <this.Stack.Screen name="Home" component={this.HomeScreen} />
+          }}
+          headerMode='none'>
+            <this.Stack.Screen name="Home" component={this.HomeScreen}/>
             <this.Stack.Screen name="Lessons" component={Lessons}/>
             <this.Stack.Screen name="Activities" component={Activities}/>
             <this.Stack.Screen name="VideoActivity" component={VideoActivity}/>
@@ -88,6 +94,5 @@ const styles = StyleSheet.create({
     backgroundColor: '#FCFDFF',
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: 30
   },
 });

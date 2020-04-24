@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, Platform, TouchableOpacity, Image, StyleSheet } from 'react-native';
+import { Text, View, Platform, TouchableOpacity, Image, StyleSheet, StatusBar } from 'react-native';
 import ActivityGroupsProgress from '../../Components/navigation/ActivityGroupsProgress';
 import ActivityFooter from '../../Components/ActivityFooter/ActivityFooter';
 import PhrasesActivityCarousel from '../../Components/PhrasesActivity/PhrasesActivityCarousel';
@@ -71,6 +71,10 @@ export default function PhrasesActivity({ navigation, route }) {
 
     return (
         <View style={{flex: 1, width: '100%', backgroundColor: '#FCFDFF'}}>
+            <StatusBar
+                barStyle="dark-content"
+                backgroundColor="white"
+                translucent/>
             <View style={{ flex: 1 }}>
                 <View style={{flex: 1, width: '100%', backgroundColor: '#FCFDFF'}}>
                     <View style={{flex: 1, width: '100%', backgroundColor: '#FCFDFF'}}>

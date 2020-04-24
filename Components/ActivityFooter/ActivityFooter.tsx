@@ -24,7 +24,7 @@ export default function ActivityFooter({ userLessonId, navigation, leftBtn, toNe
 
     return (
         <View style={styles.footerContainer}>
-            <View style={styles.footer}>
+            <View style={leftBtn ? styles.footerWithLeftBtn : styles.footer}>
                 <TouchableOpacity
                     style={{padding: 5}} 
                     onPress={() => nextNavigation()}
@@ -82,7 +82,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row'
     },
     footer: {
-        marginTop: 10,
         justifyContent: 'space-around',
         backgroundColor: '#FCFDFF',
         borderWidth: 0,
@@ -96,6 +95,25 @@ const styles = StyleSheet.create({
         shadowRadius: 2.22,
         elevation: 1,
         width: '90%',
+        shadowColor: 'lightgray',
+        marginBottom: 16,
+        marginHorizontal: '5%'
+    },
+    footerWithLeftBtn: {
+        // marginTop: 10,
+        justifyContent: 'space-around',
+        backgroundColor: '#FCFDFF',
+        borderWidth: 0,
+        shadowOpacity: 0.6,
+        borderRadius: 16,
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        // shadowOpacity: 0.22,
+        shadowRadius: 2.22,
+        elevation: 1,
+        width: '69%',
         shadowColor: 'lightgray',
         marginBottom: 16,
         marginHorizontal: '5%'
