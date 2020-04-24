@@ -76,7 +76,7 @@ export default class Congratulations extends React.Component<State> {
         resizeMode: 'contain',  
     },
     imageWrapper: {        
-        marginTop: '30%',
+        marginTop: '10%',
         alignContent: 'center',
         // flex: 1,
         justifyContent: 'center',
