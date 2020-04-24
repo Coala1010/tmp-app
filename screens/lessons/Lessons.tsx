@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, TouchableOpacity, Image, StyleSheet, ScrollView } from 'react-native';
+import { Text, View, TouchableOpacity, Image, StyleSheet, ScrollView, StatusBar } from 'react-native';
 import UserLessons from '../../types/UserLessons';
 import UserLessonsProvider from '../../providers/UserLessonsProvider';
 import CircularProgress from '../../Components/CircularProgress/CircularProgress';
@@ -89,6 +89,10 @@ export default class Lessons extends React.Component<Props, State> {
       return (
         // <View style={{flex: 1, justifyContent:'flex-start', width: '100%', backgroundColor: '#FCFDFF'}}>
           <View style={{flex: 1, justifyContent:'flex-start', width: '100%', backgroundColor: '#FCFDFF'}}>
+            <StatusBar
+          barStyle="dark-content"
+          backgroundColor="white"
+          translucent/>
             <View style={{backgroundColor: '#FCFDFF',
                         borderStyle: 'solid', borderWidth: 3,
                         borderColor: '#F7F9F7', height: 80,

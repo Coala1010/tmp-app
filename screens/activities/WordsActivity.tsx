@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, Platform, TouchableOpacity, Image, StyleSheet } from 'react-native';
+import { Text, View, Platform, TouchableOpacity, Image, StyleSheet, StatusBar } from 'react-native';
 import ActivityGroupsProgress from '../../Components/navigation/ActivityGroupsProgress';
 import ActivityFooter from '../../Components/ActivityFooter/ActivityFooter';
 import { getWordsActivity, uploadWordsActivityRecord } from '../../providers/activities/WordsActivity';
@@ -12,7 +12,6 @@ export default function WordsActivity({ navigation, route }) {
     const [activityData, setActivityData] = React.useState(null);
     const [activeQuestion, setActiveQuestion] = React.useState(0);
 
-    // const { activities } = route.params;
     const { lessonTitle, activities } = route.params;
     const nextActivity = activities.get('words').nextActivity;
 
@@ -73,6 +72,10 @@ export default function WordsActivity({ navigation, route }) {
 
     return (
         <View style={{flex: 1, justifyContent:'flex-start', width: '100%', backgroundColor: '#FCFDFF'}}>
+            <StatusBar
+                barStyle="dark-content"
+                backgroundColor="white"
+                translucent/>
             <View style={{flex: 1, justifyContent:'flex-start', width: '100%', backgroundColor: '#FCFDFF'}}>
                 <View style={{
                     backgroundColor: '#FCFDFF',

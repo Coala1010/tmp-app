@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, TouchableOpacity, Button, Image, StyleSheet } from 'react-native';
+import { Text, View, TouchableOpacity, StatusBar, Image, StyleSheet } from 'react-native';
 import { Video } from 'expo-av';
 import VideoPlayer from 'expo-video-player';
 // import BottomNavigation from '../../Components/navigation/BottomNavigation';
@@ -58,6 +58,10 @@ export default class VideoActivity extends React.Component<State> {
         // const nextActivity = activities.get('video').nextActivity;
       return (
         <View style={{flex: 1, justifyContent:'flex-start', width: '100%', backgroundColor: '#FCFDFF'}}>
+            <StatusBar
+                barStyle="dark-content"
+                backgroundColor="white"
+                translucent/>
             <View style={{flex: 1, justifyContent: 'flex-start', flexDirection: 'column', alignItems:'flex-start', width: '100%', backgroundColor: '#FCFDFF'}}>
                 {
                     this.state.videoUrl ? (<VideoPlayer

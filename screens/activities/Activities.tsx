@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, TouchableOpacity, Button, Image, StyleSheet } from 'react-native';
+import { Text, View, TouchableOpacity, StatusBar, Image, StyleSheet } from 'react-native';
 import UserActivities from '../../types/activities/UserActivities';
 import UserActivitiesProvider from '../../providers/activities/UserActivitiesProvider';
 import NavigationActivity from '../../Components/navigation/NavigationActivity';
@@ -283,8 +283,12 @@ export default class Activities extends React.Component<State> {
   
     render() {
         const { lessonTitle } = this.props.route.params; 
-        return (
+    return (
             <View style={{flex: 1, justifyContent:'flex-start', width: '100%', backgroundColor: '#FCFDFF'}}>
+                <StatusBar
+                    barStyle="light-content"
+                    backgroundColor="#233665"
+                    translucent/>
                 <View style={{flex: 1, justifyContent:'center', width: '100%', backgroundColor: '#FCFDFF'}}>
                     <View style={{backgroundColor: '#233665',
                                 borderStyle: 'solid', 
@@ -314,7 +318,7 @@ export default class Activities extends React.Component<State> {
                                     flexDirection: 'row',
                                     elevation: 3,
                                 }}>
-                            <View style={{alignContent: 'center', alignItems: 'center'}}>
+                            <View style={{alignContent: 'center', alignItems: 'center', justifyContent: 'center'}}>
                                 <Text style={styles.screenTitle}>
                                     {lessonTitle}
                                 </Text>
@@ -383,7 +387,6 @@ export default class Activities extends React.Component<State> {
     },
     screenTitle: {
         textAlign: 'center', 
-        marginTop: 35, 
         color: '#233665', 
         width: '100%', 
         fontSize: 20,

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, TouchableOpacity, Image, StyleSheet } from 'react-native';
+import { Text, View, TouchableOpacity, Image, StyleSheet, StatusBar } from 'react-native';
 
 import ActivityGroupsProgress from '../../Components/navigation/ActivityGroupsProgress';
 import DragNDrop from '../../Components/DragNDrop/DragNDrop';
@@ -53,8 +53,12 @@ export default function DragAndDropActivity({ route, navigation }) {
     }
 
     return (
-        <View style={{flex: 1, justifyContent:'flex-start', width: '100%', backgroundColor: '#FCFDFF'}}>
-            <View style={{flex: 1, justifyContent:'flex-start', width: '100%', backgroundColor: 'white'}}>
+        <View style={{flex: 1, justifyContent:'flex-start', width: '100%', height: '100%', backgroundColor: '#FCFDFF'}}>
+            <StatusBar
+                barStyle="dark-content"
+                backgroundColor="white"
+                translucent/>
+            <View style={{flex: 1, justifyContent:'flex-start', width: '100%', height: '100%', backgroundColor: 'white'}}>
                 <View style={{backgroundColor: '#FCFDFF',
                     borderStyle: 'solid', borderWidth: 3,
                     borderColor: '#F7F9F7', height: 80,
@@ -75,22 +79,45 @@ export default function DragAndDropActivity({ route, navigation }) {
                         />
                     </TouchableOpacity>
                 </View>
+                <View style={{ flex: 1, marginTop: 0, height: '100%' }}>
                 <ActivityGroupsProgress chosenActivity='dragndrop' navigation={navigation} activities={activities}/>
                 {
-                    activityData ? <DragNDrop activityData={activityData} onSuccess={onAllChoicesAnswered}/> : <View/>
+                    activityData ? (
+                        <View style={{ flex: 1, marginTop: 0, height: '100%' }}>
+                            <DragNDrop activityData={activityData} onSuccess={onAllChoicesAnswered}/> 
+                            <ActivityFooter navigation={navigation} 
+                        toNext={nextActivity.navigationScreen}
+                        toNextPayload={{ 
+                            userGroupId: nextActivity.userGroupId,
+                            lessonTitle: nextActivity.lessonTitle,
+                            lessonId: nextActivity.lessonId,
+                            userToken: nextActivity.userToken,
+                            unitId: nextActivity.unitId,
+                            unitTitle: nextActivity.unitTitle,
+                            activities: activities
+                        }}
+                    />
+                        </View>
+                    ): (
+                    <View style={{position: 'absolute', bottom: 0}}>
+                        <ActivityFooter navigation={navigation} 
+                        toNext={nextActivity.navigationScreen}
+                        toNextPayload={{ 
+                            userGroupId: nextActivity.userGroupId,
+                            lessonTitle: nextActivity.lessonTitle,
+                            lessonId: nextActivity.lessonId,
+                            userToken: nextActivity.userToken,
+                            unitId: nextActivity.unitId,
+                            unitTitle: nextActivity.unitTitle,
+                            activities: activities
+                        }}
+                    />
+                    </View>
+                    )
                 }
-                <ActivityFooter navigation={navigation} 
-                    toNext={nextActivity.navigationScreen}
-                    toNextPayload={{ 
-                        userGroupId: nextActivity.userGroupId,
-                        lessonTitle: nextActivity.lessonTitle,
-                        lessonId: nextActivity.lessonId,
-                        userToken: nextActivity.userToken,
-                        unitId: nextActivity.unitId,
-                        unitTitle: nextActivity.unitTitle,
-                        activities: activities
-                }}
-                />
+                {/* <View style={{position: 'absolute', bottom: 0}}> */}
+                        
+                </View>
             </View>
         </View>
     );

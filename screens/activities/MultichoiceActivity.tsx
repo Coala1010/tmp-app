@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import { Text, View, StyleSheet, TouchableOpacity, Image, StatusBar } from 'react-native';
 import ActivityGroupsProgress from '../../Components/navigation/ActivityGroupsProgress';
 import ActivityFooter from '../../Components/ActivityFooter/ActivityFooter';
 import Multichoice from '../../Components/Multichoice/Multichoice';
@@ -42,6 +42,10 @@ export default function MultichoiceActivityScreen({ navigation, route }) {
 
     return (
         <View style={{flex: 1, justifyContent:'flex-start', width: '100%', backgroundColor: '#FCFDFF'}}>
+            <StatusBar
+                barStyle="dark-content"
+                backgroundColor="white"
+                translucent/>
             <View style={{flex: 1, justifyContent:'flex-start', width: '100%', backgroundColor: '#FCFDFF'}}>
                 <View style={{backgroundColor: '#FCFDFF',
                     borderStyle: 'solid', borderWidth: 3,
@@ -64,7 +68,7 @@ export default function MultichoiceActivityScreen({ navigation, route }) {
                     </TouchableOpacity>
                 </View>
                 <ActivityGroupsProgress navigation={navigation} chosenActivity='multichoice' activities={activities}/>
-                <View style={{ flex: 1, marginTop: 20 }}>
+                <View style={{ flex: 1, marginTop: 20, height: '100%' }}>
                     {activityData ? (
                         <Multichoice
                             activityData={activityData}
@@ -72,20 +76,22 @@ export default function MultichoiceActivityScreen({ navigation, route }) {
                             onSuccess={onAllChoicesAnswered}
                         />
                     ): <View style={{ flex: 1 }} />}
-                    <ActivityFooter
-                        navigation={navigation}
-                        leftBtn={<HintBtn hintText={hintText} />}
-                        toNext={nextActivity.navigationScreen}
-                        toNextPayload={{ 
-                            userGroupId: nextActivity.userGroupId,
-                            lessonTitle: nextActivity.lessonTitle,
-                            lessonId: nextActivity.lessonId,
-                            userToken: nextActivity.userToken,
-                            unitTitle: nextActivity.unitTitle,
-                            unitId: nextActivity.unitI,
-                            activities: activities
-                        }}
-                    />
+                    <View style={{position: 'absolute', bottom: 0}}>
+                        <ActivityFooter
+                            navigation={navigation}
+                            leftBtn={<HintBtn hintText={hintText} />}
+                            toNext={nextActivity.navigationScreen}
+                            toNextPayload={{ 
+                                userGroupId: nextActivity.userGroupId,
+                                lessonTitle: nextActivity.lessonTitle,
+                                lessonId: nextActivity.lessonId,
+                                userToken: nextActivity.userToken,
+                                unitTitle: nextActivity.unitTitle,
+                                unitId: nextActivity.unitI,
+                                activities: activities
+                            }}
+                        />
+                    </View>
                 </View>
             </View>
         </View>
