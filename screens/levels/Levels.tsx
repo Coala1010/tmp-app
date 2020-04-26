@@ -113,7 +113,9 @@ export default class Levels extends React.Component<State> {
         // <CircularProgressWrapper/>  
         <View style={{flex: 1, justifyContent:'center', width: '100%'}}>
           <View style={{backgroundColor: '#FCFDFF',
-                        borderStyle: 'solid', borderWidth: 3,
+                        shadowColor: 'lightgray',
+                        shadowOpacity: 0.6,
+                        elevation: 3,
                         borderColor: '#F7F9F7', height: 80,
                         justifyContent: 'center',
                         flexDirection: 'row',

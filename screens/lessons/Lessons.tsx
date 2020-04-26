@@ -94,8 +94,10 @@ export default class Lessons extends React.Component<Props, State> {
           backgroundColor="white"
           translucent/>
             <View style={{backgroundColor: '#FCFDFF',
-                        borderStyle: 'solid', borderWidth: 3,
-                        borderColor: '#F7F9F7', height: 80,
+                        shadowColor: 'lightgray',
+                        shadowOpacity: 0.6,
+                        elevation: 3,
+                        height: 80,
                         justifyContent: 'center',
                         flexDirection: 'row',
                         alignItems: 'center'}}>

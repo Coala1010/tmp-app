@@ -7,5 +7,6 @@ export default class UserUnits {
     unitCreationDate: Date;
     userUnitProgress: number;
     userLastModificationDate: Date;
-    userCreationDate: Date	
+    userCreationDate: Date;
+    displayIndex: number	
 }

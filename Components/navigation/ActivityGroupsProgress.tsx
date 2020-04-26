@@ -13,7 +13,7 @@ export default class ActivityGroupsProgress extends React.Component<Props> {
         let chosenActivity = this.props.chosenActivity;
         return (
             <View style={{flexDirection: 'row', width: '100%', justifyContent: 'center', marginTop: 5, marginBottom: 5}}>
-                <View style={{flexDirection: 'row', width: '90%', justifyContent: 'center'}}>
+                <View style={{flexDirection: 'row', justifyContent: 'center'}}>
                     {
                         this.props.activities.get('dragndrop') ? (
                             <View style={styles.activityGroup}>
@@ -35,11 +35,12 @@ export default class ActivityGroupsProgress extends React.Component<Props> {
                         ) : <View/>
                     }  
                     {
+                        this.props.activities.get('dragndrop') && this.props.activities.get('multichoice') ? <View style={styles.grayLine}/> : <View/>
+                    }
+                    {
                         this.props.activities.get('multichoice') ? (
-                            <View style={styles.activityWrapper}>
-                                {
-                                    this.props.activities.get('dragndrop') ? <View style={styles.grayLine}/> : <View/>
-                                }
+                            // <View style={styles.activityWrapper}>
+                                
                                 <View style={styles.activityGroup}>
                                     <TouchableOpacity onPress={() => this.props.navigation.push('MultichoiceActivity', { 
                                         userGroupId: this.props.activities.get('multichoice').userGroupId,
@@ -54,15 +55,17 @@ export default class ActivityGroupsProgress extends React.Component<Props> {
                                         />
                                     </TouchableOpacity>
                                 </View>
-                            </View>
+                            // </View>
                         ) : <View/>    
+                    }
+
+                    {
+                        (this.props.activities.get('multichoice') || this.props.activities.get('dragndrop')) && this.props.activities.get('words')
+                         ? <View style={styles.grayLine}/> : <View/>
                     }
                     {
                         this.props.activities.get('words') ? (
-                            <View style={styles.activityWrapper}>
-                                {
-                                    this.props.activities.get('multichoice') || this.props.activities.get('dragndrop') ? <View style={styles.grayLine}/> : <View/>
-                                }
+                            // <View style={styles.activityWrapper}>
                                     <TouchableOpacity onPress={() => this.props.navigation.push('WordsActivity', { 
                                         userGroupId: this.props.activities.get('words').userGroupId,
                                         lessonTitle: this.props.activities.get('words').lessonTitle,
@@ -77,15 +80,18 @@ export default class ActivityGroupsProgress extends React.Component<Props> {
                                     />
                                 </View>
                             </TouchableOpacity>
-                            </View>
+                            // {/* </View> */}
                         ) : <View/>
                     }       
                     {
+                        ((this.props.activities.get('multichoice') || this.props.activities.get('dragndrop') || this.props.activities.get('words')) 
+                        && this.props.activities.get('phrases'))
+                         ? <View style={styles.grayLine}/> : <View/>
+                    }    
+                    {
                         this.props.activities.get('phrases') ? (
-                            <View style={styles.activityWrapper}>
-                                {
-                                    this.props.activities.get('multichoice') || this.props.activities.get('dragndrop') || this.props.activities.get('words') ? <View style={styles.grayLine}/> : <View/>
-                                }    
+                            // <View style={styles.activityWrapper}>
+                                
                                 <TouchableOpacity onPress={() => this.props.navigation.push('PhrasesActivity', { 
                                     userGroupId: this.props.activities.get('phrases').userGroupId,
                                     lessonTitle: this.props.activities.get('phrases').lessonTitle,
@@ -100,7 +106,7 @@ export default class ActivityGroupsProgress extends React.Component<Props> {
                                         />
                                     </View>
                                 </TouchableOpacity>
-                            </View>
+                            // </View>
                         ) : <View/>
                     }  
                 </View>
@@ -111,24 +117,22 @@ export default class ActivityGroupsProgress extends React.Component<Props> {
 
 const styles = StyleSheet.create({
     activityWrapper: {
-        width: '20%',
+        // width: '20%',
         height: 50,
-        marginLeft: 2,
-        marginRight: 2,
         flexDirection: 'row',
         justifyContent: 'space-between'
     },
     grayLine: {
-        width: '20%',
+        width: '10%',
         height: 25,
-        marginLeft: 2,
-        marginRight: 2,
+        marginLeft: 5,
+        marginRight: 5,
         borderBottomColor: '#E3E3E3',
         borderBottomWidth: 2,
     },
     activityImage: {
-        height: 24,
-        width: 24,
+        height: 26,
+        width: 26,
     },
     activeImage: {
     },
@@ -136,6 +140,7 @@ const styles = StyleSheet.create({
         tintColor: '#E3E3E3'
     },
     activityGroup: {
+        // width: '20%',
         color: '#233665', 
         width: 50, 
         height: 50, 
