@@ -60,7 +60,7 @@ export default class ActivityGroupsProgress extends React.Component<Props> {
                     }
 
                     {
-                        (this.props.activities.get('multichoice') || this.props.activities.get('dragndrop') && this.props.activities.get('words'))
+                        (this.props.activities.get('multichoice') || this.props.activities.get('dragndrop')) && this.props.activities.get('words')
                          ? <View style={styles.grayLine}/> : <View/>
                     }
                     {
