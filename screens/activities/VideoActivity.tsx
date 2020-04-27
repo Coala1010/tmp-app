@@ -112,7 +112,7 @@ export default class VideoActivity extends React.Component<State> {
                             onPress={() => this.props.navigation.goBack()}
                             >
                             <Image 
-                                style={styles.image}
+                                style={styles.backImage}
                                 source={require('../../assets/arrow_back-24px.png')} 
                             />
                         </TouchableOpacity>
@@ -197,7 +197,7 @@ export default class VideoActivity extends React.Component<State> {
     },
     backImage: {
         height: 24,
-        width: 24,
+        width: 15,
     },
     backImageWrapper: {
         color: '#233665', 

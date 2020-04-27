@@ -158,7 +158,7 @@ export default class Lessons extends React.Component<Props, State> {
     },
     image: {
       height: 24,
-      width: 24,
+      width: 15,
       //resizeMode: 'contain',  
     },
     backButton: {

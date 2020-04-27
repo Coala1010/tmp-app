@@ -76,7 +76,7 @@ export default function DragAndDropActivity({ route, navigation }) {
                         onPress={() => backToLessons()}
                     >
                         <Image 
-                            style={styles.image}
+                            style={styles.backImage}
                             source={require('../../assets/arrow_back-24px.png')} 
                         />
                     </TouchableOpacity>
@@ -131,6 +131,10 @@ const styles = StyleSheet.create({
       width: 24,
       //resizeMode: 'contain',  
     },
+    backImage: {
+        height: 24,
+        width: 15,
+      },
     backButton: {
         position: 'absolute',
         top: 34,

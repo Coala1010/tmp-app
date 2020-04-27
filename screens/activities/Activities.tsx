@@ -327,7 +327,7 @@ export default class Activities extends React.Component<State> {
                                 style={styles.backButton}
                                 onPress={() => this.props.navigation.goBack()}>
                                 <Image 
-                                    style={styles.image}
+                                    style={styles.backImage}
                                     source={require('../../assets/arrow_back-24px.png')} 
                                 />
                             </TouchableOpacity>
@@ -410,6 +410,10 @@ export default class Activities extends React.Component<State> {
         width: 24,
         marginRight: 11
     },
+    backImage: {
+        height: 24,
+        width: 15,
+    },
     forwardImage: {
         height: 24,
         width: 14,
@@ -418,7 +422,7 @@ export default class Activities extends React.Component<State> {
     },
     backImage: {
         height: 24,
-        width: 24,
+        width: 15,
     },
     backImageWrapper: {
         color: '#233665', 
@@ -466,7 +470,9 @@ export default class Activities extends React.Component<State> {
         borderColor: '#F7F9FC', 
         position: 'absolute',
         right: '5%',
-        top: 30, 
+        top: 30,
+        alignItems: 'center',
+        justifyContent: 'center'
       },
     forwardButton: {
         marginTop: 10,
