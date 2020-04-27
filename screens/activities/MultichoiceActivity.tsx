@@ -64,7 +64,7 @@ export default function MultichoiceActivityScreen({ navigation, route }) {
                         onPress={() => backToLessons()}
                         >
                         <Image 
-                            style={styles.image}
+                            style={styles.backImage}
                             source={require('../../assets/arrow_back-24px.png')} 
                         />
                     </TouchableOpacity>
@@ -112,6 +112,10 @@ const styles = StyleSheet.create({
     image: {
       height: 24,
       width: 24, 
+    },
+    backImage: {
+        height: 24,
+        width: 15,
     },
     backButton: {
         position: 'absolute',

@@ -16,13 +16,39 @@ interface Props {
   token: string
 }
 
-export default class Units extends React.Component<Props> {
+interface State {
+  unitsToDisplay: Array<UserUnit>
+}
+
+export default class Units extends React.Component<Props, State> {
+
+  state: Readonly<State> = {
+    unitsToDisplay: new Array<UserUnit>()
+  } 
 
   _keyExtractor = (item, index) => item.order.toString();
 
   _unitTitle = (item, index) => (item.displayIndex + 1) + '. ' + item.title;
 
   radius : number = 10; 
+
+  componentDidMount = () => {
+    let bufferUnit = null;
+    let firstUnitIndex = null;
+    this.props.userUnits.forEach((element, index) => {
+      if (index % 2 == 0) {
+        bufferUnit = element;    
+        firstUnitIndex = index;    
+        bufferUnit.displayIndex = index;
+      }
+      if (index % 2 == 1) {
+        this.state.unitsToDisplay[firstUnitIndex] = element;
+        element.displayIndex = index;
+        this.state.unitsToDisplay[index] = bufferUnit;        
+        bufferUnit.displayIndex = firstUnitIndex;
+      }
+    });
+  }
 
   _renderItem = ({item, index}) => {
     return (
@@ -54,24 +80,9 @@ export default class Units extends React.Component<Props> {
   }  
   
   render() {
-    const userUnits = this.props.userUnits;
+    const userUnits = this.state.unitsToDisplay;
     const visible = this.props.visible;
 
-    let bufferUnit = null;
-    let firstUnitIndex = null;
-    userUnits.forEach((element, index) => {
-      if (index % 2 == 0) {
-        bufferUnit = element;    
-        firstUnitIndex = index;    
-        bufferUnit.displayIndex = index;
-      }
-      if (index % 2 == 1) {
-        userUnits[firstUnitIndex] = element;
-        element.displayIndex = index;
-        userUnits[index] = bufferUnit;        
-        bufferUnit.displayIndex = firstUnitIndex;
-      }
-    });
     return visible &&  
     <View style={styles.container}>
       <FlatList<UserUnit>
