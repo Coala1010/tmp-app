@@ -3,7 +3,6 @@
     "name": "Teach Me ARABIC",
     "slug": "tma-app",
     "privacy": "public",
-    "sdkVersion": "36.0.0",
     "platforms": [
       "ios",
       "android",
