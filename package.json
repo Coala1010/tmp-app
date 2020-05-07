@@ -19,7 +19,7 @@
     "expo": "^37.0.0",
     "expo-av": "~8.1.0",
     "expo-font": "~8.1.0",
-    "expo-video-player": "^1.58",
+    "expo-video-player": "^1.5.8",
     "link": "^0.1.5",
     "promise-sequential": "^1.1.1",
     "react": "16.9.0",
