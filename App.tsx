@@ -15,7 +15,7 @@ import DragAndDropActivity from './screens/activities/DragAndDropActivity';
 import Congratulations from './screens/activities/Congratulations';
 // import { useFonts } from '@use-expo/font';
 import * as Font from 'expo-font';
-import { AppLoading } from 'expo';
+import * as SplashScreen from 'expo-splash-screen';
 
 let customFonts = {
   'NeoSansArabicBlack': require('./assets/fonts/NeoSansArabic-Black.ttf'),
@@ -39,9 +39,15 @@ export default class App extends React.Component {
   async _loadFontsAsync() {
     await Font.loadAsync(customFonts);
     this.setState({ fontsLoaded: true });
+    SplashScreen.hideAsync() 
   }
 
   componentDidMount = async () => {
+    try {
+      await SplashScreen.preventAutoHideAsync();
+    } catch (e) {
+      console.warn(e);
+    }
     await this._loadFontsAsync();
   }
 
@@ -82,8 +88,7 @@ export default class App extends React.Component {
         </NavigationContainer>
       );
     } else {
-      return <AppLoading startAsync={() => Font.loadAsync(customFonts)}
-            onFinish={() => this.setState({ fontsLoaded: true })}/>;
+      return null;
     }  
   }
 }
