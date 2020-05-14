@@ -6,14 +6,16 @@ export default function PhrasesActivityCarousel({ onChange, activityData }) {
   const { width } = Dimensions.get('window');
   const [currentIndex, setCurrentIndex] = React.useState(activityData.length - 1);
 
+  const itemWidth = Dimensions.get('window').width - Dimensions.get('window').width*0.1;
+  const contentOffset = (width - itemWidth) / 2;
   return (
     <SideSwipe
         contentContainerStyle={styles.swipperContainer}
         index={currentIndex}
-        itemWidth={width - 80}
+        itemWidth={itemWidth}
         style={{ width }}
         data={activityData}
-        contentOffset={activityData.length > 2 ? 40 : 0}
+        contentOffset={contentOffset}
         onIndexChange={index => {
             setCurrentIndex(index);
             onChange(activityData.length - 1 - index);
@@ -21,10 +23,6 @@ export default function PhrasesActivityCarousel({ onChange, activityData }) {
         renderItem={({ itemIndex, currentIndex, item, animatedValue }) => (
             <View style={[
                 styles.questionCard,
-                itemIndex !== 0 && itemIndex !== activityData.length - 1 && { width: Dimensions.get('window').width - 120 },
-                itemIndex === 0 && { marginRight: 20 },
-                itemIndex === activityData.length - 1 && { marginLeft: 20 },
-                activityData.length === 1 && { marginRight: 50, marginLeft: 50 },
             ]}>
                 <Text style={styles.questionText}>{item.phrase}</Text>
                 <View style={styles.numberContainer}>
@@ -44,9 +42,12 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'flex-start',
-        width: Dimensions.get('window').width - 100,
+        width: Dimensions.get('window').width - Dimensions.get('window').width*0.1 - 12,
         minHeight: 120,
-        margin: 10,
+        marginTop: 10,
+        marginBottom: 10,
+        marginRight: 6,
+        marginLeft: 6,
         shadowColor: "#000",
         shadowOffset: {
             width: 0,
