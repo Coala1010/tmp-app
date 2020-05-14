@@ -48,6 +48,12 @@ export default class App extends React.Component {
     } catch (e) {
       console.warn(e);
     }
+    const ReactNative = require('react-native');
+    try {
+      ReactNative.I18nManager.allowRTL(false);
+    } catch (e) {
+      console.log(e);
+    }
     await this._loadFontsAsync();
   }
 
