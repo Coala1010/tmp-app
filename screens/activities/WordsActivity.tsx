@@ -1,7 +1,8 @@
 import React from 'react';
-import { Text, View, Platform, TouchableOpacity, Image, StyleSheet, StatusBar } from 'react-native';
+import { View, Platform, StyleSheet, StatusBar } from 'react-native';
 import ActivityGroupsProgress from '../../Components/navigation/ActivityGroupsProgress';
 import ActivityFooter from '../../Components/ActivityFooter/ActivityFooter';
+import ActivityHeader from '../../Components/ActivityHeader/ActivityHeader';
 import { getWordsActivity, uploadWordsActivityRecord } from '../../providers/activities/WordsActivity';
 import PhrasesAudioControls from '../../Components/PhrasesActivity/AudioControls';
 import WordsActivityCarousel from '../../Components/WordsActivity/WordsActivityCarousel';
@@ -12,7 +13,7 @@ export default function WordsActivity({ navigation, route }) {
     const [activityData, setActivityData] = React.useState(null);
     const [activeQuestion, setActiveQuestion] = React.useState(0);
 
-    const { lessonTitle, activities } = route.params;
+    const { activities } = route.params;
     const nextActivity = activities.get('words').nextActivity;
 
     React.useEffect(() => {
@@ -58,18 +59,6 @@ export default function WordsActivity({ navigation, route }) {
         }
     };
 
-    const backToLessons = () =>{        
-        navigation.push('Lessons', { 
-            userGroupId: nextActivity.userGroupId,
-            lessonTitle: nextActivity.lessonTitle,
-            lessonId: nextActivity.lessonId,
-            userToken: nextActivity.userToken,
-            unitTitle: nextActivity.unitTitle,
-            unitId: nextActivity.unitId,
-            activities: activities
-        });
-    };
-
     return (
         <View style={{flex: 1, justifyContent:'flex-start', width: '100%', backgroundColor: '#FCFDFF'}}>
             <StatusBar
@@ -77,29 +66,7 @@ export default function WordsActivity({ navigation, route }) {
                 backgroundColor="white"
                 translucent/>
             <View style={{flex: 1, justifyContent:'flex-start', width: '100%', backgroundColor: '#FCFDFF'}}>
-                <View style={{
-                    backgroundColor: '#FCFDFF',
-                    shadowColor: 'lightgray',
-                    shadowOpacity: 0.6,
-                    elevation: 3, 
-                    height: 80,
-                    justifyContent: 'center',
-                    flexDirection: 'row'
-                }}>
-                    <Text style={{textAlign: 'center', marginTop: 34, color: '#233665', width: '100%', fontSize: 20, fontFamily: 'NeoSansArabicBold'}}>
-                        {lessonTitle}
-                    </Text>
-                    <TouchableOpacity 
-                        style={styles.backButton}
-                        //onPress={() => navigation.goBack()}
-                        onPress={() => backToLessons()}
-                        >
-                        <Image 
-                            style={styles.backImage}
-                            source={require('../../assets/arrow_back-24px.png')} 
-                        />
-                    </TouchableOpacity>
-                </View>
+                <ActivityHeader navigation={navigation} currentActivityName='words' route={route}/>
                 <ActivityGroupsProgress navigation={navigation} chosenActivity='words' activities={route.params.activities}/>
                 {activityData &&  (
                     <>
@@ -132,28 +99,5 @@ export default function WordsActivity({ navigation, route }) {
 }
 
 const styles = StyleSheet.create({
-    image: {
-      height: 24,
-      width: 24,
-      //resizeMode: 'contain',  
-    },
-    backImage: {
-        height: 24,
-        width: 15,
-    },
-    backButton: {
-        position: 'absolute',
-        top: 34,
-        right: 23, 
-        color: '#233665', 
-        width: 30, 
-        height: 30, 
-        backgroundColor: '#F7F9FC',
-        borderStyle: 'solid', 
-        borderRadius: 5, 
-        borderWidth: 1,
-        borderColor: '#F7F9FC', 
-        overflow: 'hidden',
-        alignItems: 'center'
-    }
-  });
+
+});
