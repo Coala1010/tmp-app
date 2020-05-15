@@ -27,7 +27,7 @@ export default class Activities extends React.Component<State> {
 
     componentDidMount() {
         const { lessonTitle, lessonId, userToken, unitId, unitTitle } = this.props.route.params;
-        this.setState({userToken: userToken});
+        this.setState({userToken: userToken, unitTitle: unitTitle});
         UserActivitiesProvider(lessonId, (json) => {
             let userActivities : UserActivities = json;
             this.setState({userActivities : userActivities});
@@ -281,8 +281,17 @@ export default class Activities extends React.Component<State> {
       ) : <View/>
     }
   
+    backToLessons(userToken: string, unitTitle: string, unitId: number) {        
+        this.props.navigation.push('Lessons', { 
+            userToken: userToken,
+            unitTitle: unitTitle,
+            unitId: unitId,
+            activities: this.state.activities
+        });
+    };
+
     render() {
-        const { lessonTitle } = this.props.route.params; 
+    const { lessonTitle } = this.props.route.params; 
     return (
             <View style={{flex: 1, justifyContent:'flex-start', width: '100%', backgroundColor: '#FCFDFF'}}>
                 <StatusBar
@@ -325,7 +334,11 @@ export default class Activities extends React.Component<State> {
                             </View>                                  
                             <TouchableOpacity 
                                 style={styles.backButton}
-                                onPress={() => this.props.navigation.goBack()}>
+                                onPress={() => this.backToLessons(
+                                    this.state.userToken,
+                                    this.props.route.params.unitTitle,
+                                    this.props.route.params.unitId
+                                )}>
                                 <Image 
                                     style={styles.backImage}
                                     source={require('../../assets/arrow_back-24px.png')} 

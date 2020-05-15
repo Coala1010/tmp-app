@@ -6,6 +6,7 @@ import VideoPlayer from 'expo-video-player';
 import {VideoProvider, updateVideoActivity} from '../../providers/activities/VideoProvider';
 import ActivityFooter from '../../Components/ActivityFooter/ActivityFooter';
 import { Audio } from 'expo-av';
+import ActivityHeader from '../../Components/ActivityHeader/ActivityHeader';
 
 interface State {
   videoUrl: string,
@@ -97,72 +98,24 @@ export default class VideoActivity extends React.Component<State> {
         return (
             <View style={{flex: 1, justifyContent:'flex-start', width: '100%', backgroundColor: '#FCFDFF'}}>
                 <View style={{flex: 1, justifyContent:'flex-start', width: '100%', backgroundColor: '#FCFDFF'}}>
-                    <View style={{backgroundColor: '#FCFDFF',
-                            shadowColor: 'lightgray',
-                            shadowOpacity: 0.6,
-                            elevation: 3, 
-                            height: 80,
-                            justifyContent: 'center',
-                            flexDirection: 'row'}}>
-                        <Text style={styles.lessonTitle}>
-                            {lessonTitle}
-                        </Text>
-                        <TouchableOpacity 
-                            style={styles.backButton}
-                            onPress={() => this.props.navigation.goBack()}
-                            >
-                            <Image 
-                                style={styles.backImage}
-                                source={require('../../assets/arrow_back-24px.png')} 
-                            />
-                        </TouchableOpacity>
-                    </View>
-                {this.renderVideo(videoTitle)}
+                    <ActivityHeader navigation={this.props.navigation} currentActivityName='video' route={this.props.route}/>
+                    {this.renderVideo(videoTitle)}
 
-                {/* <BottomNavigation/> */}
-                <ActivityFooter
-                        navigation={this.props.navigation}
-                        toNext={nextActivity.navigationScreen}
-                        toNextDisabled={this.state.toNextDisabled}
-                        toNextPayload={{ 
-                            userGroupId: nextActivity.userGroupId,
-                            lessonTitle: nextActivity.lessonTitle,
-                            lessonId: nextActivity.lessonId,
-                            userToken: nextActivity.userToken,
-                            unitTitle: nextActivity.unitTitle,
-                            unitId: nextActivity.unitId,
-                            activities: activities
-                        }}
-                    />
-                {/* <View style={{flexDirection: 'row', marginBottom: 50}}>
-                    <View style={styles.forwardButton}>
-                        <TouchableOpacity style={{padding: 5}} 
-                            onPress={() => this.props.navigation.navigate('VideoActivity', { videoUrl: userActivities.videoActivity.videoUrl,
-                            lessonTitle: lessonTitle})}>
-                            <View style = {styles.forwardButtonInner}>
-                                <Image 
-                                    style={styles.forwardImage}
-                                    source={require('../../assets/keyboard_arrow_left-24px.png')} 
-                                />
-                                <Text style = {{ color: '#233665', alignContent: 'center', display: 'flex', 
-                                            padding: 10, fontWeight: 'bold'}}>Forward</Text>
-                            </View>
-                        </TouchableOpacity>
-                    </View>
-                    <View style={styles.backButton}>
-                        <TouchableOpacity 
-                            style={styles.backButtonTO}
-                            onPress={() => this.props.navigation.goBack()}>
-                            <View style={styles.backImageWrapper}>
-                                <Image 
-                                    style={styles.backImage}
-                                    source={require('../../assets/exit_to_app-24px.png')} 
-                                />
-                            </View>
-                        </TouchableOpacity>
-                    </View>
-                </View> */}
-
+                    {/* <BottomNavigation/> */}
+                    <ActivityFooter
+                            navigation={this.props.navigation}
+                            toNext={nextActivity.navigationScreen}
+                            toNextDisabled={this.state.toNextDisabled}
+                            toNextPayload={{ 
+                                userGroupId: nextActivity.userGroupId,
+                                lessonTitle: nextActivity.lessonTitle,
+                                lessonId: nextActivity.lessonId,
+                                userToken: nextActivity.userToken,
+                                unitTitle: nextActivity.unitTitle,
+                                unitId: nextActivity.unitId,
+                                activities: activities
+                            }}
+                        />
             </View>
         </View>
       );
@@ -195,10 +148,6 @@ export default class VideoActivity extends React.Component<State> {
         height: 24,
         width: 14,
     },
-    backImage: {
-        height: 24,
-        width: 15,
-    },
     backImageWrapper: {
         color: '#233665', 
         width: 30, 
@@ -211,29 +160,6 @@ export default class VideoActivity extends React.Component<State> {
         borderColor: '#F7F9FC', 
         overflow: 'hidden',
         alignItems: 'center',
-    },
-    backButtonTO: {
-        width: 60, 
-        height: 30, 
-        borderColor: '#F7F9FC', 
-        overflow: 'hidden',
-        alignItems: 'center',
-    },
-    backButton: {
-        position: 'absolute',
-        top: 34,
-        right: 23, 
-        color: '#233665', 
-        width: 30, 
-        height: 30, 
-        backgroundColor: '#F7F9FC',
-        borderStyle: 'solid', 
-        borderRadius: 5, 
-        borderWidth: 1,
-        borderColor: '#F7F9FC', 
-        overflow: 'hidden',
-        alignItems: 'center',
-        fontFamily: 'NeoSansArabicBold'
     },
     forwardButton: {
         marginTop: 10,
