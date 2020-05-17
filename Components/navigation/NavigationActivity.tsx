@@ -6,5 +6,7 @@ export default class NavigationActivity {
     nextActivity: NavigationActivity;
     navigationScreen: string;
     unitId: number;
-    unitTitle: string; 
+    unitTitle: string;
+    iconUrl: any;
+    type: string; 
 }

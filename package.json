@@ -24,6 +24,7 @@
     "link": "^0.1.5",
     "promise-sequential": "^1.1.1",
     "react": "~16.9.0",
+    "react-devtools": "^3.6.3",
     "react-dom": "16.9.0",
     "react-native": "~0.61.5",
     "react-native-easy-dnd": "^1.0.2",

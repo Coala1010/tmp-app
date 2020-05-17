@@ -1,284 +1,323 @@
 import React from 'react';
 import { Text, View, TouchableOpacity, StatusBar, Image, StyleSheet } from 'react-native';
-import UserActivities from '../../types/activities/UserActivities';
+import ActivityGroup from '../../types/activities/ActivityGroup';
 import UserActivitiesProvider from '../../providers/activities/UserActivitiesProvider';
 import NavigationActivity from '../../Components/navigation/NavigationActivity';
 
 interface State {
   selectedIndex: Number,
-  userActivities: UserActivities,
+  groups: ActivityGroup[],
   userToken: string,
   activities: Map<string, NavigationActivity>,
   firstActivity: NavigationActivity
 }
 
 export default class Activities extends React.Component<State> {
+    numberNames;
+
     state: Readonly<State> = {
         selectedIndex: -1,
-        userActivities: null,
+        groups: null,
         userToken: null,
         activities: null,
         firstActivity: null
     }
 
     constructor (props) {
-        super(props)
+        super(props);
+        this.numberNames = this.numbers();
+    }
+
+    numbers = () => {
+        const numbers = new Array;
+        
+        //1
+        numbers.push('النشاط الأول'); 
+        //2
+        numbers.push('النشاط الثاني');
+        //3
+        numbers.push('النشاط الثالث');
+        //4
+        numbers.push('النشاط الرابع');
+        //5
+        numbers.push('النشاط الخامس');
+        //6
+        numbers.push('النشاط السادس');
+        //7
+        numbers.push('النشاط السابع');
+        //8
+        numbers.push('النشاط الثامن');
+        //9
+        numbers.push('النشاط التاسع');
+        //10
+        numbers.push('النشاط العاشر');
+        //11
+        numbers.push('النشاط الحادي عشر');
+        //12
+        numbers.push('النشاط الثاني عشر');
+        //13
+        numbers.push('النشاط الثالث عشر');
+        //14
+        numbers.push('النشاط الرابع عشر');
+        //15
+        numbers.push('النشاط الخامس عشر');
+        //16
+        numbers.push('النشاط السادس عشر');
+        //17
+        numbers.push('النشاط السابع عشر');
+        //18
+        numbers.push('النشاط الثامن عشر');
+        //19
+        numbers.push('النشاط التاسع عشر');
+        //21
+        numbers.push('النشاط العشرون');
+        return numbers;
     }
 
     componentDidMount() {
         const { lessonTitle, lessonId, userToken, unitId, unitTitle } = this.props.route.params;
         this.setState({userToken: userToken, unitTitle: unitTitle});
         UserActivitiesProvider(lessonId, (json) => {
-            let userActivities : UserActivities = json;
-            this.setState({userActivities : userActivities});
-            this.createActivitiesMap(lessonId, lessonTitle, userToken, userActivities, unitId, unitTitle);
+            // let userActivities : UserActivities = json;
+            let groups : ActivityGroup[] = json;
+            this.setState({groups : groups});
+            this.createActivitiesMap(lessonId, lessonTitle, userToken, groups, unitId, unitTitle);
         });
     }
 
-    createActivitiesMap = (lessonId: number, lessonTitle: string, userToken: string, userActivities : UserActivities, unitId: number, unitTitle: string) => {
+    createActivityNavigation(lessonId: number, lessonTitle: string, userToken: string,
+        nextActivity: NavigationActivity, unitId: number, unitTitle: string, userGroupId: number,
+        navigationScreen: string, iconUrl: string, type: string) : NavigationActivity {
+
+        const navigationActivity = new NavigationActivity();
+        navigationActivity.lessonId = lessonId;
+        navigationActivity.lessonTitle = lessonTitle;
+        navigationActivity.userGroupId = userGroupId;
+        navigationActivity.userToken = userToken;
+        navigationActivity.navigationScreen = navigationScreen;
+        navigationActivity.nextActivity = nextActivity;
+        navigationActivity.unitId = unitId;
+        navigationActivity.unitTitle = unitTitle;
+        navigationActivity.iconUrl = iconUrl;
+        navigationActivity.type = type;
+        return navigationActivity;
+    }
+
+    createActivitiesMap = (lessonId: number, lessonTitle: string, userToken: string, groups : ActivityGroup[], unitId: number, unitTitle: string) => {
         const activities = new Map<string, NavigationActivity>()
 
         let nextActivity = new NavigationActivity();
         nextActivity.lessonId = lessonId;
         nextActivity.lessonTitle = lessonTitle;
-        nextActivity.userGroupId = userActivities.dragAndDropActivityGroup.userGroupId;
+        //nextActivity.userGroupId = userActivities.dragAndDropActivityGroup.userGroupId;
         nextActivity.userToken = userToken;
         nextActivity.navigationScreen = 'Lessons';
         nextActivity.nextActivity = nextActivity;
         nextActivity.unitId = unitId;
         nextActivity.unitTitle = unitTitle;
+        nextActivity.type = 'lessons';
         activities.set('lessons', nextActivity);
 
-        if (userActivities.dragAndDropActivityGroup && userActivities.dragAndDropActivityGroup.userGroupId) {
-            const phrasesNavigation = new NavigationActivity();
-            phrasesNavigation.lessonId = lessonId;
-            phrasesNavigation.lessonTitle = lessonTitle;
-            phrasesNavigation.userGroupId = userActivities.dragAndDropActivityGroup.userGroupId;
-            phrasesNavigation.userToken = userToken;
-            phrasesNavigation.navigationScreen = 'DragAndDropActivity';
-            phrasesNavigation.nextActivity = nextActivity;
-            phrasesNavigation.unitId = unitId;
-            phrasesNavigation.unitTitle = unitTitle;
-            activities.set('dragndrop', phrasesNavigation);
-            nextActivity = phrasesNavigation;
-        }
+        groups.forEach((activityGroup) => {
+            if (activityGroup.type === 'orderWordsActivityGroup') {
+                const navigationActivity = this.createActivityNavigation(
+                    lessonId, 
+                    lessonTitle,
+                    userToken,
+                    nextActivity,
+                    unitId,
+                    unitTitle,
+                    activityGroup.groupId,
+                    'OrderWordsActivity',
+                    require('../../assets/touch_app_24_px.png'),
+                    'orderwords'
+                )
 
-        if (userActivities.multichoiceActivityGroup && userActivities.multichoiceActivityGroup.userGroupId) {
-            const phrasesNavigation = new NavigationActivity();
-            phrasesNavigation.lessonId = lessonId;
-            phrasesNavigation.lessonTitle = lessonTitle;
-            phrasesNavigation.userGroupId = userActivities.multichoiceActivityGroup.userGroupId;
-            phrasesNavigation.userToken = userToken;
-            phrasesNavigation.navigationScreen = 'MultichoiceActivity';
-            phrasesNavigation.nextActivity = nextActivity;
-            phrasesNavigation.unitId = unitId;
-            phrasesNavigation.unitTitle = unitTitle;
-            activities.set('multichoice', phrasesNavigation);
-            nextActivity = phrasesNavigation;
-        }
+                activities.set('orderwords', navigationActivity);
+                nextActivity = navigationActivity;
+            }
 
-        if (userActivities.wordActivityGroup && userActivities.wordActivityGroup.userGroupId) {
-            const phrasesNavigation = new NavigationActivity();
-            phrasesNavigation.lessonId = lessonId;
-            phrasesNavigation.lessonTitle = lessonTitle;
-            phrasesNavigation.userGroupId = userActivities.wordActivityGroup.userGroupId;
-            phrasesNavigation.userToken = userToken;
-            phrasesNavigation.navigationScreen = 'WordsActivity';
-            phrasesNavigation.nextActivity = nextActivity;
-            phrasesNavigation.unitId = unitId;
-            phrasesNavigation.unitTitle = unitTitle;
-            activities.set('words', phrasesNavigation);
-            nextActivity = phrasesNavigation;
-        }
+            if (activityGroup.type === 'dragAndDropActivityGroup') {
+                const navigationActivity = this.createActivityNavigation(
+                    lessonId, 
+                    lessonTitle,
+                    userToken,
+                    nextActivity,
+                    unitId,
+                    unitTitle,
+                    activityGroup.groupId,
+                    'DragAndDropActivity',
+                    require('../../assets/extension-24px.png'),
+                    'dragndrop'
+                )
 
-        if (userActivities.phrasesActivityGroup && userActivities.phrasesActivityGroup.userGroupId) {
-            const phrasesNavigation = new NavigationActivity();
-            phrasesNavigation.lessonId = lessonId;
-            phrasesNavigation.lessonTitle = lessonTitle;
-            phrasesNavigation.userGroupId = userActivities.phrasesActivityGroup.userGroupId;
-            phrasesNavigation.userToken = userToken;
-            phrasesNavigation.navigationScreen = 'PhrasesActivity';
-            phrasesNavigation.nextActivity = nextActivity;
-            phrasesNavigation.unitId = unitId;
-            phrasesNavigation.unitTitle = unitTitle;
-            activities.set('phrases', phrasesNavigation);
-            nextActivity = phrasesNavigation;
-        }
+                activities.set('dragndrop', navigationActivity);
+                nextActivity = navigationActivity;
+            }
 
-        if (userActivities.videoActivityGroup && userActivities.videoActivityGroup.userGroupId) {
-            const phrasesNavigation = new NavigationActivity();
-            phrasesNavigation.lessonId = lessonId;
-            phrasesNavigation.lessonTitle = lessonTitle;
-            phrasesNavigation.userGroupId = userActivities.videoActivityGroup.userGroupId;
-            phrasesNavigation.userToken = userToken;
-            phrasesNavigation.navigationScreen = 'VideoActivity';
-            phrasesNavigation.nextActivity = nextActivity;
-            phrasesNavigation.unitId = unitId;
-            phrasesNavigation.unitTitle = unitTitle;
-            activities.set('video', phrasesNavigation);
-            nextActivity = phrasesNavigation;
-        }
+            if (activityGroup.type === 'multichoiceActivityGroup') {
+                const navigationActivity = this.createActivityNavigation(
+                    lessonId, 
+                    lessonTitle,
+                    userToken,
+                    nextActivity,
+                    unitId,
+                    unitTitle,
+                    activityGroup.groupId,
+                    'MultichoiceActivity',
+                    require('../../assets/format_list_bulleted-24px.png'),
+                    'multichoice'
+                )
+
+                activities.set('multichoice', navigationActivity);
+                nextActivity = navigationActivity;
+            }
+
+            if (activityGroup.type === 'wordActivityGroup') {
+                const navigationActivity = this.createActivityNavigation(
+                    lessonId, 
+                    lessonTitle,
+                    userToken,
+                    nextActivity,
+                    unitId,
+                    unitTitle,
+                    activityGroup.groupId,
+                    'WordsActivity',
+                    require('../../assets/photo-24px.png'),
+                    'words'
+                )
+
+                activities.set('words', navigationActivity);
+                nextActivity = navigationActivity;
+            }
+
+            if (activityGroup.type === 'phrasesActivityGroup') {
+                const navigationActivity = this.createActivityNavigation(
+                    lessonId, 
+                    lessonTitle,
+                    userToken,
+                    nextActivity,
+                    unitId,
+                    unitTitle,
+                    activityGroup.groupId,
+                    'PhrasesActivity',
+                    require('../../assets/headset-24px.png'),
+                    'phrases'
+                )
+
+                activities.set('phrases', navigationActivity);
+                nextActivity = navigationActivity;
+            }
+
+            if (activityGroup.type === 'videoActivityGroup') {
+                const navigationActivity = this.createActivityNavigation(
+                    lessonId, 
+                    lessonTitle,
+                    userToken,
+                    nextActivity,
+                    unitId,
+                    unitTitle,
+                    activityGroup.groupId,
+                    'VideoActivity',
+                    require('../../assets/video-24px.png'),
+                    'video'
+                )
+
+                activities.set('video', navigationActivity);
+                nextActivity = navigationActivity;
+            }
+        });
 
         this.setState({firstActivity : nextActivity});
 
         this.setState({activities: activities});
     }
 
+    prerenderActivities() {
+        const { lessonTitle, lessonId } = this.props.route.params;
+        let lessonNumber = -1; 
+        return this.state.groups.map((activityGroup, i) => {
+            var activityTitle, iconUrl, navigationScreen: string;
+            lessonNumber++;
+            if (activityGroup.type === 'videoActivityGroup') {
+                activityTitle = this.numberNames[lessonNumber] + ' : ' + 'فيديو';
+                iconUrl = require('../../assets/video-24px.png');
+                navigationScreen = 'VideoActivity';
+            }
+            if (activityGroup.type === 'phrasesActivityGroup') {
+                activityTitle = this.numberNames[lessonNumber] + ' : ' + 'إستماع';
+                iconUrl = require('../../assets/headset-24px.png');     
+                navigationScreen = 'PhrasesActivity';
+            }
+            if (activityGroup.type === 'wordActivityGroup') {
+                activityTitle = this.numberNames[lessonNumber] + ' : ' + 'التعرف على الصور';
+                iconUrl = require('../../assets/photo-24px.png');     
+                navigationScreen = 'WordsActivity';
+            }
+            if (activityGroup.type === 'multichoiceActivityGroup') {
+                activityTitle = this.numberNames[lessonNumber] + ' : ' + 'إختيار ما بين متعدد';
+                iconUrl = require('../../assets/format_list_bulleted-24px.png');     
+                navigationScreen = 'MultichoiceActivity';
+            }
+            if (activityGroup.type === 'dragAndDropActivityGroup') {
+                activityTitle = this.numberNames[lessonNumber] + ' : ' + 'مطابقة الصور';
+                iconUrl = require('../../assets/extension-24px.png');     
+                navigationScreen = 'DragAndDropActivity';
+            }
+            if (activityGroup.type === 'orderWordsActivityGroup') {
+                activityTitle = this.numberNames[lessonNumber] + ' : ' + 'لجعل الجملة';
+                iconUrl = require('../../assets/touch_app_24_px.png');     
+                navigationScreen = 'OrderWordsActivity';
+            }
+        
+            return this.renderActivity(this.props.navigation, 
+                navigationScreen, 
+                activityGroup.userGroupId, 
+                lessonTitle,
+                lessonId,
+                activityTitle, 
+                iconUrl);          
+        })
+    }
+
     renderActivitiesList(){
-      const { lessonTitle, lessonId } = this.props.route.params; 
-      // const userActivities = 
-
-      return this.state.userActivities ? (
+      let userActivities;
+      if (this.state.activities) {
+        userActivities = this.prerenderActivities();
+      }
+      return this.state.activities ? (
         <View style={{flex: 1, justifyContent:'flex-start', padding: 20, width: '100%', marginTop: 40}}>
-            {
-                this.state.userActivities.videoActivityGroup && this.state.userActivities.videoActivityGroup.userGroupId ? 
-                (
-                    <View style={styles.activity}>
-
-                        <TouchableOpacity style={{padding: 5}} 
-                            onPress={() => this.props.navigation.navigate('VideoActivity', { 
-                                userGroupId: this.state.userActivities.videoActivityGroup.userGroupId,
-                                lessonTitle: lessonTitle,
-                                lessonId: lessonId,
-                                userToken: this.state.userToken,
-                                activities: this.state.activities,
-                                unitId: this.props.route.params.unitId 
-                                })}>
-                            <View style = {{alignItems: 'center', backgroundColor: '#FCFDFF', 
-                                justifyContent: 'space-around', height: 60,
-                                flexDirection: 'row'
-                                }}>
-                            <Text style = {styles.activityText}>النشاط الأول : فيديو</Text>
-                            {/* Video Activity */}
-                            <Image 
-                                            style={styles.image}
-                                            source={require('../../assets/video-24px.png')} 
-                                            />
-                            </View>
-                        </TouchableOpacity>
-                    
-                   </View>
-                ) 
-                : <View/>
-            }
-            {
-                this.state.userActivities.phrasesActivityGroup && this.state.userActivities.phrasesActivityGroup.userGroupId ? (
-                    <View 
-                        //key={i} 
-                        style={styles.activity}>
-
-                        <TouchableOpacity
-                            style={{padding: 5}}
-                            onPress={() => this.props.navigation.navigate('PhrasesActivity', { 
-                                userGroupId: this.state.userActivities.phrasesActivityGroup.userGroupId,
-                                groupId: this.state.userActivities.phrasesActivityGroup.groupId,
-                                lessonTitle: lessonTitle,
-                                lessonId: lessonId,
-                                userToken: this.state.userToken,
-                                activities: this.state.activities
-                            })}
-                        >
-                            <View style = {{alignItems: 'center', backgroundColor: '#FCFDFF', 
-                                justifyContent: 'space-around', height: 60,
-                                flexDirection: 'row'
-                                }}>
-                            <Text style = {styles.activityText}>النشاط الثاني  : إستماع</Text>
-                            {/* Phrases Activity */}
-                            <Image 
-                                            style={styles.image}
-                                            source={require('../../assets/headset-24px.png')} 
-                                            />
-                            </View>
-                        </TouchableOpacity>
-                    </View>
-                ) : <View/>
-            }
-            {
-                this.state.userActivities.wordActivityGroup && this.state.userActivities.wordActivityGroup.userGroupId ? ( 
-                    <View 
-                        //key={i} 
-                        style={styles.activity}>
-
-                        <TouchableOpacity style={{padding: 5}} 
-                            onPress={() => this.props.navigation.navigate('WordsActivity', { 
-                                userGroupId: this.state.userActivities.wordActivityGroup.userGroupId,
-                                lessonTitle: lessonTitle,
-                                lessonId: lessonId,
-                                userToken: this.state.userToken,
-                                activities: this.state.activities
-                            })}>
-                            <View style = {{alignItems: 'center', backgroundColor: '#FCFDFF', 
-                                justifyContent: 'space-around', height: 60,
-                                flexDirection: 'row'
-                                }}>
-                            <Text style = {styles.activityText}>النشاط الثالث : التعرف على الصور</Text>
-                            {/* Words Activity */}
-                            <Image 
-                                            style={styles.image}
-                                            source={require('../../assets/photo-24px.png')} 
-                                            />
-                            </View>
-                        </TouchableOpacity>
-                    </View>
-                ) : <View/>
-            }
-            {
-                this.state.userActivities.multichoiceActivityGroup && this.state.userActivities.multichoiceActivityGroup.userGroupId ? ( 
-                    <View 
-                        //key={i} 
-                        style={styles.activity}>
-
-                        <TouchableOpacity style={{padding: 5}} 
-                            onPress={() => this.props.navigation.navigate('MultichoiceActivity', { 
-                                userGroupId: this.state.userActivities.multichoiceActivityGroup.userGroupId,
-                                lessonTitle: lessonTitle,
-                                lessonId: lessonId,
-                                userToken: this.state.userToken,
-                                activities: this.state.activities
-                                })}>
-                            <View style = {{alignItems: 'center', backgroundColor: '#FCFDFF', 
-                                justifyContent: 'space-around', height: 60,
-                                flexDirection: 'row'
-                                }}>
-                            <Text style = {styles.activityText}>النشاط الثالث : إختيار ما بين متعدد</Text>
-                            {/* Multichoice Activity */}
-                            <Image 
-                                            style={styles.image}
-                                            source={require('../../assets/format_list_bulleted-24px.png')} 
-                                            />
-                            </View>
-                        </TouchableOpacity>
-                    </View>
-               ) : <View/>
-            }
-            {
-                this.state.userActivities.dragAndDropActivityGroup && this.state.userActivities.dragAndDropActivityGroup.userGroupId ? (
-                    <View style={styles.activity}>
-                        <TouchableOpacity style={{padding: 5}} 
-                            onPress={() => this.props.navigation.navigate('DragAndDropActivity', { 
-                                userGroupId: this.state.userActivities.dragAndDropActivityGroup.userGroupId,
-                                lessonTitle: lessonTitle,
-                                lessonId: lessonId,
-                                userToken: this.state.userToken,
-                                activities: this.state.activities
-                             })}>
-                            <View style={{alignItems: 'center', backgroundColor: '#FCFDFF', 
-                                justifyContent: 'space-around', height: 60,
-                                flexDirection: 'row'
-                            }}>
-                                <Text style={styles.activityText}>النشاط الرابع : مطابقة الصور</Text>
-                                {/* Drag And Drop Activity */}
-                                <Image 
-                                    style={styles.image}
-                                    source={require('../../assets/extension-24px.png')} 
-                                />
-                            </View>
-                        </TouchableOpacity>
-                    </View>
-               ) : <View/>
-            }
+            {userActivities}
         </View>
       ) : <View/>
+    }
+
+    renderActivity(navigation, screenName: string, userGroupId: number, 
+        lessonTitle: string, lessonId: number, activityTitle: string, urlToIcon: any) {
+        return (
+            <View style={styles.activity}>
+                <TouchableOpacity style={{padding: 5}} 
+                    onPress={() => navigation.navigate(screenName, { 
+                        userGroupId: userGroupId,
+                        lessonTitle: lessonTitle,
+                        lessonId: lessonId,
+                        userToken: this.state.userToken,
+                        activities: this.state.activities
+                        })}>
+                    <View style={{alignItems: 'center', backgroundColor: '#FCFDFF', 
+                        justifyContent: 'space-around', height: 60,
+                        flexDirection: 'row'
+                    }}>
+                        <Text style={styles.activityText}>{activityTitle}</Text>
+                        <Image 
+                            style={styles.image}
+                            // source={require('../../assets/photo-24px.png')}
+                            source={urlToIcon} 
+                        />
+                    </View>
+                </TouchableOpacity>
+            </View>
+        )
     }
   
     backToLessons(userToken: string, unitTitle: string, unitId: number) {        
@@ -408,7 +447,7 @@ export default class Activities extends React.Component<State> {
         fontFamily: 'NeoSansArabicBold'
     },
     activityText: {
-        marginLeft: 50, 
+        // marginLeft: 50, 
         color: '#233665', 
         alignContent: 'center', 
         display: 'flex', 

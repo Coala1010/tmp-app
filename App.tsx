@@ -12,6 +12,7 @@ import PhrasesActivity from './screens/activities/PhrasesActivity';
 import WordsActivity from './screens/activities/WordsActivity';
 import MultichoiceActivity from './screens/activities/MultichoiceActivity';
 import DragAndDropActivity from './screens/activities/DragAndDropActivity';
+import OrderWordsActivity from './screens/activities/OrderWordsActivity';
 import Congratulations from './screens/activities/Congratulations';
 // import { useFonts } from '@use-expo/font';
 import * as Font from 'expo-font';
@@ -89,6 +90,7 @@ export default class App extends React.Component {
             <this.Stack.Screen name="WordsActivity" component={WordsActivity}/>
             <this.Stack.Screen name="MultichoiceActivity" component={MultichoiceActivity}/>
             <this.Stack.Screen name="DragAndDropActivity" component={DragAndDropActivity}/>
+            <this.Stack.Screen name="OrderWordsActivity" component={OrderWordsActivity}/>
             <this.Stack.Screen name="Congratulations" component={Congratulations}/>
           </this.Stack.Navigator>
         </NavigationContainer>
