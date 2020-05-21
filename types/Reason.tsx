@@ -1,4 +1,4 @@
-export default class UserLevel {
+export default class Reason {
   id: number;
   reason: string;
 	pictureUrl: string;

@@ -31,7 +31,6 @@ export function CreateUserReasonToLearn(data, resultCallback : any) {
 
 export function DeleteReason(reasonId: number, resultCallback : any) {
     let url = environment.API_URL + '/api/v1/app/reasons/' + reasonId;
-    console.log(url);
     fetch(url, {
         method: 'DELETE',
         headers: {

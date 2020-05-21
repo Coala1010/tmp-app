@@ -186,7 +186,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent:'center',
     width: '100%',
-    backgroundColor: 'white',
+    backgroundColor: '#fcfdff',
   },
   titleSection: {
     shadowColor: 'lightgray',
@@ -208,7 +208,7 @@ const styles = StyleSheet.create({
   answerSection: {
     flex: 1,
     width: '100%',
-    backgroundColor: 'white',
+    backgroundColor: '#fcfdff',
     flexDirection: 'column',
     marginBottom: 20,
   },
@@ -242,7 +242,7 @@ const styles = StyleSheet.create({
     color: '#233665',
     textAlign: 'right',
     fontSize: 20,
-    marginRight: 10,
+    marginRight: 16,
   },
   bottomBtnContainer: {
     width: '100%',
