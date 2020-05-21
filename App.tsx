@@ -6,6 +6,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 import Levels from './screens/levels/Levels';
 import Lessons from './screens/lessons/Lessons';
+import Whylearn from './screens/whylearn/Whylearn';
 import Activities from './screens/activities/Activities';
 import VideoActivity from './screens/activities/VideoActivity';
 import PhrasesActivity from './screens/activities/PhrasesActivity';
@@ -84,6 +85,7 @@ export default class App extends React.Component {
           headerMode='none'>
             <this.Stack.Screen name="Home" component={this.HomeScreen}/>
             <this.Stack.Screen name="Lessons" component={Lessons}/>
+            <this.Stack.Screen name="Whylearn" component={Whylearn}/>
             <this.Stack.Screen name="Activities" component={Activities}/>
             <this.Stack.Screen name="VideoActivity" component={VideoActivity}/>
             <this.Stack.Screen name="PhrasesActivity" component={PhrasesActivity}/>
