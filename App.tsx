@@ -69,7 +69,7 @@ export default class App extends React.Component {
           barStyle="dark-content"
           backgroundColor="white"
           translucent/>
-        <Levels navigation={navigation}/>
+        <Whylearn navigation={navigation}/>
       </View>
       // </SafeAreaView>
     );
@@ -86,6 +86,7 @@ export default class App extends React.Component {
             <this.Stack.Screen name="Home" component={this.HomeScreen}/>
             <this.Stack.Screen name="Lessons" component={Lessons}/>
             <this.Stack.Screen name="Whylearn" component={Whylearn}/>
+            <this.Stack.Screen name="Levels" component={Levels}/>
             <this.Stack.Screen name="Activities" component={Activities}/>
             <this.Stack.Screen name="VideoActivity" component={VideoActivity}/>
             <this.Stack.Screen name="PhrasesActivity" component={PhrasesActivity}/>

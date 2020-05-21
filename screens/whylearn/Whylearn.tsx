@@ -1,7 +1,12 @@
 import React from 'react';
-import { Text, View, TouchableOpacity, StyleSheet, ScrollView, Alert } from 'react-native';
+import { Alert, Image, Text, View, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 import AntDesignIcon from 'react-native-vector-icons/AntDesign';
-import FeatherIcon from 'react-native-vector-icons/Feather';
+
+import Reasons from '../../types/Reasons';
+import UserProvider from '../../providers/UserProvider';
+import { GetReason, CreateUserReasonToLearn, DeleteReason } from '../../providers/ReasonProvider';
+import { IC_CHECK } from '../../utils/Icons';
+import environment from '../../development.json';
 
 import {
   NavigationParams,
@@ -11,48 +16,87 @@ import {
 
 interface State {
   selectedIndex: Array<Number>,
-  userToken: string
+  reasonData: Reasons,
+  userId: number
 }
-
-const answerData = [
-  {
-    text: '🤓 الثقافة والمرح',
-  },
-  {
-    text: '📚 التعليم',
-  },
-  {
-    text: '🕋 الغرض الديني',
-  },
-  {
-    text: '✈️ السفر',
-  },
-  {
-    text: '💼 غرض العمل',
-  },
-  {
-    text: '🧠 تدريب الدماغ',
-  },
-  {
-    text: '🧐 أغراض أخرى',
-  },
-];
 
 export default class Whylearn extends React.Component<State> {
   constructor (props) {
     super(props);
+    UserProvider((json) => {
+      this.setState({ userId: json.id });      
+    });
   }
 
   state: Readonly<State> = {
     selectedIndex: [],
-    userToken: null
-  } 
+    reasonData: null,
+    userId: null
+  }
+
+  getImageUrl(reasonId: number, pictureUrl: string) {
+    return environment.API_URL + '/api/v1/app/reasons/' + reasonId + '/image/' + pictureUrl;
+  }
   
   componentDidMount() {
+    GetReason((json) => {
+      let data : Reasons = new Reasons();
+      data.reasonOfArabic = json;
+      for(let i = 0; i < data.reasonOfArabic.length; i++) {
+        data.reasonOfArabic[i]['imageUrl'] = this.getImageUrl(data.reasonOfArabic[i].id, data.reasonOfArabic[i].pictureUrl);
+      }
+      this.setState({ reasonData : data });
+    });
+  }
+
+  addReason(reasonId: number, dateOfCreation: Date) {
+    let requestData = {
+      id: null,
+      reasonsToLearnId: reasonId,
+      userId: this.state.userId,
+      userReasonCreationDate: dateOfCreation
+    };
+    CreateUserReasonToLearn(requestData, (json) => {
+      console.log('CreateUserReasonToLearn');
+      console.log(json);
+      if(json.error_message) {
+        console.log(json.error_message);
+      } else {
+        let data = this.state.reasonData;
+        for(let i = 0; i < data.reasonOfArabic.length; i++) {
+          if (data.reasonOfArabic[i].id == reasonId) {
+            data.reasonOfArabic[i]['learnId'] = json.id;
+            this.setState({ reasonData : data });
+            break;
+          }
+        }
+      }
+    });
+  }
+
+  removeReason(learnId: number) {
+    console.log('removeReason');
+    console.log(learnId);
+    DeleteReason(learnId, (json) => {
+      console.log('DeleteReason');
+      console.log(json);
+      if (json.error_message) {
+        console.log(json.error_message);
+      } else {
+        let data = this.state.reasonData;
+        for(let i = 0; i < data.reasonOfArabic.length; i++) {
+          if (data.reasonOfArabic[i].learnId == learnId) {
+            data.reasonOfArabic[i].learnId = null;
+            this.setState({ reasonData : data });
+            break;
+          }
+        }
+      }
+    });
   }
 
   render() {
-    let { selectedIndex } = this.state;
+    let { selectedIndex, reasonData } = this.state;
 
     return (
       <View style={styles.container}>
@@ -65,28 +109,38 @@ export default class Whylearn extends React.Component<State> {
           scrollEventThrottle={50}
           style={styles.answerSection}
           contentContainerStyle={styles.answerContentContainer}>
-          {answerData.map((item, index) => {
+          {reasonData && reasonData.reasonOfArabic.map((item, index) => {
             return (
               <TouchableOpacity
-                key={item.text}
+                key={item.reasonOrder}
                 onPress={() => {
                   let aryIndex = selectedIndex;
                   let pos = aryIndex.indexOf(index);
                   if (pos > -1) {
                     aryIndex.splice(pos, 1);
+                    this.removeReason(item.learnId);
                   } else {
                     aryIndex.push(index);
+                    this.addReason(item.id, item.dateOfCreation);
                   }
                   this.setState({ selectedIndex : aryIndex });
                 }}
                 style={styles.answerBtnContainer}>
                 <View 
-                  key={item.text} 
                   style={styles.answerBtnSection}>
-                  <FeatherIcon name="check" size={24} style={[styles.answerBtnCheck, { opacity: selectedIndex.indexOf(index) > -1 ? 1 : 0}]} />
-                  <Text style={[styles.answerBtnText, { fontFamily: selectedIndex.indexOf(index) > -1 ? 'NeoSansArabicBold' : 'NeoSansArabic' }]}>
-                    {item.text}
-                  </Text>
+                  <Image
+                    style={{
+                      width: 24,
+                      height: 24,
+                      opacity: selectedIndex.indexOf(index) > -1 ? 1 : 0, }}
+                    resizeMode="contain"
+                    source={IC_CHECK} />
+                  <View style={{ flexDirection: 'row'}}>
+                    <Text style={[styles.answerBtnText, { fontFamily: selectedIndex.indexOf(index) > -1 ? 'NeoSansArabicBold' : 'NeoSansArabic' }]}>
+                      {item.reason}
+                    </Text>
+                    <Image style={{ width: 24, height: 24 }} source={{uri: item.imageUrl}} />
+                  </View>
                 </View>
               </TouchableOpacity>
             );
@@ -100,20 +154,13 @@ export default class Whylearn extends React.Component<State> {
                 'Notice',
                 'Show Login page',
                 [
-                  {text: 'OK', onPress: () => { console.log('Show Login page'); }}
+                  {text: 'OK', onPress: () => { this.props.navigation.navigate('Levels', {}); }}
                 ],
                 { cancelable: false }
               );
             }
             else {
-              Alert.alert(
-                'Notice',
-                'Why are you learning Arabic?',
-                [
-                  {text: 'OK', onPress: () => { console.log('Why are you learning Arabic?'); }}
-                ],
-                { cancelable: false }
-              );
+              this.props.navigation.navigate('Levels', {});
             }
           }}
           style={styles.bottomBtnContainer}>
@@ -173,7 +220,7 @@ const styles = StyleSheet.create({
     width: '90%',
     shadowColor: '#233665',
     shadowOffset: {width: 0, height: 1},
-    shadowOpacity: 0.20,
+    shadowOpacity: 0.14,
     shadowRadius: 4,
     elevation: 6,
     marginVertical: 10,
@@ -184,7 +231,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    height: 56,
+    height: 59,
+    paddingHorizontal: 16,
   },
   answerBtnCheck: {
     color: '#368496',
