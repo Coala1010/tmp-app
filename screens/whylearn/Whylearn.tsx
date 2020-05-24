@@ -1,18 +1,11 @@
 import React from 'react';
 import { Alert, Image, Text, View, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
-import AntDesignIcon from 'react-native-vector-icons/AntDesign';
 
 import Reasons from '../../types/Reasons';
 import UserProvider from '../../providers/UserProvider';
 import { GetReason, CreateUserReasonToLearn, DeleteReason } from '../../providers/ReasonProvider';
-import { IC_CHECK } from '../../utils/Icons';
+import { IC_CHECK, IC_LEFT_ARROW } from '../../utils/Icons';
 import environment from '../../development.json';
-
-import {
-  NavigationParams,
-  NavigationScreenProp,
-  NavigationState,
-} from 'react-navigation';
 
 interface State {
   selectedIndex: Array<Number>,
@@ -165,8 +158,8 @@ export default class Whylearn extends React.Component<State> {
           }}
           style={styles.bottomBtnContainer}>
           <View style={styles.bottomBtnSection}>
-            <View style={[styles.bottomBtnIcon, { paddingLeft: 10, paddingTop: 4 }]}>
-              <AntDesignIcon name='left' color='#fcfdff' size={20} />
+            <View style={[styles.bottomBtnIcon, { paddingLeft: 10 }]}>
+              <Image style={{ width: 24, height: 24 }} source={IC_LEFT_ARROW} />
             </View>
             <View style={styles.bottomBtnTextSection}>
               <Text style={styles.bottomBtnText}>
@@ -220,9 +213,9 @@ const styles = StyleSheet.create({
     width: '90%',
     shadowColor: '#233665',
     shadowOffset: {width: 0, height: 1},
-    shadowOpacity: 0.14,
-    shadowRadius: 4,
-    elevation: 6,
+    shadowOpacity: 0.1,
+    shadowRadius: 6,
+    elevation: 4,
     marginVertical: 10,
   },
   answerBtnSection: {
@@ -243,6 +236,7 @@ const styles = StyleSheet.create({
     textAlign: 'right',
     fontSize: 20,
     marginRight: 16,
+    paddingTop: 3,
   },
   bottomBtnContainer: {
     width: '100%',
@@ -259,6 +253,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     flexDirection: 'row',
     justifyContent: 'space-between',
+    alignItems: 'center',
     paddingVertical: 8,
   },
   bottomBtnIcon: {
